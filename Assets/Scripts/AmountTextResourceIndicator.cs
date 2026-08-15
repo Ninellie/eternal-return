@@ -1,20 +1,21 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using VContainer;
 
 namespace EternalReturn
 {
-    public class LikeIndicator : MonoBehaviour
+    public class AmountTextResourceIndicator : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI text;
-        [SerializeField] private Image image;
+        
+        [SerializeField] private ResourceRepository resourceRepository;
+        [SerializeField] private string resourceName;
 
-        [Inject]
-        private LikeResource _resource;
-
+        private Resource _resource;
+        
         private void OnEnable()
         {
+            _resource = resourceRepository.GetByName(resourceName);
+            
             UpdateIndicator(_resource.Amount);
             _resource.OnChange += UpdateIndicator;
         }
@@ -22,15 +23,12 @@ namespace EternalReturn
         private void OnDisable()
         {
             _resource.OnChange -= UpdateIndicator;
+            _resource = null;
         }
 
         private void UpdateIndicator(int amount)
         {
             text.text = amount.ToString();
-            
-            var percent = _resource.Amount / (float)_resource.MaxAmount;
-            
-            image.rectTransform.anchorMax = new Vector2(percent, 1);
         }
     }
 }
