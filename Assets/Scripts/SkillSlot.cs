@@ -4,10 +4,10 @@ namespace EternalReturn
 {
     public class SkillSlot : MonoBehaviour
     {
-        [SerializeField] private bool isEmpty;
+        [SerializeField] private bool isOccupied;
         [SerializeField] private bool isLocked;
         
-        public bool IsEmpty => isEmpty;
+        public bool IsOccupied => isOccupied;
         public bool IsLocked => isLocked;
     }
 }
