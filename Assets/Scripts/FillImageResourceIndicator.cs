@@ -9,6 +9,7 @@ namespace EternalReturn
 
         [SerializeField] private ResourceRepository resourceRepository;
         [SerializeField] private string resourceName;
+        [SerializeField] private bool fillAmountMode;
 
         private Resource _resource;
         
@@ -29,6 +30,12 @@ namespace EternalReturn
         private void UpdateIndicator(int amount)
         {
             var percent = _resource.Amount / (float)_resource.MaxAmount;
+            
+            if (fillAmountMode)
+            {
+                image.fillAmount = percent;
+                return;
+            }
             
             image.rectTransform.anchorMax = new Vector2(percent, 1);
         }
