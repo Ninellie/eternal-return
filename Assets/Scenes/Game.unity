@@ -1365,8 +1365,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeBlockerOnOverheatFill
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  likeButton: {fileID: 1552643205}
   overheatResourceName: overheat
   likeResourceName: likes
+  likesNullTime: 1
 --- !u!1 &1552643203
 GameObject:
   m_ObjectHideFlags: 0

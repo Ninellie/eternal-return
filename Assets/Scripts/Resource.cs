@@ -11,13 +11,13 @@ namespace EternalReturn
         [SerializeField] private int amount;
         [SerializeField] private int maxAmount;
         [SerializeField] private bool emptyOnFill;
-        [SerializeField] private bool isBlocked;
+        [SerializeField] private bool isIncreaseBlocked;
         
         public string Name => name;
         
         public int Amount => amount;
         public int MaxAmount => maxAmount;
-        public bool IsBlocked => isBlocked;
+        public bool IsIncreaseBlocked => isIncreaseBlocked;
         
         public event Action<int> OnChange;
         public event Action<int> OnIncrease;
@@ -30,7 +30,7 @@ namespace EternalReturn
         public void Increase(int value)
         {
             if (value == 0) return;
-            if (isBlocked) return;
+            if (isIncreaseBlocked) return;
             
             amount += value;
             
@@ -54,7 +54,6 @@ namespace EternalReturn
         public void Decrease(int value)
         {
             if (value == 0) return;
-            if (isBlocked) return;
             
             amount -= value;
             
@@ -69,15 +68,15 @@ namespace EternalReturn
             OnChange?.Invoke(Amount);
         }
 
-        public void Block()
+        public void BlockIncrease()
         {
-            isBlocked = true;
+            isIncreaseBlocked = true;
             OnBlocked?.Invoke();
         }
 
-        public void Unblock()
+        public void UnblockIncrease()
         {
-            isBlocked = false;
+            isIncreaseBlocked = false;
             OnUnblocked?.Invoke();
         }
     }
