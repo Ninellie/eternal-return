@@ -2,7 +2,7 @@
 
 namespace EternalReturn
 {
-    public class LikeBlockerOnOverheatFill : MonoBehaviour
+    public class LikesBlockController : MonoBehaviour
     {
         [SerializeField] private ResourceRepository resourceRepository;
         
