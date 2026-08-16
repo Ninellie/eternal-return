@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 21478777}
   - component: {fileID: 21478776}
   - component: {fileID: 21478775}
+  - component: {fileID: 21478778}
   m_Layer: 5
   m_Name: Overheat Indicator
   m_TagString: Untagged
@@ -208,6 +209,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21478773}
   m_CullTransparentMesh: 1
+--- !u!114 &21478778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21478773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.FillImageResourceIndicator
+  image: {fileID: 1084777687}
+  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  resourceName: overheat
+  fillAmountMode: 1
 --- !u!1 &56900812
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +373,7 @@ GameObject:
   - component: {fileID: 273860308}
   - component: {fileID: 273860310}
   - component: {fileID: 273860309}
+  - component: {fileID: 273860311}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -482,6 +500,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273860307}
   m_CullTransparentMesh: 1
+--- !u!114 &273860311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273860307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b079dea6e8154ee39fc7e545702926d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.IdeaButtonLabel
+  idea: {fileID: 327661991}
+  readyText: "\u0414\u0443\u043C\u0430\u0442\u044C"
+  harvestableText: "\u0418\u0434\u0435\u044F!"
+  onCooldownText: "\u0425\u043C\u043C..."
+  text: {fileID: 273860309}
 --- !u!1 &320151114
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,7 +1574,6 @@ GameObject:
   - component: {fileID: 1084777686}
   - component: {fileID: 1084777688}
   - component: {fileID: 1084777687}
-  - component: {fileID: 1084777689}
   m_Layer: 5
   m_Name: Filler
   m_TagString: Untagged
@@ -1604,22 +1638,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084777685}
   m_CullTransparentMesh: 1
---- !u!114 &1084777689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084777685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.FillImageResourceIndicator
-  image: {fileID: 1084777687}
-  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
-  resourceName: overheat
-  fillAmountMode: 1
 --- !u!1 &1239039131
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,7 +1914,6 @@ MonoBehaviour:
   idea: {fileID: 327661991}
   skillPanel: {fileID: 799625767}
   button: {fileID: 1399903944}
-  filler: {fileID: 1886119118}
 --- !u!1 &1501357688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,7 +2038,6 @@ GameObject:
   - component: {fileID: 1552643207}
   - component: {fileID: 1552643205}
   - component: {fileID: 1552643208}
-  - component: {fileID: 1552643209}
   m_Layer: 5
   m_Name: Like Button
   m_TagString: Untagged
@@ -2129,22 +2145,6 @@ MonoBehaviour:
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
   resourceName: likes
   increaseAmount: 1
---- !u!114 &1552643209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552643203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeIndicator
-  image: {fileID: 1239039135}
-  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
-  resourceName: likes
-  fillAmountMode: 1
 --- !u!1 &1670058760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,6 +2343,7 @@ GameObject:
   - component: {fileID: 1803285179}
   - component: {fileID: 1803285178}
   - component: {fileID: 1803285177}
+  - component: {fileID: 1803285180}
   m_Layer: 5
   m_Name: Likes Indicator
   m_TagString: Untagged
@@ -2420,6 +2421,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1803285175}
   m_CullTransparentMesh: 1
+--- !u!114 &1803285180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803285175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeIndicator
+  image: {fileID: 1239039135}
+  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  resourceName: likes
+  fillAmountMode: 1
 --- !u!1 &1863611675
 GameObject:
   m_ObjectHideFlags: 0

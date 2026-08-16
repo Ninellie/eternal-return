@@ -10,7 +10,6 @@ namespace EternalReturn
         [SerializeField] private SkillPanel skillPanel;
         
         [SerializeField] private Button button;
-        [SerializeField] private Image filler;
         
         private void OnEnable()
         {
