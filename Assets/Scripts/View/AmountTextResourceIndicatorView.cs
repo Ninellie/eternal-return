@@ -1,15 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using EternalReturn.Core;
+using TMPro;
+using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.View
 {
-    public class FillImageResourceIndicator : MonoBehaviour
+    public class AmountTextResourceIndicatorView : MonoBehaviour
     {
-        [SerializeField] private Image image;
-
+        [Header("Dependencies")]
         [SerializeField] private ResourceRepository resourceRepository;
+        [SerializeField] private TextMeshProUGUI text;
+        
+        [Header("Settings")]
         [SerializeField] private string resourceName;
-        [SerializeField] private bool fillAmountMode;
 
         private Resource _resource;
         
@@ -29,15 +31,7 @@ namespace EternalReturn
 
         private void UpdateIndicator(int amount)
         {
-            var percent = _resource.Amount / (float)_resource.MaxAmount;
-            
-            if (fillAmountMode)
-            {
-                image.fillAmount = percent;
-                return;
-            }
-            
-            image.rectTransform.anchorMax = new Vector2(percent, 1);
+            text.text = amount.ToString();
         }
     }
 }

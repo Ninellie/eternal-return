@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using EternalReturn.Core;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
     public class LikesBlockController : MonoBehaviour
     {

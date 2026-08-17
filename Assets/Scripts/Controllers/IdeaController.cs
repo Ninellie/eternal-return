@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
-    public class Idea : MonoBehaviour
+    public class IdeaController : MonoBehaviour
     {
         [SerializeField] private float baseCooldown;
         [SerializeField] private float cooldown;
@@ -14,7 +14,6 @@ namespace EternalReturn
         [SerializeField] private float postHarvestCooldown;
         
         [SerializeField] private bool isHarvestable;
-        
         
         public bool IsOnCooldown => isOnCooldown;
         public float BaseCooldown => baseCooldown;

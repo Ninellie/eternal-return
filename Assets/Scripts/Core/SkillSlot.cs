@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Core
 {
-    public class SkillSlot : MonoBehaviour
+    [Serializable]
+    public class SkillSlot
     {
         [SerializeField] private bool isOccupied;
         [SerializeField] private bool isLocked;

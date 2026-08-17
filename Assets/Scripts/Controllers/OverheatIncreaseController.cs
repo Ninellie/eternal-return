@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using EternalReturn.Core;
+using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
     public class OverheatIncreaseController : MonoBehaviour
     {
@@ -25,6 +26,7 @@ namespace EternalReturn
         private void OnDisable()
         {
             _likeResource.OnIncrease -= IncreaseOverheat;
+            
             _likeResource = null;
             _overheatResource = null;
         }

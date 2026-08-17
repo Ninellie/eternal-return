@@ -1,13 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using EternalReturn.Core;
+using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
-    public class ResourceIncreaseButton : MonoBehaviour
+    public class ResourceIncreaseController : MonoBehaviour
     {
-        [SerializeField] private Button button;
-        
+        [Header("Dependencies")]
         [SerializeField] private ResourceRepository resourceRepository;
+        
+        [Header("Settings")]
         [SerializeField] private string resourceName;
         [SerializeField] private int increaseAmount;
 
@@ -23,7 +24,7 @@ namespace EternalReturn
             _resource = null;
         }
 
-        public void Like()
+        public void Increase()
         {
             _resource.Increase(increaseAmount);
         }

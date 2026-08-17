@@ -221,8 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.FillImageResourceIndicator
-  image: {fileID: 1084777687}
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  image: {fileID: 1084777687}
   resourceName: overheat
   fillAmountMode: 1
 --- !u!1 &56900812
@@ -362,6 +362,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56900812}
   m_CullTransparentMesh: 1
+--- !u!1 &146004885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 146004886}
+  m_Layer: 0
+  m_Name: '[Controllers]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &146004886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146004885}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &273860307
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,11 +543,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b079dea6e8154ee39fc7e545702926d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.IdeaButtonLabel
-  idea: {fileID: 327661991}
+  ideaController: {fileID: 862621953}
+  text: {fileID: 273860309}
   readyText: "\u0414\u0443\u043C\u0430\u0442\u044C"
   harvestableText: "\u0418\u0434\u0435\u044F!"
   onCooldownText: "\u0425\u043C\u043C..."
-  text: {fileID: 273860309}
 --- !u!1 &320151114
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320151114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -574,7 +605,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 327661990}
-  - component: {fileID: 327661991}
   m_Layer: 5
   m_Name: Idea Monitor
   m_TagString: Untagged
@@ -603,25 +633,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 10}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &327661991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 327661989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08539731b6264f8e8d9352a2928a582d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Idea
-  baseCooldown: 1
-  cooldown: 0
-  isOnCooldown: 0
-  basePostHarvestCooldown: 1
-  isOnPostHarvestCooldown: 0
-  postHarvestCooldown: 0
-  isHarvestable: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,7 +1231,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799625765}
-  - component: {fileID: 799625767}
   - component: {fileID: 799625766}
   - component: {fileID: 799625768}
   m_Layer: 5
@@ -1280,20 +1290,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &799625767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799625764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1af2773a0591471fbd565885fdad86b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.SkillPanel
-  slots:
-  - {fileID: 1501357693}
 --- !u!114 &799625768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1308,6 +1304,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &862621952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 862621954}
+  - component: {fileID: 862621953}
+  m_Layer: 0
+  m_Name: Idea Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &862621953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862621952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08539731b6264f8e8d9352a2928a582d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Idea
+  baseCooldown: 1
+  cooldown: 0
+  isOnCooldown: 0
+  basePostHarvestCooldown: 1
+  isOnPostHarvestCooldown: 0
+  postHarvestCooldown: 0
+  isHarvestable: 0
+--- !u!4 &862621954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862621952}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &924626111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,6 +1760,53 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1303653111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1303653113}
+  - component: {fileID: 1303653112}
+  m_Layer: 0
+  m_Name: Skill Panel Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1303653112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303653111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af2773a0591471fbd565885fdad86b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.SkillPanel
+  slots:
+  - isOccupied: 0
+    isLocked: 0
+--- !u!4 &1303653113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303653111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1320023117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1740,7 +1834,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320023117}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1796,6 +1890,53 @@ MonoBehaviour:
   overheatResourceName: overheat
   likeResourceName: likes
   likesNullTime: 1
+--- !u!1 &1383087239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1383087241}
+  - component: {fileID: 1383087240}
+  m_Layer: 0
+  m_Name: Resource Increase Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1383087240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383087239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1a4d7b5dfa486f987db49fac1eccfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeButton
+  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  resourceName: likes
+  increaseAmount: 1
+--- !u!4 &1383087241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383087239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1399903940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1879,8 +2020,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 327661991}
-        m_TargetAssemblyTypeName: EternalReturn.Idea, Assembly-CSharp
+      - m_Target: {fileID: 862621953}
+        m_TargetAssemblyTypeName: EternalReturn.Controllers.IdeaController, Assembly-CSharp
         m_MethodName: GetIdea
         m_Mode: 1
         m_Arguments:
@@ -1911,8 +2052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3959f4f2d354d2b80450f65dd78a949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.IdeaButton
-  idea: {fileID: 327661991}
-  skillPanel: {fileID: 799625767}
+  ideaController: {fileID: 862621953}
+  skillPanelController: {fileID: 1303653112}
   button: {fileID: 1399903944}
 --- !u!1 &1501357688
 GameObject:
@@ -1926,7 +2067,6 @@ GameObject:
   - component: {fileID: 1501357692}
   - component: {fileID: 1501357691}
   - component: {fileID: 1501357690}
-  - component: {fileID: 1501357693}
   m_Layer: 5
   m_Name: Skill Slot
   m_TagString: Untagged
@@ -2012,20 +2152,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501357688}
   m_CullTransparentMesh: 1
---- !u!114 &1501357693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501357688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3535ea30aeea470186322487a3eb3e5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.SkillSlot
-  isOccupied: 0
-  isLocked: 0
 --- !u!1 &1552643203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2037,7 +2163,6 @@ GameObject:
   - component: {fileID: 1552643204}
   - component: {fileID: 1552643207}
   - component: {fileID: 1552643205}
-  - component: {fileID: 1552643208}
   m_Layer: 5
   m_Name: Like Button
   m_TagString: Untagged
@@ -2109,9 +2234,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1552643208}
-        m_TargetAssemblyTypeName: EternalReturn.LikeButton, Assembly-CSharp
-        m_MethodName: Like
+      - m_Target: {fileID: 1383087240}
+        m_TargetAssemblyTypeName: EternalReturn.Controllers.ResourceIncreaseController, Assembly-CSharp
+        m_MethodName: Increase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2129,22 +2254,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552643203}
   m_CullTransparentMesh: 1
---- !u!114 &1552643208
-MonoBehaviour:
+--- !u!1 &1650193688
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552643203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea1a4d7b5dfa486f987db49fac1eccfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeButton
-  button: {fileID: 1552643205}
-  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
-  resourceName: likes
-  increaseAmount: 1
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1650193689}
+  m_Layer: 0
+  m_Name: -------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1650193689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650193688}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1670058760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,8 +2335,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e08f98c9bd415ab7414fe932b16338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.AmountTextResourceIndicator
-  text: {fileID: 56900814}
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  text: {fileID: 56900814}
   resourceName: intel
 --- !u!1 &1672485328
 GameObject:
@@ -2328,8 +2468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e08f98c9bd415ab7414fe932b16338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.AmountTextResourceIndicator
-  text: {fileID: 2102213635}
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  text: {fileID: 2102213635}
   resourceName: motivation
 --- !u!1 &1803285175
 GameObject:
@@ -2433,8 +2573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b9d056d7de48b39d4f3f08b3391e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeIndicator
-  image: {fileID: 1239039135}
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  image: {fileID: 1239039135}
   resourceName: likes
   fillAmountMode: 1
 --- !u!1 &1863611675
@@ -2539,7 +2679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1752bc7ad2904968a094bc7f4abb761a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.IdeaCooldownIndicator
-  idea: {fileID: 327661991}
+  ideaController: {fileID: 862621953}
   filler: {fileID: 1886119118}
   harvestableColor: {r: 0.44568115, g: 1, b: 0.2971698, a: 1}
   onCooldownColor: {r: 1, g: 0.8509804, b: 0, a: 1}
@@ -2935,9 +3075,14 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 519420032}
-  - {fileID: 619394802}
-  - {fileID: 789544524}
-  - {fileID: 764749245}
+  - {fileID: 146004886}
   - {fileID: 320151115}
   - {fileID: 1320023118}
+  - {fileID: 862621954}
+  - {fileID: 1303653113}
+  - {fileID: 1383087241}
+  - {fileID: 1650193689}
+  - {fileID: 789544524}
+  - {fileID: 764749245}
+  - {fileID: 519420032}
+  - {fileID: 619394802}

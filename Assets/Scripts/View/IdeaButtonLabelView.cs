@@ -1,42 +1,44 @@
-﻿using TMPro;
+﻿using EternalReturn.Controllers;
+using TMPro;
 using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.View
 {
-    public class IdeaButtonLabel : MonoBehaviour
+    public class IdeaButtonLabelView : MonoBehaviour
     {
-        [SerializeField] private Idea idea;
+        [Header("Dependencies")]
+        [SerializeField] private IdeaController ideaController;
+        [SerializeField] private TextMeshProUGUI text;
         
+        [Header("Settings")]
         [SerializeField] private string readyText;
         [SerializeField] private string harvestableText;
         [SerializeField] private string onCooldownText;
         
-        [SerializeField] private TextMeshProUGUI text;
-        
         private void OnEnable()
         {
-            idea.OnIdeaCooldownStarted += SetOnCooldown;
-            idea.OnIdeaHarvestable += SetHarvestable;
-            idea.OnIdeaPostHarvestCooldownExpired += SetReady;
+            ideaController.OnIdeaCooldownStarted += SetOnCooldown;
+            ideaController.OnIdeaHarvestable += SetHarvestable;
+            ideaController.OnIdeaPostHarvestCooldownExpired += SetReady;
             
             UpdateButtonLabel();    
         }
 
         private void OnDisable()
         {
-            idea.OnIdeaCooldownStarted -= SetOnCooldown;
-            idea.OnIdeaHarvestable -= SetHarvestable;
-            idea.OnIdeaPostHarvestCooldownExpired -= SetReady;
+            ideaController.OnIdeaCooldownStarted -= SetOnCooldown;
+            ideaController.OnIdeaHarvestable -= SetHarvestable;
+            ideaController.OnIdeaPostHarvestCooldownExpired -= SetReady;
         }
 
         private void UpdateButtonLabel()
         {
-            if (idea.IsOnCooldown)
+            if (ideaController.IsOnCooldown)
             {
                 SetReady();
             }
 
-            if (idea.IsHarvestable)
+            if (ideaController.IsHarvestable)
             {
                 SetHarvestable();
             }

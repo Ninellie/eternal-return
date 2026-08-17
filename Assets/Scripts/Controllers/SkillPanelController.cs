@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using EternalReturn.Core;
 using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
-    public class SkillPanel : MonoBehaviour
+    public class SkillPanelController : MonoBehaviour
     {
         [SerializeField] private List<SkillSlot> slots;
 

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using EternalReturn.Core;
+using UnityEngine;
 
-namespace EternalReturn
+namespace EternalReturn.Controllers
 {
-    public class OverheatDecreaserOverTime : MonoBehaviour
+    public class OverheatDecreaseOverTimeController : MonoBehaviour
     {
         [SerializeField] private ResourceRepository resourceRepository;
         
