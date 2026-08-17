@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace EternalReturn.Controllers
 {
     public class IdeaController : MonoBehaviour
     {
+        [Header("Dependencies")]        
+        [SerializeField] private IdeasRepository ideaRepository;
+
+        [SerializeField] private SkillPanelController skillPanelController;
+        
+        [Header("Settings")]
         [SerializeField] private float baseCooldown;
         [SerializeField] private float cooldown;
         [SerializeField] private bool isOnCooldown;
@@ -14,6 +22,9 @@ namespace EternalReturn.Controllers
         [SerializeField] private float postHarvestCooldown;
         
         [SerializeField] private bool isHarvestable;
+        
+        [Header("Inner")]
+        [SerializeField] private Idea idea;
         
         public bool IsOnCooldown => isOnCooldown;
         public float BaseCooldown => baseCooldown;
@@ -29,7 +40,7 @@ namespace EternalReturn.Controllers
         public event Action OnIdeaPostHarvestCooldownExpired;
         public event Action OnIdeaHarvestable;
         public event Action OnIdeaHarvested;
-
+        
         public void GetIdea()
         {
             if (isOnCooldown) return;
@@ -37,13 +48,25 @@ namespace EternalReturn.Controllers
             
             if (isHarvestable)
             {
+                skillPanelController.AddSkill(idea.Name);
+                
+                idea = null;
                 isHarvestable = false;
                 isOnPostHarvestCooldown = true;
+                
                 postHarvestCooldown = basePostHarvestCooldown;
                 OnIdeaHarvested?.Invoke();
                 return;
             }
+
+            var hasEmptyUnlockedSlots = skillPanelController.Slots.
+                Any(s => !s.IsOccupied && !s.IsLocked);
             
+            if (!hasEmptyUnlockedSlots) return;
+            
+            idea = ideaRepository.GetRandomIdea();
+            
+            baseCooldown = idea.HarvestCooldown;
             cooldown = baseCooldown;
             isOnCooldown = true;
             

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c45b573bbe46428b6ae2028387bf6f, type: 3}
+  m_Name: Ideas Repository
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Controllers.IdeasRepository
+  ideas:
+  - Name: "\u041F\u0438\u0442\u043E\u043D"
+    HarvestCooldown: 1
+  - Name: "\u0410\u043A\u0441\u0435\u043C\u0431\u043B\u0435\u0440"
+    HarvestCooldown: 2
+  - Name: "\u041C\u0438\u043A\u0440\u043E\u043F\u0440\u043E\u0446\u0435\u0441\u0441\u043E\u0440\u044B"
+    HarvestCooldown: 3
+  - Name: "\u041C\u0438\u043A\u0440\u043E\u043F\u0435\u043D\u0438\u0441"
+    HarvestCooldown: 4

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EternalReturn.Core;
 using UnityEngine;
 
@@ -14,14 +15,24 @@ namespace EternalReturn.Controllers
         
         public List<SkillSlot> Slots => slots;
         
-        private void AddSkill()
+        public void AddSkill(string skillName)
         {
+            var hasEmptyUnlockedSlots = slots.
+                Any(s => !s.IsOccupied && !s.IsLocked);
+            
+            if (!hasEmptyUnlockedSlots) return;
+            
+            var emptyUnlockedSlot = slots.
+                First(s => !s.IsOccupied && !s.IsLocked);
+
+            emptyUnlockedSlot.SetSkill(skillName);
+            
             OnSlotOccupied?.Invoke();
         }
         
-        private void UnlockSkillSlot()
-        {
-            OnSlotUnlocked?.Invoke();
-        }
+        // private void UnlockSkillSlot()
+        // {
+        //     OnSlotUnlocked?.Invoke();
+        // }
     }
 }
