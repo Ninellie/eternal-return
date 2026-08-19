@@ -17,12 +17,12 @@ namespace EternalReturn.Controllers
         
         public void AddSkill(string skillName)
         {
-            var hasEmptyUnlockedSlots = slots.
+            var hasEmptyUnlockedSlots = Slots.
                 Any(s => !s.IsOccupied && !s.IsLocked);
             
             if (!hasEmptyUnlockedSlots) return;
             
-            var emptyUnlockedSlot = slots.
+            var emptyUnlockedSlot = Slots.
                 First(s => !s.IsOccupied && !s.IsLocked);
 
             emptyUnlockedSlot.SetSkill(skillName);

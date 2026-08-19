@@ -19,5 +19,5 @@ MonoBehaviour:
     HarvestCooldown: 2
   - Name: "\u041C\u0438\u043A\u0440\u043E\u043F\u0440\u043E\u0446\u0435\u0441\u0441\u043E\u0440\u044B"
     HarvestCooldown: 3
-  - Name: "\u041C\u0438\u043A\u0440\u043E\u043F\u0435\u043D\u0438\u0441"
+  - Name: "\u042E\u043D\u044C\u043A\u0430"
     HarvestCooldown: 4
