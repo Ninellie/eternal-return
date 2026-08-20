@@ -14,15 +14,19 @@ namespace EternalReturn.Core
         public bool IsOccupied => isOccupied;
         public string Skill => skill;
 
-        public event Action OnChanged;
+        public event Action OnOccupied;
         
         public void SetSkill(string value)
         {
             if (isLocked) return;
             skill = value;
             isOccupied = true;
-            OnChanged?.Invoke();
-            
+            OnOccupied?.Invoke();
+        }
+
+        public void Unlock()
+        {
+            isLocked = false;
         }
     }
 }

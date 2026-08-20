@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EternalReturn.Core;
 using UnityEngine;
 
@@ -10,16 +11,39 @@ namespace EternalReturn.Controllers
         [SerializeField] private SkillPanelController controller;
         [SerializeField] private List<SkillSlotView> viewSlots;
         
+        [SerializeField] private SkillSlotView viewSlotPrefab;
+        [SerializeField] private RectTransform contentContainer;
+        
         private void OnEnable()
         {
-            for (var i = 0; i < viewSlots.Count; i++)
+            foreach (var view in viewSlots)
             {
-                var viewSlot = viewSlots[i];
-                var slot = controller.Slots[i];
-                
-                viewSlot.SetSlot(slot);
-                viewSlot.RefreshView();
+                Destroy(view.gameObject);
             }
+            
+            var slots = controller.Slots;
+
+            foreach (var slot in slots)
+            {
+                if (slot.IsLocked) continue;
+
+                CreateViewSlot(slot);
+            }
+            
+            controller.OnSlotUnlocked += CreateViewSlot;
+        }
+
+        private void OnDisable()
+        {
+            controller.OnSlotUnlocked -= CreateViewSlot;
+        }
+
+        private void CreateViewSlot(SkillSlot slot)
+        {
+            var viewSlot = Instantiate(viewSlotPrefab, contentContainer);
+                
+            viewSlot.SetSlot(slot);
+            viewSlot.RefreshView();
         }
     }
 }

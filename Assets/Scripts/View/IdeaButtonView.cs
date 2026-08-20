@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using EternalReturn.Controllers;
+using EternalReturn.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,11 @@ namespace EternalReturn.View
             ideaController.OnIdeaHarvestable -= RefreshIdeaControllerButton;
             ideaController.OnIdeaHarvested -= RefreshIdeaControllerButton;
             ideaController.OnIdeaPostHarvestCooldownExpired -= RefreshIdeaControllerButton;
+        }
+
+        private void RefreshIdeaControllerButton(SkillSlot slot)
+        {
+            RefreshIdeaControllerButton();
         }
         
         private void RefreshIdeaControllerButton()

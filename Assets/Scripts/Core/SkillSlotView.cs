@@ -9,29 +9,29 @@ namespace EternalReturn.Core
         [SerializeField] private TextMeshProUGUI label;
         [SerializeField] private GameObject root;
         [SerializeField] private SkillSlot slot;
-        
+
+        public GameObject Root => root;
+
         private void OnEnable()
         {
             if (slot == null) return;
-            slot.OnChanged += RefreshView;
+            slot.OnOccupied += RefreshView;
         }
 
         private void OnDisable()
         {
-            slot.OnChanged -= RefreshView;
+            slot.OnOccupied -= RefreshView;
         }
 
         public void SetSlot(SkillSlot value)
         {
             slot = value;
             
-            slot.OnChanged += RefreshView;
+            slot.OnOccupied += RefreshView;
         }
 
         public void RefreshView()
         {
-            root.SetActive(!slot.IsLocked);
-
             if (slot.IsOccupied)
             {
                 label.text = $"{slot.Skill}";

@@ -11,7 +11,7 @@ namespace EternalReturn.Controllers
         [SerializeField] private List<SkillSlot> slots;
 
         public event Action OnSlotOccupied;
-        public event Action OnSlotUnlocked;
+        public event Action<SkillSlot> OnSlotUnlocked;
         
         public List<SkillSlot> Slots => slots;
         
@@ -30,9 +30,11 @@ namespace EternalReturn.Controllers
             OnSlotOccupied?.Invoke();
         }
         
-        // private void UnlockSkillSlot()
-        // {
-        //     OnSlotUnlocked?.Invoke();
-        // }
+        public void CreateSkillSlot()
+        {
+            var slot = new SkillSlot();
+            slot.Unlock();
+            OnSlotUnlocked?.Invoke(slot);
+        }
     }
 }
