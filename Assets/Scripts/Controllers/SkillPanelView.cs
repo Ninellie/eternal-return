@@ -13,6 +13,7 @@ namespace EternalReturn.Controllers
         
         [SerializeField] private SkillSlotView viewSlotPrefab;
         [SerializeField] private RectTransform contentContainer;
+        [SerializeField] private RectTransform createButton;
         
         private void OnEnable()
         {
@@ -41,7 +42,7 @@ namespace EternalReturn.Controllers
         private void CreateViewSlot(SkillSlot slot)
         {
             var viewSlot = Instantiate(viewSlotPrefab, contentContainer);
-                
+            createButton.SetAsLastSibling();
             viewSlot.SetSlot(slot);
             viewSlot.RefreshView();
         }

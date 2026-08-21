@@ -1476,6 +1476,7 @@ MonoBehaviour:
   viewSlots: []
   viewSlotPrefab: {fileID: 7083326564447242450, guid: 988ae827f946a7a4cadd9e6aaeab146f, type: 3}
   contentContainer: {fileID: 924626112}
+  createButton: {fileID: 585178899}
 --- !u!1 &862621952
 GameObject:
   m_ObjectHideFlags: 0
