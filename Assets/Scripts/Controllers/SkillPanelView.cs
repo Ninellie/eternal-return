@@ -22,21 +22,17 @@ namespace EternalReturn.Controllers
                 Destroy(view.gameObject);
             }
             
-            var slots = controller.Slots;
-
-            foreach (var slot in slots)
+            foreach (var slot in controller.Slots)
             {
-                if (slot.IsLocked) continue;
-
                 CreateViewSlot(slot);
             }
             
-            controller.OnSlotUnlocked += CreateViewSlot;
+            controller.OnSlotCreated += CreateViewSlot;
         }
 
         private void OnDisable()
         {
-            controller.OnSlotUnlocked -= CreateViewSlot;
+            controller.OnSlotCreated -= CreateViewSlot;
         }
 
         private void CreateViewSlot(SkillSlot slot)

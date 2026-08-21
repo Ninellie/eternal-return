@@ -15,7 +15,7 @@ namespace EternalReturn.View
         
         private void OnEnable()
         {
-            skillPanelController.OnSlotUnlocked += RefreshIdeaControllerButton;
+            skillPanelController.OnSlotCreated += RefreshIdeaControllerButton;
             skillPanelController.OnSlotOccupied += RefreshIdeaControllerButton;
             
             ideaController.OnIdeaCooldownStarted += RefreshIdeaControllerButton;
@@ -28,7 +28,7 @@ namespace EternalReturn.View
 
         private void OnDisable()
         {
-            skillPanelController.OnSlotUnlocked -= RefreshIdeaControllerButton;
+            skillPanelController.OnSlotCreated -= RefreshIdeaControllerButton;
             skillPanelController.OnSlotOccupied -= RefreshIdeaControllerButton;
             
             ideaController.OnIdeaCooldownStarted -= RefreshIdeaControllerButton;
@@ -62,10 +62,9 @@ namespace EternalReturn.View
                 return;
             }
             
-            var hasEmptyUnlockedSlots = skillPanelController.Slots.
-                Any(s => !s.IsOccupied && !s.IsLocked);
+            var hasEmptySlots = skillPanelController.Slots.Any(s => !s.IsOccupied);
             
-            button.interactable = hasEmptyUnlockedSlots;
+            button.interactable = hasEmptySlots;
         }
     }
 }

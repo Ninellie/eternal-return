@@ -58,8 +58,7 @@ namespace EternalReturn.Controllers
                 return;
             }
 
-            var hasEmptyUnlockedSlots = skillPanelController.Slots.
-                Any(s => !s.IsOccupied && !s.IsLocked);
+            var hasEmptyUnlockedSlots = skillPanelController.Slots.Any(s => !s.IsOccupied);
             
             if (!hasEmptyUnlockedSlots) return;
             

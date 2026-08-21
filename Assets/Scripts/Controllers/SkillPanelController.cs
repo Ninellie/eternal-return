@@ -11,19 +11,19 @@ namespace EternalReturn.Controllers
         [SerializeField] private List<SkillSlot> slots;
 
         public event Action OnSlotOccupied;
-        public event Action<SkillSlot> OnSlotUnlocked;
+        public event Action<SkillSlot> OnSlotCreated;
         
         public List<SkillSlot> Slots => slots;
         
         public void AddSkill(string skillName)
         {
             var hasEmptyUnlockedSlots = Slots.
-                Any(s => !s.IsOccupied && !s.IsLocked);
+                Any(s => !s.IsOccupied);
             
             if (!hasEmptyUnlockedSlots) return;
             
             var emptyUnlockedSlot = Slots.
-                First(s => !s.IsOccupied && !s.IsLocked);
+                First(s => !s.IsOccupied);
 
             emptyUnlockedSlot.SetSkill(skillName);
             
@@ -33,8 +33,8 @@ namespace EternalReturn.Controllers
         public void CreateSkillSlot()
         {
             var slot = new SkillSlot();
-            slot.Unlock();
-            OnSlotUnlocked?.Invoke(slot);
+            slots.Add(slot);
+            OnSlotCreated?.Invoke(slot);
         }
     }
 }
