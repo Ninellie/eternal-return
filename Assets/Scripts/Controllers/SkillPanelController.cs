@@ -8,14 +8,24 @@ namespace EternalReturn.Controllers
 {
     public class SkillPanelController : MonoBehaviour
     {
+        [Header("Dependencies")]
         [SerializeField] private List<SkillSlot> slots;
+        [SerializeField] private ResourceRepository resourceRepository;
+        
+        [Header("Settings")]
+        [SerializeField] private string intelResourceName;
 
         public event Action OnSlotOccupied;
         public event Action<SkillSlot> OnSlotCreated;
         
         public List<SkillSlot> Slots => slots;
-        
-        public void AddSkill(string skillName)
+
+        private void FixedUpdate()
+        {
+            slots.Where(s=>s.IsOccupied).ToList().ForEach(s => s.Skill.Tick());
+        }
+
+        public void AddSkill(Skill value)
         {
             var hasEmptyUnlockedSlots = Slots.
                 Any(s => !s.IsOccupied);
@@ -25,7 +35,9 @@ namespace EternalReturn.Controllers
             var emptyUnlockedSlot = Slots.
                 First(s => !s.IsOccupied);
 
-            emptyUnlockedSlot.SetSkill(skillName);
+            emptyUnlockedSlot.SetSkill(value);
+            
+            value.OnComplete += GainIntel;
             
             OnSlotOccupied?.Invoke();
         }
@@ -35,6 +47,11 @@ namespace EternalReturn.Controllers
             var slot = new SkillSlot();
             slots.Add(slot);
             OnSlotCreated?.Invoke(slot);
+        }
+
+        private void GainIntel(int value)
+        {
+            resourceRepository.GetByName(intelResourceName).Increase(value);
         }
     }
 }

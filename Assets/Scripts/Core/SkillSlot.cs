@@ -7,14 +7,14 @@ namespace EternalReturn.Core
     public class SkillSlot
     {
         [SerializeField] private bool isOccupied;
-        [SerializeField] private string skill;
+        [SerializeField] private Skill skill;
 
         public bool IsOccupied => isOccupied;
-        public string Skill => skill;
-
+        public Skill Skill => skill;
+        
         public event Action OnOccupied;
         
-        public void SetSkill(string value)
+        public void SetSkill(Skill value)
         {
             skill = value;
             isOccupied = true;

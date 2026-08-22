@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EternalReturn.Core
 {
@@ -7,10 +8,9 @@ namespace EternalReturn.Core
     {
         [Header("Dependencies")]
         [SerializeField] private TextMeshProUGUI label;
-        [SerializeField] private GameObject root;
+        [SerializeField] private Image filler;
+        
         [SerializeField] private SkillSlot slot;
-
-        public GameObject Root => root;
 
         private void OnEnable()
         {
@@ -23,10 +23,19 @@ namespace EternalReturn.Core
             slot.OnOccupied -= RefreshView;
         }
 
+        private void Update()
+        {
+            if (!slot.IsOccupied) return;
+            
+            var percent = 1 - slot.Skill.Cooldown / slot.Skill.BaseCooldown;
+            
+            filler.rectTransform.anchorMax = new Vector2(percent, 1);
+        }
+
         public void SetSlot(SkillSlot value)
         {
             slot = value;
-            
+            SetEmpty();
             slot.OnOccupied += RefreshView;
         }
 
@@ -34,12 +43,17 @@ namespace EternalReturn.Core
         {
             if (slot.IsOccupied)
             {
-                label.text = $"{slot.Skill}";
+                label.text = $"{slot.Skill.Name}";
             }
             else
             {
                 label.text = "Свободный слот";
             }
+        }
+
+        private void SetEmpty()
+        {
+            filler.rectTransform.anchorMax = new Vector2(0, 1);
         }
     }
 }

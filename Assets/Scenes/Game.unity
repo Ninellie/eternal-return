@@ -1516,7 +1516,10 @@ MonoBehaviour:
   postHarvestCooldown: 0
   isHarvestable: 0
   idea:
-    Name: 
+    SkillConfig:
+      name: 
+      baseCooldown: 0
+      intelGain: 0
     HarvestCooldown: 0
 --- !u!4 &862621954
 Transform:
@@ -2075,6 +2078,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.SkillPanel
   slots: []
+  resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
+  intelResourceName: intel
 --- !u!4 &1303653113
 Transform:
   m_ObjectHideFlags: 0

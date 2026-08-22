@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using EternalReturn.Core;
 using UnityEngine;
 
 namespace EternalReturn.Controllers
@@ -47,7 +48,9 @@ namespace EternalReturn.Controllers
             
             if (isHarvestable)
             {
-                skillPanelController.AddSkill(idea.Name);
+                var skill = new Skill(idea.SkillConfig);
+                
+                skillPanelController.AddSkill(skill);
                 
                 idea = null;
                 isHarvestable = false;

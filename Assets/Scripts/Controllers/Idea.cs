@@ -1,11 +1,12 @@
 ﻿using System;
+using EternalReturn.Core;
 
 namespace EternalReturn.Controllers
 {
     [Serializable]
     public class Idea
     {
-        public string Name;
+        public SkillConfig SkillConfig;
         public float HarvestCooldown;
     }
 }
