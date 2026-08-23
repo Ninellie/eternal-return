@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using EternalReturn.Core;
+using EternalReturn.Skills;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Ideas
 {
     public class IdeaController : MonoBehaviour
     {

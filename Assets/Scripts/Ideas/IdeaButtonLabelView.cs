@@ -1,8 +1,7 @@
-﻿using EternalReturn.Controllers;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-namespace EternalReturn.View
+namespace EternalReturn.Ideas
 {
     public class IdeaButtonLabelView : MonoBehaviour
     {

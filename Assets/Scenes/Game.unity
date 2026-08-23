@@ -2208,7 +2208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.LikeButton
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
-  resourceName: likes
+  likeResourceName: likes
   increaseAmount: 1
 --- !u!4 &1383087241
 Transform:
@@ -3382,9 +3382,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 146004886}
   - {fileID: 320151115}
-  - {fileID: 1320023118}
   - {fileID: 862621954}
   - {fileID: 1303653113}
+  - {fileID: 1320023118}
   - {fileID: 1383087241}
   - {fileID: 1650193689}
   - {fileID: 789544524}

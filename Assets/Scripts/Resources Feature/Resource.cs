@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace EternalReturn.Core
+namespace EternalReturn.Resources_Feature
 {
     [Serializable]
     public class Resource

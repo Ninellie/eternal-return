@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalReturn.Core
+namespace EternalReturn.Skills
 {
     public class SkillSlotView : MonoBehaviour
     {

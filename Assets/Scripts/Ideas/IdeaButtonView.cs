@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using EternalReturn.Controllers;
-using EternalReturn.Core;
+using EternalReturn.Skills;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalReturn.View
+namespace EternalReturn.Ideas
 {
     public class IdeaButtonView : MonoBehaviour
     {

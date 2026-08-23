@@ -1,22 +1,22 @@
-﻿using EternalReturn.Core;
+﻿using EternalReturn.Resources_Feature;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Likes
 {
-    public class ResourceIncreaseController : MonoBehaviour
+    public class LikesIncreaseController : MonoBehaviour
     {
         [Header("Dependencies")]
         [SerializeField] private ResourceRepository resourceRepository;
         
         [Header("Settings")]
-        [SerializeField] private string resourceName;
+        [SerializeField] private string likeResourceName;
         [SerializeField] private int increaseAmount;
 
         private Resource _resource;
 
         private void OnEnable()
         {
-            _resource = resourceRepository.GetByName(resourceName);
+            _resource = resourceRepository.GetByName(likeResourceName);
         }
 
         private void OnDisable()
@@ -24,6 +24,9 @@ namespace EternalReturn.Controllers
             _resource = null;
         }
 
+        /// <summary>
+        /// Метод вызывает кнопка из инспектора
+        /// </summary>
         public void Increase()
         {
             _resource.Increase(increaseAmount);

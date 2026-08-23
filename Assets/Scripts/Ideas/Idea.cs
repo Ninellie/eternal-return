@@ -1,7 +1,7 @@
 ﻿using System;
-using EternalReturn.Core;
+using EternalReturn.Skills;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Ideas
 {
     [Serializable]
     public class Idea

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using EternalReturn.Core;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Skills
 {
     public class SkillPanelView : MonoBehaviour
     {

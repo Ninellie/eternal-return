@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace EternalReturn.Core
+namespace EternalReturn.Resources_Feature
 {
     [CreateAssetMenu(menuName = "Eternal Return/Resource Repository")]
     public class ResourceRepository : ScriptableObject

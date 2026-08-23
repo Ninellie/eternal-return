@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EternalReturn.Core;
+using EternalReturn.Resources_Feature;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Skills
 {
     public class SkillPanelController : MonoBehaviour
     {

@@ -1,7 +1,7 @@
-﻿using EternalReturn.Core;
+﻿using EternalReturn.Resources_Feature;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Likes
 {
     public class MotivationIncreaseFromLikesController : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace EternalReturn.Core
+namespace EternalReturn.Skills
 {
     [Serializable]
     public class SkillSlot

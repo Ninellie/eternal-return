@@ -1,8 +1,7 @@
-﻿using EternalReturn.Controllers;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalReturn.View
+namespace EternalReturn.Ideas
 {
     public class IdeaCooldownIndicatorView : MonoBehaviour
     {

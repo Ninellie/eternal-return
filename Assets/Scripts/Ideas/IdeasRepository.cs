@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace EternalReturn.Controllers
+namespace EternalReturn.Ideas
 {
     [CreateAssetMenu(menuName = "Eternal Return/Ideas Repository")]
     public class IdeasRepository : ScriptableObject
