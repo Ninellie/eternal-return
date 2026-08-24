@@ -42,7 +42,7 @@ namespace EternalReturn.Skills
             OnSlotOccupied?.Invoke();
         }
         
-        public void CreateSkillSlot()
+        public void CreateSlot()
         {
             var slot = new SkillSlot();
             slots.Add(slot);
