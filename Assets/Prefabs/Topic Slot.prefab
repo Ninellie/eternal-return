@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 533319101069293209}
   - component: {fileID: 7309783631054145980}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +220,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: -3165150236309540248}
         m_TargetAssemblyTypeName: EternalReturn.Topics.TopicSlotView, Assembly-CSharp
-        m_MethodName: CreateButtonClick
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -358,6 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicSlotView
   label: {fileID: 2616675143240918036}
   filler: {fileID: 5959474539087890563}
+  button: {fileID: 7309783631054145980}
   slot:
     isOccupied: 0
     topic:
@@ -365,6 +366,13 @@ MonoBehaviour:
       baseCooldown: 0
       cooldown: 0
       motivationGain: 0
+      isHarvestable: 0
+  topic:
+    name: 
+    baseCooldown: 0
+    cooldown: 0
+    motivationGain: 0
+    isHarvestable: 0
 --- !u!1 &8796152487176269431
 GameObject:
   m_ObjectHideFlags: 0

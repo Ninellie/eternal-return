@@ -10,25 +10,19 @@ namespace EternalReturn.Topics
         [Header("Dependencies")]
         [SerializeField] private TextMeshProUGUI label;
         [SerializeField] private Image filler;
+        [SerializeField] private Button button;
         
         [SerializeField] private TopicSlot slot;
+        
+        [SerializeField] private DailyTopic topic;
 
-        public event Action<TopicSlot> OnCreateButtonClick;
-        
-        private void OnEnable()
-        {
-            if (slot == null) return;
-            slot.OnOccupied += RefreshView;
-        }
-        
-        private void OnDisable()
-        {
-            slot.OnOccupied -= RefreshView;
-        }
+        public event Action<TopicSlot> OnCreateClick;
+        public event Action<TopicSlot> OnHarvestClick;
         
         private void Update()
         {
             if (!slot.IsOccupied) return;
+            if (slot.Topic.IsHarvestable) return;
             
             var percent = 1 - slot.Topic.Cooldown / slot.Topic.BaseCooldown;
             
@@ -38,33 +32,54 @@ namespace EternalReturn.Topics
         /// <summary>
         /// Метод вызывается кнопкой из инспектора
         /// </summary>
-        public void CreateButtonClick()
+        public void ButtonClick()
         {
-            OnCreateButtonClick?.Invoke(slot);
+            if (slot.IsOccupied)
+            {
+                if (topic.IsHarvestable)
+                { 
+                    OnHarvestClick?.Invoke(slot);
+                }
+            }
+            else
+            {
+                OnCreateClick?.Invoke(slot);
+            }
         }
         
         public void SetSlot(TopicSlot value)
         {
             slot = value;
-            SetEmpty();
-            slot.OnOccupied += RefreshView;
+            slot.OnOccupied += SetOccupied;
+            slot.OnEmpty += SetEmpty;
         }
-        
-        public void RefreshView()
+
+        private void SetOccupied()
         {
-            if (slot.IsOccupied)
-            {
-                label.text = $"{slot.Topic.Name}";
-            }
-            else
-            {
-                label.text = "Свободный слот";
-            }
+            topic = slot.Topic;
+            topic.OnCooldownExpire += SetHarvestable;
+            
+            button.interactable = false;
+            label.text = $"{slot.Topic.Name}";
         }
 
         private void SetEmpty()
         {
+            if (topic != null)
+            {
+                topic.OnCooldownExpire -= SetHarvestable;
+                topic = null;
+            }
+            
             filler.rectTransform.anchorMax = new Vector2(0, 1);
+            button.interactable = true;
+            label.text = "Свободный слот";
+        }
+
+        private void SetHarvestable()
+        {
+            button.interactable = true;
+            label.text = $"Собрать {slot.Topic.MotivationGain} мотивации";
         }
     }
 }

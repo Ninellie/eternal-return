@@ -38,8 +38,8 @@ namespace EternalReturn.Topics
             var viewSlot = Instantiate(viewSlotPrefab, contentContainer);
             createButton.SetAsLastSibling();
             viewSlot.SetSlot(slot);
-            viewSlot.OnCreateButtonClick += controller.AddTopicToSlot;
-            viewSlot.RefreshView();
+            viewSlot.OnCreateClick += controller.AddTopicToSlot;
+            viewSlot.OnHarvestClick += controller.Harvest;
         }
     }
 }

@@ -37,14 +37,16 @@ namespace EternalReturn.Topics
             if (slot.IsOccupied) return;
             var config = topicRepository.GetRandomTopic();
             var topic = new DailyTopic(config);
+            topic.SetOnCooldown();
             slot.SetTopic(topic);
-            
-            topic.OnComplete += GainMotivation;
         }
-        
-        private void GainMotivation(int value)
+
+        public void Harvest(TopicSlot topicSlot)
         {
-            resourceRepository.GetByName(intelResourceName).Increase(value);
+            var motivationGain = topicSlot.Topic.MotivationGain;
+            resourceRepository.GetByName(intelResourceName).Increase(motivationGain);
+            
+            topicSlot.Empty();
         }
     }
 }

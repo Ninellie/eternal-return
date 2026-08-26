@@ -10,13 +10,15 @@ namespace EternalReturn.Topics
         [SerializeField] private float baseCooldown;
         [SerializeField] private float cooldown;
         [SerializeField] private int motivationGain;
+        [SerializeField] private bool isHarvestable;
         
         public string Name => name;
         public float BaseCooldown => baseCooldown;
         public float Cooldown => cooldown;
         public int MotivationGain => motivationGain;
+        public bool IsHarvestable => isHarvestable;
         
-        public event Action<int> OnComplete;
+        public event Action OnCooldownExpire;
         
         public DailyTopic(DailyTopicConfig config)
         {
@@ -24,16 +26,26 @@ namespace EternalReturn.Topics
             baseCooldown = config.BaseCooldown;
             motivationGain = config.MotivationGain;
         }
+
+        public void SetOnCooldown()
+        {
+            isHarvestable = false;
+            cooldown = baseCooldown;
+        }
         
         public void Tick()
         {
+            if (isHarvestable) return;
+            
             cooldown -= Time.deltaTime;
         
             if (cooldown > 0) return;
             
-            cooldown = BaseCooldown;
+            cooldown = 0;
             
-            OnComplete?.Invoke(motivationGain);
+            isHarvestable = true;
+            
+            OnCooldownExpire?.Invoke();
         }
     }
 }

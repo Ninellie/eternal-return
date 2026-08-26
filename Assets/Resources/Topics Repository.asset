@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicsRepository
   dailyTopics:
   - name: "\u041C\u044F\u0443"
-    baseCooldown: 1
+    baseCooldown: 3
     motivationGain: 3
