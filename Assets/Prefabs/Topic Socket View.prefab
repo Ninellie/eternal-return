@@ -217,19 +217,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2616675143240918036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -3165150236309540248}
-        m_TargetAssemblyTypeName: EternalReturn.Topics.TopicSlotView, Assembly-CSharp
-        m_MethodName: ButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7172064456382064316
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +233,7 @@ GameObject:
   - component: {fileID: 3701650979445385164}
   - component: {fileID: -3165150236309540248}
   m_Layer: 5
-  m_Name: Topic Slot
+  m_Name: Topic Socket View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,23 +344,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806f2c0a209e4d5da337ee2caa01a1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicSlotView
-  label: {fileID: 2616675143240918036}
-  filler: {fileID: 5959474539087890563}
-  button: {fileID: 7309783631054145980}
-  slot:
-    isOccupied: 0
-    topic:
-      name: 
-      baseCooldown: 0
-      cooldown: 0
-      motivationGain: 0
-      isHarvestable: 0
-  topic:
-    name: 
-    baseCooldown: 0
-    cooldown: 0
-    motivationGain: 0
-    isHarvestable: 0
+  Label: {fileID: 2616675143240918036}
+  Filler: {fileID: 5959474539087890563}
+  Button: {fileID: 7309783631054145980}
+  Socket:
+    IsOccupied: 0
+    Topic:
+      Name: 
+      BaseCooldown: 0
+      Cooldown: 0
+      MotivationGain: 0
+      IsHarvestable: 0
 --- !u!1 &8796152487176269431
 GameObject:
   m_ObjectHideFlags: 0

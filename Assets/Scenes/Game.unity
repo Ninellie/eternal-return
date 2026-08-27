@@ -577,7 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357c7c9a69f64fc0b03280b5de58a9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicsPanelController
-  slots: []
+  sockets: []
   topicRepository: {fileID: 11400000, guid: 5deed5001e9d91744a51594fd47d67e6, type: 2}
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
   intelResourceName: motivation
@@ -1427,8 +1427,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicsPanelView
   controller: {fileID: 316349789}
-  viewSlots: []
-  viewSlotPrefab: {fileID: -3165150236309540248, guid: 7e99a42e9d6e019498d138f569253d1f, type: 3}
+  viewSockets: []
+  viewSocketPrefab: {fileID: -3165150236309540248, guid: 7e99a42e9d6e019498d138f569253d1f, type: 3}
   contentContainer: {fileID: 579302179}
   createButton: {fileID: 2123584226}
 --- !u!1 &755297645
@@ -3933,8 +3933,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 316349789}
-        m_TargetAssemblyTypeName: EternalReturn.Topics.TopicsPanelController, Assembly-CSharp
-        m_MethodName: CreateSlot
+        m_TargetAssemblyTypeName: EternalReturn.Topics.TopicsController, Assembly-CSharp
+        m_MethodName: CreateSocket
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
