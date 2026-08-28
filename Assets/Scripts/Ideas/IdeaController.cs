@@ -10,7 +10,7 @@ namespace EternalReturn.Ideas
         [Header("Dependencies")]        
         [SerializeField] private IdeasRepository ideaRepository;
 
-        [SerializeField] private SkillPanelController skillPanelController;
+        [SerializeField] private SkillsController skillsController;
         
         [Header("Settings")]
         [SerializeField] private float baseCooldown;
@@ -50,7 +50,7 @@ namespace EternalReturn.Ideas
             {
                 var skill = new Skill(idea.SkillConfig);
                 
-                skillPanelController.AddSkill(skill);
+                skillsController.InsertSkill(skill);
                 
                 idea = null;
                 isHarvestable = false;
@@ -61,7 +61,7 @@ namespace EternalReturn.Ideas
                 return;
             }
 
-            var hasEmptyUnlockedSlots = skillPanelController.Slots.Any(s => !s.IsOccupied);
+            var hasEmptyUnlockedSlots = skillsController.Sockets.Any(s => !s.IsOccupied);
             
             if (!hasEmptyUnlockedSlots) return;
             

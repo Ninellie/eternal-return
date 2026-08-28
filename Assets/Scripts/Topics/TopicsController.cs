@@ -69,6 +69,8 @@ namespace EternalReturn.Topics
 
         public void CreateTopic(TopicSocket socket)
         {
+            if (socket.IsOccupied) return;
+            
             var config = topicRepository.GetRandomTopic();
             
             var topic = new DailyTopic(config);

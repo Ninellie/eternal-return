@@ -8,7 +8,7 @@ namespace EternalReturn.Topics
     {
         [Header("Dependencies")] 
         [SerializeField] private TopicsController controller;
-        [SerializeField] private List<TopicSocketView> viewSockets;
+        [SerializeField] private List<TopicSocketView> socketViews;
         
         [SerializeField] private TopicSocketView viewSocketPrefab;
         [SerializeField] private RectTransform contentContainer;
@@ -16,37 +16,37 @@ namespace EternalReturn.Topics
         
         private void OnEnable()
         {
-            foreach (var viewSocket in viewSockets)
+            foreach (var socketView in socketViews)
             {
-                Destroy(viewSocket.gameObject);
+                Destroy(socketView.gameObject);
             }
             
             foreach (var socket in controller.Sockets)
             {
-                CreateViewSocket(socket);
+                CreateSocketView(socket);
             }
             
-            controller.OnSocketCreated += CreateViewSocket;
+            controller.OnSocketCreated += CreateSocketView;
             
-            controller.OnTopicInserted += SetSocketOccupied;
-            controller.OnTopicCooldownExpired += SetSocketHarvestable;
-            controller.OnTopicRemoved += SetSocketEmpty;
+            controller.OnTopicInserted += SetSocketViewOccupied;
+            controller.OnTopicCooldownExpired += SetSocketViewHarvestable;
+            controller.OnTopicRemoved += SetSocketViewEmpty;
         }
 
         private void OnDisable()
         {
-            controller.OnSocketCreated -= CreateViewSocket;
+            controller.OnSocketCreated -= CreateSocketView;
             
-            controller.OnTopicInserted -= SetSocketOccupied;
-            controller.OnTopicCooldownExpired -= SetSocketHarvestable;
-            controller.OnTopicRemoved -= SetSocketEmpty;
+            controller.OnTopicInserted -= SetSocketViewOccupied;
+            controller.OnTopicCooldownExpired -= SetSocketViewHarvestable;
+            controller.OnTopicRemoved -= SetSocketViewEmpty;
         }
 
         private void Update()
         {
-            foreach (var viewSocket in viewSockets)
+            foreach (var socketView in socketViews)
             {
-                var socket = viewSocket.Socket;
+                var socket = socketView.Socket;
                 
                 if (!socket.IsOccupied) continue;
                 
@@ -56,23 +56,28 @@ namespace EternalReturn.Topics
                 
                 var percent = 1 - topic.Cooldown / topic.BaseCooldown;
                 
-                viewSocket.Filler.rectTransform.anchorMax = new Vector2(percent, 1);
+                socketView.Filler.rectTransform.anchorMax = new Vector2(percent, 1);
             }
         }
         
-        private void CreateViewSocket(TopicSocket socket)
+        private void CreateSocketView(TopicSocket socket)
         {
-            var viewSocket = Instantiate(viewSocketPrefab, contentContainer);
+            var socketView = Instantiate(viewSocketPrefab, contentContainer);
+            socketViews.Add(socketView);
+            
             createButton.SetAsLastSibling();
-            viewSocket.Socket = socket;
+            
+            socketView.Socket = socket;
+            
+            socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
+            socketView.Button.interactable = true;
+            socketView.Label.text = "Свободный слот";
             
             var targetSocket = socket;
-            viewSocket.Button.onClick.AddListener(() => OnViewSocketButtonClick(targetSocket));
-            
-            viewSockets.Add(viewSocket);
+            socketView.Button.onClick.AddListener(() => OnSocketViewButtonClick(targetSocket));
         }
 
-        private void OnViewSocketButtonClick(TopicSocket socket)
+        private void OnSocketViewButtonClick(TopicSocket socket)
         {
             if (!socket.IsOccupied)
             {
@@ -86,29 +91,30 @@ namespace EternalReturn.Topics
 
         }
 
-        private void SetSocketOccupied(TopicSocket socket)
+        private void SetSocketViewOccupied(TopicSocket socket)
         {
-            var viewSocket = viewSockets.First(v => v.Socket == socket);
+            var socketView = socketViews.First(v => v.Socket == socket);
             
-            viewSocket.Button.interactable = false;
-            viewSocket.Label.text = $"{socket.Topic.Name}";
+            socketView.Button.interactable = false;
+            socketView.Label.text = $"{socket.Topic.Name}";
         }
 
-        private void SetSocketEmpty(TopicSocket socket)
+        private void SetSocketViewEmpty(TopicSocket socket)
         {
-            var viewSocket = viewSockets.First(v => v.Socket == socket);
+            var socketView = socketViews.First(v => v.Socket == socket);
             
-            viewSocket.Filler.rectTransform.anchorMax = new Vector2(0, 1);
-            viewSocket.Button.interactable = true;
-            viewSocket.Label.text = "Свободный слот";
+            socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
+            socketView.Button.interactable = true;
+            socketView.Label.text = "Свободный слот";
         }
 
-        private void SetSocketHarvestable(TopicSocket socket)
+        private void SetSocketViewHarvestable(TopicSocket socket)
         {
-            var viewSocket = viewSockets.First(v => v.Socket == socket);
+            var socketView = socketViews.First(v => v.Socket == socket);
             
-            viewSocket.Button.interactable = true;
-            viewSocket.Label.text = $"Собрать {socket.Topic.MotivationGain} мотивации";
+            socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
+            socketView.Button.interactable = true;
+            socketView.Label.text = $"Собрать {socket.Topic.MotivationGain} мотивации";
         }
         
     }

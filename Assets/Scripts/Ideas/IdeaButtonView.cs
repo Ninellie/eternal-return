@@ -9,13 +9,13 @@ namespace EternalReturn.Ideas
     {
         [Header("Dependencies")]
         [SerializeField] private IdeaController ideaController;
-        [SerializeField] private SkillPanelController skillPanelController;
+        [SerializeField] private SkillsController skillsController;
         [SerializeField] private Button button;
         
         private void OnEnable()
         {
-            skillPanelController.OnSlotCreated += RefreshIdeaControllerButton;
-            skillPanelController.OnSlotOccupied += RefreshIdeaControllerButton;
+            skillsController.OnSocketCreated += RefreshIdeaControllerButton;
+            skillsController.OnSocketOccupied += RefreshIdeaControllerButton;
             
             ideaController.OnIdeaCooldownStarted += RefreshIdeaControllerButton;
             ideaController.OnIdeaHarvestable += RefreshIdeaControllerButton;
@@ -27,8 +27,8 @@ namespace EternalReturn.Ideas
 
         private void OnDisable()
         {
-            skillPanelController.OnSlotCreated -= RefreshIdeaControllerButton;
-            skillPanelController.OnSlotOccupied -= RefreshIdeaControllerButton;
+            skillsController.OnSocketCreated -= RefreshIdeaControllerButton;
+            skillsController.OnSocketOccupied -= RefreshIdeaControllerButton;
             
             ideaController.OnIdeaCooldownStarted -= RefreshIdeaControllerButton;
             ideaController.OnIdeaHarvestable -= RefreshIdeaControllerButton;
@@ -36,7 +36,7 @@ namespace EternalReturn.Ideas
             ideaController.OnIdeaPostHarvestCooldownExpired -= RefreshIdeaControllerButton;
         }
 
-        private void RefreshIdeaControllerButton(SkillSlot slot)
+        private void RefreshIdeaControllerButton(SkillSocket socket)
         {
             RefreshIdeaControllerButton();
         }
@@ -61,7 +61,7 @@ namespace EternalReturn.Ideas
                 return;
             }
             
-            var hasEmptySlots = skillPanelController.Slots.Any(s => !s.IsOccupied);
+            var hasEmptySlots = skillsController.Sockets.Any(s => !s.IsOccupied);
             
             button.interactable = hasEmptySlots;
         }

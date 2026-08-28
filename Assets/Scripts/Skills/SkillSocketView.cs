@@ -2,15 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalReturn.Topics
+namespace EternalReturn.Skills
 {
-    public class TopicSocketView : MonoBehaviour
+    public class SkillSocketView : MonoBehaviour
     {
         [Header("Dependencies")]
         [SerializeField] public TextMeshProUGUI Label;
         [SerializeField] public Image Filler;
-        [SerializeField] public Button Button;
-                         
-        [SerializeField] public TopicSocket Socket;
+        
+        [SerializeField] public SkillSocket Socket;
     }
 }

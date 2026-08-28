@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 316349790}
   - component: {fileID: 316349789}
   m_Layer: 0
-  m_Name: Topics Panel Controller
+  m_Name: Topics Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1076,7 +1076,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1303653112}
         m_TargetAssemblyTypeName: EternalReturn.Controllers.SkillPanelController, Assembly-CSharp
-        m_MethodName: CreateSlot
+        m_MethodName: CreateSocket
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1427,7 +1427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicsPanelView
   controller: {fileID: 316349789}
-  viewSockets: []
+  socketViews: []
   viewSocketPrefab: {fileID: -3165150236309540248, guid: 7e99a42e9d6e019498d138f569253d1f, type: 3}
   contentContainer: {fileID: 579302179}
   createButton: {fileID: 2123584226}
@@ -1846,8 +1846,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Controllers.SkillPanelView
   controller: {fileID: 1303653112}
-  viewSlots: []
-  viewSlotPrefab: {fileID: 7083326564447242450, guid: 988ae827f946a7a4cadd9e6aaeab146f, type: 3}
+  socketViews: []
+  viewSocketPrefab: {fileID: 7083326564447242450, guid: 988ae827f946a7a4cadd9e6aaeab146f, type: 3}
   contentContainer: {fileID: 924626112}
   createButton: {fileID: 585178899}
 --- !u!1 &862621952
@@ -1880,7 +1880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Idea
   ideaRepository: {fileID: 11400000, guid: 6664c0a315ce7a44eb194866775477e3, type: 2}
-  skillPanelController: {fileID: 1303653112}
+  skillsController: {fileID: 1303653112}
   baseCooldown: 1
   cooldown: 0
   isOnCooldown: 0
@@ -2432,7 +2432,7 @@ GameObject:
   - component: {fileID: 1303653113}
   - component: {fileID: 1303653112}
   m_Layer: 0
-  m_Name: Skill Panel Controller
+  m_Name: Skills Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2450,7 +2450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af2773a0591471fbd565885fdad86b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.SkillPanel
-  slots: []
+  sockets: []
   resourceRepository: {fileID: 11400000, guid: 47b114f0915f0884c8e4ee651411607e, type: 2}
   intelResourceName: intel
 --- !u!4 &1303653113
@@ -2714,7 +2714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.IdeaButton
   ideaController: {fileID: 862621953}
-  skillPanelController: {fileID: 1303653112}
+  skillsController: {fileID: 1303653112}
   button: {fileID: 1399903944}
 --- !u!1 &1552643203
 GameObject:

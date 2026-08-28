@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 7083326564447242450}
   - component: {fileID: 3701650979445385164}
   m_Layer: 5
-  m_Name: Skill Slot
+  m_Name: Skill Socket View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,15 +331,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f791aed6709440b381722290b5f6883f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Core.SkillSlotView
-  label: {fileID: 2616675143240918036}
-  filler: {fileID: 5959474539087890563}
-  slot:
-    isOccupied: 0
-    skill:
-      name: 
-      baseCooldown: 0
-      cooldown: 0
-      intelGain: 0
+  Label: {fileID: 2616675143240918036}
+  Filler: {fileID: 5959474539087890563}
+  Socket:
+    IsOccupied: 0
+    Skill:
+      Name: 
+      BaseCooldown: 0
+      Cooldown: 0
+      IntelGain: 0
 --- !u!114 &3701650979445385164
 MonoBehaviour:
   m_ObjectHideFlags: 0
