@@ -17,15 +17,24 @@ MonoBehaviour:
     amount: 0
     maxAmount: 40
     emptyOnFill: 1
+    isIncreaseBlocked: 0
   - name: motivation
-    amount: 5
+    amount: 0
     maxAmount: 100
     emptyOnFill: 0
+    isIncreaseBlocked: 0
   - name: intel
-    amount: 0
+    amount: 2222
     maxAmount: 200
     emptyOnFill: 0
+    isIncreaseBlocked: 0
   - name: overheat
     amount: 0
     maxAmount: 40
     emptyOnFill: 0
+    isIncreaseBlocked: 0
+  - name: stress
+    amount: 54
+    maxAmount: 100
+    emptyOnFill: 0
+    isIncreaseBlocked: 0

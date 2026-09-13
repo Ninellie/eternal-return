@@ -10,12 +10,19 @@ namespace EternalReturn.Skills
     {
         [Header("Dependencies")]
         [SerializeField] private List<SkillSocket> sockets;
-        [SerializeField] private ResourceRepository resourceRepository;
+        [SerializeField] private ResourceConfigs resourceConfigs;
         
         [Header("Settings")]
-        [SerializeField] private string intelResourceName;
-
+        [SerializeField] private int socketIntelPrice;
+        
+        /// <summary>
+        /// Вызывается после того как умение заняло сокет.
+        /// </summary>
         public event Action<SkillSocket> OnSocketOccupied;
+        
+        /// <summary>
+        /// Вызывается после того как был открыт новый сокет.
+        /// </summary>
         public event Action<SkillSocket> OnSocketCreated;
         
         public List<SkillSocket> Sockets => sockets;
@@ -34,15 +41,21 @@ namespace EternalReturn.Skills
                 if (skill.Cooldown > 0) continue;
             
                 skill.Cooldown = skill.BaseCooldown;
-            
-                var intelResource = resourceRepository.GetByName(intelResourceName);
                 
-                intelResource.Increase(skill.IntelGain);
+                resourceConfigs.Intel.Increase(skill.IntelGain);
             }
         }
 
         public void CreateSocket()
         {
+            // todo если сокет первый, то он стоит 0
+
+            var intel = resourceConfigs.Intel;
+            
+            if (socketIntelPrice > intel.Amount) return;
+            
+            intel.Decrease(socketIntelPrice);
+            
             var slot = new SkillSocket();
             sockets.Add(slot);
             OnSocketCreated?.Invoke(slot);

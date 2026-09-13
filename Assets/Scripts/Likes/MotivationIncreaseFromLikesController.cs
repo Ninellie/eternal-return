@@ -1,38 +1,30 @@
 ﻿using EternalReturn.Resources_Feature;
-using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace EternalReturn.Likes
 {
-    public class MotivationIncreaseFromLikesController : MonoBehaviour
+    public class MotivationIncreaseFromLikesController : IStartable
     {
-        [SerializeField] private ResourceRepository resourceRepository;
+        private const int IncreaseAmount = 1;
         
-        [SerializeField] private string likeResourceName;
-        [SerializeField] private string motivationResourceName;
+        private readonly Resource _likes;
+        private readonly Resource _motivation;
         
-        [SerializeField] private int increaseAmount;
-        
-        private Resource _likeResource;
-        private Resource _motivationResource;
-        
-        private void OnEnable()
+        public MotivationIncreaseFromLikesController([Key("likes")] Resource likes, [Key("motivation")] Resource overheat)
         {
-            _likeResource = resourceRepository.GetByName(likeResourceName);
-            _motivationResource = resourceRepository.GetByName(motivationResourceName);
-            
-            _likeResource.OnFill += IncreaseMotivation;
+            _likes = likes;
+            _motivation = overheat;
         }
-
-        private void OnDisable()
+        
+        public void Start()
         {
-            _likeResource.OnFill -= IncreaseMotivation;
-            _likeResource = null;
-            _motivationResource = null;
+            _likes.OnFill += IncreaseMotivation;
         }
 
         private void IncreaseMotivation()
         {
-            _motivationResource.Increase(increaseAmount);
+            _motivation.Increase(IncreaseAmount);
         }
     }
 }

@@ -1,47 +1,42 @@
 ﻿using EternalReturn.Resources_Feature;
 using UnityEngine;
-using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 namespace EternalReturn.Likes
 {
-    public class LikesBlockController : MonoBehaviour
+    /// <summary>
+    /// Обнуляет и блокирует лайки после перегрева. Снимает блок когда перегрев достигает нуля. 
+    /// </summary>
+    public class LikesBlockController : IStartable, IFixedTickable
     {
-        [SerializeField] private ResourceRepository resourceRepository;
-        [SerializeField] private Button likeButton;
-        [SerializeField] private string overheatResourceName;
-        [SerializeField] private string likeResourceName;
-        [SerializeField] private float likesNullTime;
-
-        private Resource _overheatResource;
-        private Resource _likeResource;
+        private const float LikesResettingDuration = 3;
+        private const int DecreaseAmount = 1;
+        
+        private readonly Resource _overheat;
+        private readonly Resource _likes;
 
         private bool _isResettingLikes;
         private float _timePerDecrease;
         private float _decreaseCooldown;
-        
-        private void OnEnable()
+
+        public LikesBlockController([Key("overheat")] Resource overheat, [Key("likes")] Resource likes)
         {
-            _overheatResource = resourceRepository.GetByName(overheatResourceName);
-            _likeResource = resourceRepository.GetByName(likeResourceName);
-            
-            _overheatResource.OnFill += BlockLikes;
-            _overheatResource.OnEmpty += UnblockLikes;
+            _overheat = overheat;
+            _likes = likes;
         }
         
-        private void OnDisable()
+        public void Start()
         {
-            _overheatResource.OnFill -= BlockLikes;
-            _overheatResource.OnEmpty -= UnblockLikes;
-            
-            _overheatResource = null;
-            _likeResource = null;
+            _overheat.OnFill += BlockLikes;
+            _overheat.OnEmpty += UnblockLikes;
         }
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
             if (!_isResettingLikes) return;
 
-            if (_likeResource.Amount == 0)
+            if (_likes.Amount == 0)
             {
                 _isResettingLikes = false;
             }
@@ -50,23 +45,21 @@ namespace EternalReturn.Likes
             
             if (_decreaseCooldown > 0) return;
             
-            _likeResource.Decrease(1);
+            _likes.Decrease(DecreaseAmount);
             _decreaseCooldown = _timePerDecrease;
-        }
-
-        private void BlockLikes()
-        {
-            likeButton.interactable = false;
-            _likeResource.BlockIncrease();
-            
-            _timePerDecrease = likesNullTime / _likeResource.Amount;
-            _isResettingLikes = true;
         }
 
         private void UnblockLikes()
         {
-            _likeResource.UnblockIncrease();
-            likeButton.interactable = true;
+            _likes.UnblockIncrease();
+        }
+
+        private void BlockLikes()
+        {
+            _likes.BlockIncrease();
+            
+            _timePerDecrease = LikesResettingDuration / _likes.Amount;
+            _isResettingLikes = true;
         }
     }
 }

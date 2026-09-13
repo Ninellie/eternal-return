@@ -10,10 +10,10 @@ namespace EternalReturn.Topics
         [Header("Dependencies")]
         [SerializeField] private List<TopicSocket> sockets;
         [SerializeField] private TopicsRepository topicRepository;
-        [SerializeField] private ResourceRepository resourceRepository;
+        [SerializeField] private ResourceConfigs resourceConfigs;
         
         [Header("Settings")]
-        [SerializeField] private string intelResourceName;
+        [SerializeField] private int socketIntelPrice;
         
         /// <summary>
         /// Вызывается сразу после создания слота.
@@ -62,6 +62,13 @@ namespace EternalReturn.Topics
 
         public void CreateSocket()
         {
+            // todo если сокет первый, то он стоит 0
+            var intel = resourceConfigs.Intel;
+            
+            if (socketIntelPrice > intel.Amount) return;
+            
+            intel.Decrease(socketIntelPrice);
+            
             var socket = new TopicSocket();
             Sockets.Add(socket);
             OnSocketCreated?.Invoke(socket);
@@ -86,7 +93,7 @@ namespace EternalReturn.Topics
         {
             var motivationGain = socket.Topic.MotivationGain;
             
-            resourceRepository.GetByName(intelResourceName).Increase(motivationGain);
+            resourceConfigs.Motivation.Increase(motivationGain);
 
             socket.Topic = null;
             socket.IsOccupied = false;

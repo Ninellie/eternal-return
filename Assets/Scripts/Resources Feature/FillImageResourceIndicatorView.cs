@@ -6,7 +6,7 @@ namespace EternalReturn.Resources_Feature
     public class FillImageResourceIndicatorView : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private ResourceRepository resourceRepository;
+        [SerializeField] private ResourceConfigs resourceConfigs;
         [SerializeField] private Image image;
 
         [Header("Settings")]
@@ -17,7 +17,7 @@ namespace EternalReturn.Resources_Feature
         
         private void OnEnable()
         {
-            _resource = resourceRepository.GetByName(resourceName);
+            _resource = resourceConfigs.GetByName(resourceName);
             
             UpdateIndicator(_resource.Amount);
             _resource.OnChange += UpdateIndicator;

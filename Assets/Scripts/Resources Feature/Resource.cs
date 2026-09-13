@@ -19,6 +19,9 @@ namespace EternalReturn.Resources_Feature
         public int MaxAmount => maxAmount;
         public bool IsIncreaseBlocked => isIncreaseBlocked;
         
+        /// <summary>
+        /// Вызывается после любого изменения. Передаётся новое значение.
+        /// </summary>
         public event Action<int> OnChange;
         public event Action<int> OnIncrease;
         public event Action<int> OnDecrease;
@@ -26,6 +29,19 @@ namespace EternalReturn.Resources_Feature
         public event Action OnEmpty;
         public event Action OnBlocked;
         public event Action OnUnblocked;
+
+        public Resource(ResourceConfig config) 
+            : this(config.Name, config.Amount, config.MaxAmount, config.EmptyOnFill, config.IsIncreaseBlocked)
+        { }
+        
+        public Resource(string name, int amount, int maxAmount, bool emptyOnFill, bool isIncreaseBlocked)
+        {
+            this.name = name;
+            this.amount = amount;
+            this.maxAmount = maxAmount;
+            this.emptyOnFill = emptyOnFill;
+            this.isIncreaseBlocked = isIncreaseBlocked;
+        }
         
         public void Increase(int value)
         {

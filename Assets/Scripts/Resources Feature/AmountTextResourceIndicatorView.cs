@@ -6,18 +6,17 @@ namespace EternalReturn.Resources_Feature
     public class AmountTextResourceIndicatorView : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private ResourceRepository resourceRepository;
         [SerializeField] private TextMeshProUGUI text;
-        
-        [Header("Settings")]
-        [SerializeField] private string resourceName;
 
         private Resource _resource;
+
+        public void SetResource(Resource resource)
+        {
+            _resource = resource;
+        }
         
         private void OnEnable()
         {
-            _resource = resourceRepository.GetByName(resourceName);
-            
             UpdateIndicator(_resource.Amount);
             _resource.OnChange += UpdateIndicator;
         }
