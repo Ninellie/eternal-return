@@ -12,7 +12,7 @@ namespace EternalReturn.Likes
         private readonly Resource _likes;
         private readonly Button _likeButton;
 
-        public LikesViewController([Key("like_button")] Button likeButton, [Key("likes")] Resource likes)
+        public LikesViewController([Key("likes")] Button likeButton, [Key("likes")] Resource likes)
         {
             _likeButton = likeButton;
             _likes = likes;

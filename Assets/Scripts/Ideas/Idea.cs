@@ -8,5 +8,6 @@ namespace EternalReturn.Ideas
     {
         public SkillConfig SkillConfig;
         public float HarvestCooldown;
+        public float PostHarvestCooldown;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EternalReturn.Ideas;
 using EternalReturn.Likes;
 using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
@@ -15,6 +16,9 @@ namespace EternalReturn
     {
         [SerializeField] private ResourceConfigs resourceConfigs;
         [SerializeField] private SkillsController skillsController;
+        
+        [SerializeField] private IdeasRepository ideasRepository;
+        [SerializeField] private IdeaView ideaView;
         
         [SerializeField] private Button likeButton;
         
@@ -59,15 +63,24 @@ namespace EternalReturn
             builder.RegisterEntryPoint<ResourceIndicatorViewController>();
             
             // Likes
+            builder.RegisterInstance(likeButton).Keyed("likes");
             builder.RegisterEntryPoint<LikesBlockController>();
-            builder.RegisterEntryPoint<LikesViewController>();
             builder.RegisterEntryPoint<MotivationIncreaseFromLikesController>();
             builder.RegisterEntryPoint<OverheatController>();
-            builder.RegisterInstance(likeButton).Keyed("like_button");
+            builder.RegisterEntryPoint<LikesViewController>();
+            
             
             // Stress
-            builder.RegisterEntryPoint<StressController>();
             builder.RegisterInstance(skillsController);
+            builder.RegisterEntryPoint<StressController>();
+            
+            // Idea
+            builder.RegisterInstance(ideaView);
+            builder.RegisterInstance(ideasRepository);
+            builder.RegisterEntryPoint<IdeaController>().AsSelf();
+            builder.RegisterEntryPoint<IdeaButtonViewController>();
+            builder.RegisterEntryPoint<IdeaButtonLabelViewController>();
+            builder.RegisterEntryPoint<IdeaCooldownIndicatorViewController>();
         }
     }
 }

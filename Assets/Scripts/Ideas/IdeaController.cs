@@ -2,105 +2,107 @@
 using System.Linq;
 using EternalReturn.Skills;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer.Unity;
 
 namespace EternalReturn.Ideas
 {
-    public class IdeaController : MonoBehaviour
+    public class IdeaController : IStartable, IFixedTickable
     {
-        [Header("Dependencies")]        
-        [SerializeField] private IdeasRepository ideaRepository;
+        public float BaseCooldown { get; private set; }
+        public float BasePostHarvestCooldown { get; private set; }
+        
+        public bool IsOnCooldown { get; private set; }
+        public float Cooldown { get; private set; }
+        public bool IsOnPostHarvestCooldown { get; private set; }
+        public float PostHarvestCooldown { get; private set; }
 
-        [SerializeField] private SkillsController skillsController;
-        
-        [Header("Settings")]
-        [SerializeField] private float baseCooldown;
-        [SerializeField] private float cooldown;
-        [SerializeField] private bool isOnCooldown;
-
-        [SerializeField] private float basePostHarvestCooldown;
-        [SerializeField] private bool isOnPostHarvestCooldown;
-        [SerializeField] private float postHarvestCooldown;
-        
-        [SerializeField] private bool isHarvestable;
-        
-        [Header("Inner")]
-        [SerializeField] private Idea idea;
-        
-        public bool IsOnCooldown => isOnCooldown;
-        public float BaseCooldown => baseCooldown;
-        public float Cooldown => cooldown;
-        
-        public bool IsOnPostHarvestCooldown => isOnPostHarvestCooldown;
-        public float BasePostHarvestCooldown => basePostHarvestCooldown;
-        public float PostHarvestCooldown => postHarvestCooldown;
-        
-        public bool IsHarvestable => isHarvestable;
+        public bool IsHarvestable { get; private set; }
 
         public event Action OnIdeaCooldownStarted;
         public event Action OnIdeaPostHarvestCooldownExpired;
         public event Action OnIdeaHarvestable;
         public event Action OnIdeaHarvested;
         
-        public void GetIdea()
-        {
-            if (isOnCooldown) return;
-            if (isOnPostHarvestCooldown) return;
-            
-            if (isHarvestable)
-            {
-                var skill = new Skill(idea.SkillConfig);
-                
-                skillsController.InsertSkill(skill);
-                
-                idea = null;
-                isHarvestable = false;
-                isOnPostHarvestCooldown = true;
-                
-                postHarvestCooldown = basePostHarvestCooldown;
-                OnIdeaHarvested?.Invoke();
-                return;
-            }
+        private readonly IdeasRepository _ideaRepository;
+        private readonly SkillsController _skillsController;
+        private readonly Button _ideaButton;
 
-            var hasEmptyUnlockedSlots = skillsController.Sockets.Any(s => !s.IsOccupied);
-            
-            if (!hasEmptyUnlockedSlots) return;
-            
-            idea = ideaRepository.GetRandomIdea();
-            
-            baseCooldown = idea.HarvestCooldown;
-            cooldown = baseCooldown;
-            isOnCooldown = true;
-            
-            OnIdeaCooldownStarted?.Invoke();
+        private Idea _idea;
+
+        public IdeaController(IdeasRepository ideaRepository, SkillsController skillsController, IdeaView ideaView)
+        {
+            _ideaRepository = ideaRepository;
+            _skillsController = skillsController;
+            _ideaButton = ideaView.Button;
         }
 
-        private void FixedUpdate()
+        public void Start()
         {
-            if (isOnPostHarvestCooldown)
+            _ideaButton.onClick.AddListener(GetIdea);
+        }
+
+        public void FixedTick()
+        {
+            if (IsOnPostHarvestCooldown)
             {
-                postHarvestCooldown -= Time.fixedDeltaTime;
+                PostHarvestCooldown -= Time.fixedDeltaTime;
                 
-                if (postHarvestCooldown > 0) return;
+                if (PostHarvestCooldown > 0) return;
                 
-                postHarvestCooldown = 0;
+                PostHarvestCooldown = 0;
                 
-                isOnPostHarvestCooldown = false;
+                IsOnPostHarvestCooldown = false;
                 
                 OnIdeaPostHarvestCooldownExpired?.Invoke();
             }
             
-            if (!isOnCooldown) return;
+            if (!IsOnCooldown) return;
             
-            cooldown -= Time.fixedDeltaTime;
+            Cooldown -= Time.fixedDeltaTime;
             
-            if (cooldown > 0) return;
+            if (Cooldown > 0) return;
             
-            cooldown = 0;
+            Cooldown = 0;
             
-            isOnCooldown = false;
-            isHarvestable = true;
+            IsOnCooldown = false;
+            IsHarvestable = true;
             
             OnIdeaHarvestable?.Invoke();
+        }
+
+        private void GetIdea()
+        {
+            if (IsOnCooldown) return;
+            if (IsOnPostHarvestCooldown) return;
+            
+            if (IsHarvestable)
+            {
+                var skill = new Skill(_idea.SkillConfig);
+                
+                _skillsController.InsertSkill(skill);
+                
+                _idea = null;
+                IsHarvestable = false;
+                IsOnPostHarvestCooldown = true;
+                
+                PostHarvestCooldown = BasePostHarvestCooldown;
+                OnIdeaHarvested?.Invoke();
+                return;
+            }
+
+            var hasEmptyUnlockedSlots = _skillsController.Sockets.Any(s => !s.IsOccupied);
+            
+            if (!hasEmptyUnlockedSlots) return;
+            
+            _idea = _ideaRepository.GetRandomIdea();
+            
+            BaseCooldown = _idea.HarvestCooldown;
+            BasePostHarvestCooldown = _idea.PostHarvestCooldown;
+            Cooldown = BaseCooldown;
+            IsOnCooldown = true;
+            
+            OnIdeaCooldownStarted?.Invoke();
         }
     }
 }
