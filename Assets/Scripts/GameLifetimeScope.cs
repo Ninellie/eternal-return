@@ -1,7 +1,9 @@
-﻿using EternalReturn.Likes;
+﻿using System.Collections.Generic;
+using EternalReturn.Likes;
 using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using EternalReturn.Stress;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -15,9 +17,13 @@ namespace EternalReturn
         [SerializeField] private SkillsController skillsController;
         
         [SerializeField] private Button likeButton;
-        [SerializeField] private AmountTextResourceIndicatorView intelIndicator;
-        [SerializeField] private AmountTextResourceIndicatorView motivationIndicator;
-        [SerializeField] private AmountTextResourceIndicatorView stressIndicator;
+        
+        [SerializeField] private Image likesIndicator;
+        [SerializeField] private Image overheatIndicator;
+        
+        [SerializeField] private TextMeshProUGUI intelIndicator;
+        [SerializeField] private TextMeshProUGUI motivationIndicator;
+        [SerializeField] private TextMeshProUGUI stressIndicator;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -35,10 +41,23 @@ namespace EternalReturn
             builder.RegisterInstance(stress).Keyed("stress");
             
             // Indicators
-            intelIndicator.SetResource(intel);
-            motivationIndicator.SetResource(motivation);
-            stressIndicator.SetResource(stress);
+            var textIndicators = new Dictionary<Resource, TextMeshProUGUI>
+            {
+                { intel, intelIndicator },
+                { motivation, motivationIndicator },
+                { stress, stressIndicator }
+            };
 
+            var imageIndicators = new Dictionary<Resource, Image>()
+            {
+                { likes, likesIndicator },
+                { overheat, overheatIndicator },
+            };
+
+            builder.RegisterInstance(textIndicators);
+            builder.RegisterInstance(imageIndicators);
+            builder.RegisterEntryPoint<ResourceIndicatorViewController>();
+            
             // Likes
             builder.RegisterEntryPoint<LikesBlockController>();
             builder.RegisterEntryPoint<LikesViewController>();
