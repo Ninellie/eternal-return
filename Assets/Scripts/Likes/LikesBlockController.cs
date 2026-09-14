@@ -1,6 +1,5 @@
 ﻿using EternalReturn.Resources_Feature;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.Likes
@@ -20,10 +19,10 @@ namespace EternalReturn.Likes
         private float _timePerDecrease;
         private float _decreaseCooldown;
 
-        public LikesBlockController([Key("overheat")] Resource overheat, [Key("likes")] Resource likes)
+        public LikesBlockController(ResourceProvider resourceProvider)
         {
-            _overheat = overheat;
-            _likes = likes;
+            _overheat = resourceProvider.Overheat;
+            _likes = resourceProvider.Likes;
         }
         
         public void Start()

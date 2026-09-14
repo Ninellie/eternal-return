@@ -6,14 +6,14 @@ namespace EternalReturn.Resources_Feature
     [Serializable]
     public class Resource
     {
-        [SerializeField] private string name;
+        [SerializeField] private ResourceName name;
         
         [SerializeField] private int amount;
         [SerializeField] private int maxAmount;
         [SerializeField] private bool emptyOnFill;
         [SerializeField] private bool isIncreaseBlocked;
         
-        public string Name => name;
+        public ResourceName Name => name;
         
         public int Amount => amount;
         public int MaxAmount => maxAmount;
@@ -34,7 +34,7 @@ namespace EternalReturn.Resources_Feature
             : this(config.Name, config.Amount, config.MaxAmount, config.EmptyOnFill, config.IsIncreaseBlocked)
         { }
         
-        public Resource(string name, int amount, int maxAmount, bool emptyOnFill, bool isIncreaseBlocked)
+        public Resource(ResourceName name, int amount, int maxAmount, bool emptyOnFill, bool isIncreaseBlocked)
         {
             this.name = name;
             this.amount = amount;

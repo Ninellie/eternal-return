@@ -1,5 +1,4 @@
 ﻿using EternalReturn.Resources_Feature;
-using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.Likes
@@ -11,10 +10,10 @@ namespace EternalReturn.Likes
         private readonly Resource _likes;
         private readonly Resource _motivation;
         
-        public MotivationIncreaseFromLikesController([Key("likes")] Resource likes, [Key("motivation")] Resource overheat)
+        public MotivationIncreaseFromLikesController(ResourceProvider resourceProvider) 
         {
-            _likes = likes;
-            _motivation = overheat;
+            _likes = resourceProvider.Likes;
+            _motivation = resourceProvider.Motivation;
         }
         
         public void Start()

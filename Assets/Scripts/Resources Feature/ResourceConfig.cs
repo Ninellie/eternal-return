@@ -5,7 +5,7 @@ namespace EternalReturn.Resources_Feature
     [Serializable]
     public struct ResourceConfig
     {
-        public string Name;
+        public ResourceName Name;
         
         public int Amount;
         public int MaxAmount;

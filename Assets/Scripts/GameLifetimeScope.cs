@@ -12,6 +12,7 @@ using VContainer.Unity;
 
 namespace EternalReturn
 {
+    
     public class GameLifetimeScope : LifetimeScope
     {
         [SerializeField] private ResourceConfigs resourceConfigs;
@@ -28,34 +29,28 @@ namespace EternalReturn
         [SerializeField] private TextMeshProUGUI intelIndicator;
         [SerializeField] private TextMeshProUGUI motivationIndicator;
         [SerializeField] private TextMeshProUGUI stressIndicator;
-
+        
+        [SerializeField] private ResourceProvider resourceProvider;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             // Resources
-            var likes = new Resource(resourceConfigs.Likes);
-            var overheat = new Resource(resourceConfigs.Overheat);
-            var intel = new Resource(resourceConfigs.Intel);
-            var motivation = new Resource(resourceConfigs.Motivation);
-            var stress = new Resource(resourceConfigs.Stress);
+            resourceProvider = new ResourceProvider(resourceConfigs);
 
-            builder.RegisterInstance(likes).Keyed("likes");
-            builder.RegisterInstance(overheat).Keyed("overheat");
-            builder.RegisterInstance(intel).Keyed("intel");
-            builder.RegisterInstance(motivation).Keyed("motivation");
-            builder.RegisterInstance(stress).Keyed("stress");
+            builder.RegisterInstance(resourceProvider);
             
             // Indicators
             var textIndicators = new Dictionary<Resource, TextMeshProUGUI>
             {
-                { intel, intelIndicator },
-                { motivation, motivationIndicator },
-                { stress, stressIndicator }
+                { resourceProvider.Intel, intelIndicator },
+                { resourceProvider.Intel, motivationIndicator },
+                { resourceProvider.Stress, stressIndicator }
             };
 
             var imageIndicators = new Dictionary<Resource, Image>()
             {
-                { likes, likesIndicator },
-                { overheat, overheatIndicator },
+                { resourceProvider.Likes, likesIndicator },
+                { resourceProvider.Overheat, overheatIndicator },
             };
 
             builder.RegisterInstance(textIndicators);
