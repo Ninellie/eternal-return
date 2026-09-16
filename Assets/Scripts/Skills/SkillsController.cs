@@ -3,34 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using EternalReturn.Resources_Feature;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace EternalReturn.Skills
 {
-    public class SkillsController : MonoBehaviour
+    public class SkillsController : IFixedTickable
     {
-        [Header("Dependencies")]
-        [SerializeField] private List<SkillSocket> sockets;
-        [SerializeField] private ResourceConfigs resourceConfigs;
-        
-        [Header("Settings")]
-        [SerializeField] private int socketIntelPrice;
-        
+        private const int SocketIntelPrice = 10;
+
         /// <summary>
         /// Вызывается после того как умение заняло сокет.
         /// </summary>
         public event Action<SkillSocket> OnSocketOccupied;
-        
+
         /// <summary>
         /// Вызывается после того как был открыт новый сокет.
         /// </summary>
         public event Action<SkillSocket> OnSocketCreated;
-        
-        public List<SkillSocket> Sockets => sockets;
 
-        private void FixedUpdate()
+        public List<SkillSocket> Sockets { get; } = new();
+
+        private readonly Resource _intel;
+
+        public SkillsController(ResourceProvider resourceProvider)
+        {
+            _intel = resourceProvider.Intel;
+        }
+
+        public void FixedTick()
         {
             // Обработка кулдаунов тем и если кулдаун истёк, пополнение ресурса знаний
-            foreach (var socket in sockets)
+            foreach (var socket in Sockets)
             {
                 if (!socket.IsOccupied) continue;
                 
@@ -42,34 +45,35 @@ namespace EternalReturn.Skills
             
                 skill.Cooldown = skill.BaseCooldown;
                 
-                resourceConfigs.Intel.Increase(skill.IntelGain);
+                _intel.Increase(skill.IntelGain);
             }
         }
 
         public void CreateSocket()
         {
-            // todo если сокет первый, то он стоит 0
-
-            var intel = resourceConfigs.Intel;
+            var price = SocketIntelPrice;
             
-            if (socketIntelPrice > intel.Amount) return;
+            if (Sockets.Count > 0)
+            {
+                price = 0;
+            }
             
-            intel.Decrease(socketIntelPrice);
+            if (price > _intel.Amount) return;
+            
+            _intel.Decrease(SocketIntelPrice);
             
             var slot = new SkillSocket();
-            sockets.Add(slot);
+            Sockets.Add(slot);
             OnSocketCreated?.Invoke(slot);
         }
 
         public void InsertSkill(Skill value)
         {
-            var hasEmptySockets = Sockets.
-                Any(s => !s.IsOccupied);
+            var hasEmptySockets = Sockets.Any(s => !s.IsOccupied);
             
             if (!hasEmptySockets) return;
             
-            var emptySocket = Sockets.
-                First(s => !s.IsOccupied);
+            var emptySocket = Sockets.First(s => !s.IsOccupied);
 
             emptySocket.Skill = value;
             emptySocket.IsOccupied = true;

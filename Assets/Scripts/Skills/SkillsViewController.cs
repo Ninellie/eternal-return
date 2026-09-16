@@ -1,46 +1,68 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EternalReturn.Resources_Feature;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 namespace EternalReturn.Skills
 {
-    public class SkillsViewController : MonoBehaviour
+    public class SkillsViewController : IStartable, ITickable
     {
-        [Header("Dependencies")] 
-        [SerializeField] private SkillsController controller;
-        [SerializeField] private List<SkillSocketView> socketViews;
+        private const int SocketIntelPrice = 10;
         
-        [SerializeField] private SkillSocketView viewSocketPrefab;
-        [SerializeField] private RectTransform contentContainer;
-        [SerializeField] private RectTransform createButton;
+        private readonly SkillsController _controller;
+
+        private readonly SkillSocketView _viewSocketPrefab;
+        private readonly RectTransform _contentContainer;
+        private readonly Button _buySocketButton;
+        private readonly TMP_Text _buySocketButtonLabel;
+        private readonly Resource _intel;
+
+        private readonly List<SkillSocketView> _socketViews = new();
         
-        private void OnEnable()
+        public SkillsViewController(
+            SkillsController controller,
+            SkillSocketView viewSocketPrefab,
+            RectTransform contentContainer,
+            [Key("skills")] Button buySocketButton,
+            [Key("skills")] TMP_Text buySocketButtonLabel,
+            ResourceProvider resourceProvider)
         {
-            foreach (var socketView in socketViews)
+            _controller = controller;
+            _viewSocketPrefab = viewSocketPrefab;
+            _contentContainer = contentContainer;
+            _buySocketButton = buySocketButton;
+            _buySocketButtonLabel = buySocketButtonLabel;
+            _intel = resourceProvider.Intel;
+        }
+
+        public void Start()
+        {
+            foreach (var socketView in _socketViews)
             {
-                Destroy(socketView.gameObject);
+                Object.Destroy(socketView.gameObject);
             }
             
-            foreach (var slot in controller.Sockets)
+            foreach (var slot in _controller.Sockets)
             {
                 CreateSocketView(slot);
             }
             
-            controller.OnSocketCreated += CreateSocketView;
+            _buySocketButton.onClick.AddListener(_controller.CreateSocket);
+            _controller.OnSocketCreated += CreateSocketView;
+            _controller.OnSocketOccupied += SetSocketViewOccupied;
             
-            controller.OnSocketOccupied += SetSocketViewOccupied;
+            _intel.OnChange += RefreshView;
+            
+            RefreshView(_intel.Amount);
         }
 
-        private void OnDisable()
+        public void Tick()
         {
-            controller.OnSocketCreated -= CreateSocketView;
-            
-            controller.OnSocketOccupied -= SetSocketViewOccupied;
-        }
-
-        private void Update()
-        {
-            foreach (var socketView in socketViews)
+            foreach (var socketView in _socketViews)
             {
                 var socket = socketView.Socket;
                 
@@ -56,10 +78,11 @@ namespace EternalReturn.Skills
 
         private void CreateSocketView(SkillSocket socket)
         {
-            var socketView = Instantiate(viewSocketPrefab, contentContainer);
-            socketViews.Add(socketView);
+            var socketView = Object.Instantiate(_viewSocketPrefab, _contentContainer);
             
-            createButton.SetAsLastSibling();
+            _socketViews.Add(socketView);
+            
+            _buySocketButton.transform.SetAsLastSibling();
 
             socketView.Socket = socket;
             
@@ -69,9 +92,30 @@ namespace EternalReturn.Skills
 
         private void SetSocketViewOccupied(SkillSocket socket)
         {
-            var socketView = socketViews.First(v => v.Socket == socket);
+            var socketView = _socketViews.First(v => v.Socket == socket);
 
             socketView.Label.text = $"{socketView.Socket.Skill.Name}";
+        }
+
+        private void RefreshView(int intelValue)
+        {
+            var isSocketsListEmpty = _controller.Sockets.Count > 0;
+
+            var price = SocketIntelPrice;
+            
+            if (isSocketsListEmpty)
+            {
+                price = 0;
+                _buySocketButtonLabel.text = "Открыть сокет";   
+            }
+            else
+            {
+                _buySocketButtonLabel.text = $"Купить сокет за {SocketIntelPrice} знаний";   
+            }
+            
+            var isCanBuySocket = intelValue >= price;
+
+            _buySocketButton.interactable = isCanBuySocket;
         }
 
         // На будущее

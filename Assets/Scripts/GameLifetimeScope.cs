@@ -12,11 +12,9 @@ using VContainer.Unity;
 
 namespace EternalReturn
 {
-    
     public class GameLifetimeScope : LifetimeScope
     {
         [SerializeField] private ResourceConfigs resourceConfigs;
-        [SerializeField] private SkillsController skillsController;
         
         [SerializeField] private IdeasRepository ideasRepository;
         [SerializeField] private IdeaView ideaView;
@@ -29,6 +27,13 @@ namespace EternalReturn
         [SerializeField] private TextMeshProUGUI intelIndicator;
         [SerializeField] private TextMeshProUGUI motivationIndicator;
         [SerializeField] private TextMeshProUGUI stressIndicator;
+        
+        [SerializeField] private Button buySkillSocketButton;
+        [SerializeField] private TextMeshProUGUI buySkillSocketButtonLabel;
+
+        [SerializeField] private RectTransform skillSocketContentContainer;
+        
+        [SerializeField] private SkillSocketView viewSocketPrefab;
         
         [SerializeField] private ResourceProvider resourceProvider;
         
@@ -66,7 +71,6 @@ namespace EternalReturn
             
             
             // Stress
-            builder.RegisterInstance(skillsController);
             builder.RegisterEntryPoint<StressController>();
             
             // Idea
@@ -76,6 +80,14 @@ namespace EternalReturn
             builder.RegisterEntryPoint<IdeaButtonViewController>();
             builder.RegisterEntryPoint<IdeaButtonLabelViewController>();
             builder.RegisterEntryPoint<IdeaCooldownIndicatorViewController>();
+            
+            // Skills
+            builder.RegisterInstance(buySkillSocketButton).Keyed("skills");
+            builder.RegisterInstance(buySkillSocketButtonLabel).Keyed("skills");
+            builder.RegisterInstance(skillSocketContentContainer);
+            builder.RegisterInstance(viewSocketPrefab);
+            builder.RegisterEntryPoint<SkillsController>().AsSelf();
+            builder.RegisterEntryPoint<SkillsViewController>();
         }
     }
 }
