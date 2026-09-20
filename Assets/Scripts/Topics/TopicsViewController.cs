@@ -1,51 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using EternalReturn.Resources_Feature;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 namespace EternalReturn.Topics
 {
-    public class TopicsViewController : MonoBehaviour
+    public class TopicsViewController : IStartable, ITickable
     {
-        [Header("Dependencies")] 
-        [SerializeField] private TopicsController controller;
-        [SerializeField] private List<TopicSocketView> socketViews;
+        private const int SocketIntelPrice = 10;
         
-        [SerializeField] private TopicSocketView viewSocketPrefab;
-        [SerializeField] private RectTransform contentContainer;
-        [SerializeField] private RectTransform createButton;
+        private readonly TopicsController _controller;
         
-        private void OnEnable()
+        private readonly TopicSocketView _viewSocketPrefab;
+        private readonly RectTransform _contentContainer;
+        private readonly Button _buySocketButton;
+        private readonly TextMeshProUGUI _buySocketButtonLabel;
+
+        private readonly List<TopicSocketView> _socketViews = new();
+        private readonly Resource _intel;
+
+        public TopicsViewController(
+            TopicsController controller,
+            TopicSocketView viewSocketPrefab,
+            [Key("topics")] RectTransform contentContainer,
+            [Key("topics")] Button buySocketButton,
+            [Key("topics")] TextMeshProUGUI buySocketButtonLabel,
+            ResourceProvider resourceProvider)
         {
-            foreach (var socketView in socketViews)
-            {
-                Destroy(socketView.gameObject);
-            }
-            
-            foreach (var socket in controller.Sockets)
+            _controller = controller;
+            _viewSocketPrefab = viewSocketPrefab;
+            _contentContainer = contentContainer;
+            _buySocketButton = buySocketButton;
+            _buySocketButtonLabel = buySocketButtonLabel;
+            _intel = resourceProvider.Intel;
+        }
+
+        public void Start()
+        {
+            foreach (var socket in _controller.Sockets)
             {
                 CreateSocketView(socket);
             }
             
-            controller.OnSocketCreated += CreateSocketView;
+            _controller.OnSocketCreated += CreateSocketView;
             
-            controller.OnTopicInserted += SetSocketViewOccupied;
-            controller.OnTopicCooldownExpired += SetSocketViewHarvestable;
-            controller.OnTopicRemoved += SetSocketViewEmpty;
-        }
-
-        private void OnDisable()
-        {
-            controller.OnSocketCreated -= CreateSocketView;
+            _controller.OnTopicInserted += SetSocketViewOccupied;
+            _controller.OnTopicCooldownExpired += SetSocketViewHarvestable;
+            _controller.OnTopicRemoved += SetSocketViewEmpty;
             
-            controller.OnTopicInserted -= SetSocketViewOccupied;
-            controller.OnTopicCooldownExpired -= SetSocketViewHarvestable;
-            controller.OnTopicRemoved -= SetSocketViewEmpty;
+            _intel.OnChange += RefreshView;
+            
+            RefreshView(_intel.Amount);
+            
+            _buySocketButton.onClick.AddListener(_controller.CreateSocket);
         }
-
-        private void Update()
+        
+        public void Tick()
         {
-            foreach (var socketView in socketViews)
+            foreach (var socketView in _socketViews)
             {
                 var socket = socketView.Socket;
                 
@@ -60,13 +76,14 @@ namespace EternalReturn.Topics
                 socketView.Filler.rectTransform.anchorMax = new Vector2(percent, 1);
             }
         }
-        
+
         private void CreateSocketView(TopicSocket socket)
         {
-            var socketView = Instantiate(viewSocketPrefab, contentContainer);
-            socketViews.Add(socketView);
+            var socketView = Object.Instantiate(_viewSocketPrefab, _contentContainer);
             
-            createButton.SetAsLastSibling();
+            _socketViews.Add(socketView);
+            
+            _buySocketButton.transform.SetAsLastSibling();
             
             socketView.Socket = socket;
             
@@ -76,25 +93,26 @@ namespace EternalReturn.Topics
             
             var targetSocket = socket;
             socketView.Button.onClick.AddListener(() => OnSocketViewButtonClick(targetSocket));
+            
+            RefreshView(_intel.Amount);
         }
 
         private void OnSocketViewButtonClick(TopicSocket socket)
         {
             if (!socket.IsOccupied)
             {
-                controller.CreateTopic(socket);
+                _controller.CreateTopic(socket);
                 return;
             }
 
             if (!socket.Topic.IsHarvestable) return;
             
-            controller.HarvestTopicFromSocket(socket);
-
+            _controller.HarvestTopicFromSocket(socket);
         }
 
         private void SetSocketViewOccupied(TopicSocket socket)
         {
-            var socketView = socketViews.First(v => v.Socket == socket);
+            var socketView = _socketViews.First(v => v.Socket == socket);
             
             socketView.Button.interactable = false;
             socketView.Label.text = $"{socket.Topic.Name}";
@@ -102,7 +120,7 @@ namespace EternalReturn.Topics
 
         private void SetSocketViewEmpty(TopicSocket socket)
         {
-            var socketView = socketViews.First(v => v.Socket == socket);
+            var socketView = _socketViews.First(v => v.Socket == socket);
             
             socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
             socketView.Button.interactable = true;
@@ -111,12 +129,32 @@ namespace EternalReturn.Topics
 
         private void SetSocketViewHarvestable(TopicSocket socket)
         {
-            var socketView = socketViews.First(v => v.Socket == socket);
+            var socketView = _socketViews.First(v => v.Socket == socket);
             
             socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
             socketView.Button.interactable = true;
             socketView.Label.text = $"Собрать {socket.Topic.MotivationGain} мотивации";
         }
         
+        private void RefreshView(int intelValue)
+        {
+            var isSocketsListEmpty = _controller.Sockets.Count == 0;
+
+            var price = SocketIntelPrice;
+            
+            if (isSocketsListEmpty)
+            {
+                price = 0;
+                _buySocketButtonLabel.text = "Открыть сокет";   
+            }
+            else
+            {
+                _buySocketButtonLabel.text = $"Купить сокет за {SocketIntelPrice} знаний";   
+            }
+            
+            var isCanBuySocket = intelValue >= price;
+
+            _buySocketButton.interactable = isCanBuySocket;
+        }
     }
 }

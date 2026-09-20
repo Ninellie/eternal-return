@@ -1,7 +1,6 @@
 ﻿using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.Stress
@@ -15,15 +14,13 @@ namespace EternalReturn.Stress
         private readonly Resource _overheat;
         
         public StressController(
-            [Key("stress")] Resource stress,
-            [Key("likes")] Resource likes,
-            [Key("overheat")] Resource overheat,
-            SkillsController skillsController)
+            SkillsController skillsController,
+            ResourceProvider resourceProvider)
         {
-            _stress = stress;
-            _likes = likes;
-            _overheat = overheat;
             _skillsController = skillsController;
+            _stress = resourceProvider.Stress;
+            _likes = resourceProvider.Likes;
+            _overheat = resourceProvider.Overheat;
         }
         
         public void Start()

@@ -8,5 +8,6 @@ namespace EternalReturn.Topics
     {
         [SerializeField] public bool IsOccupied;
         [SerializeField] public DailyTopic Topic;
+        [SerializeField] public TopicSocketView View;
     }
 }

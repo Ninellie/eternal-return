@@ -1,5 +1,4 @@
 ﻿using TMPro;
-using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.Ideas
@@ -10,12 +9,12 @@ namespace EternalReturn.Ideas
         private const string HarvestableText = "Идея";
         private const string OnCooldownText = "Хмм...";
         
-        private readonly TextMeshProUGUI _text;
+        private readonly TextMeshProUGUI _label;
         private readonly IdeaController _ideaController;
 
-        public IdeaButtonLabelViewController(IdeaController ideaController, [Key("idea")]TextMeshProUGUI text)
+        public IdeaButtonLabelViewController(IdeaController ideaController, IdeaView ideaView)
         {
-            _text = text;
+            _label = ideaView.Label;
             _ideaController = ideaController;
         }
 
@@ -45,17 +44,17 @@ namespace EternalReturn.Ideas
 
         private void SetReady()
         {
-            _text.text = ReadyText;
+            _label.text = ReadyText;
         }
 
         private void SetHarvestable()
         {
-            _text.text = HarvestableText;
+            _label.text = HarvestableText;
         }
 
         private void SetOnCooldown()
         {
-            _text.text = OnCooldownText;
+            _label.text = OnCooldownText;
         }
     }
 }

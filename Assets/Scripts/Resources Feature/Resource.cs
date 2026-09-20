@@ -31,7 +31,7 @@ namespace EternalReturn.Resources_Feature
         public event Action OnUnblocked;
 
         public Resource(ResourceConfig config) 
-            : this(config.Name, config.Amount, config.MaxAmount, config.EmptyOnFill, config.IsIncreaseBlocked)
+            : this(config.Name, config.BaseAmount, config.MaxAmount, config.EmptyOnFill, config.IsIncreaseBlocked)
         { }
         
         public Resource(ResourceName name, int amount, int maxAmount, bool emptyOnFill, bool isIncreaseBlocked)

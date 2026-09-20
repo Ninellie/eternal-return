@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using EternalReturn.Resources_Feature;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace EternalReturn.Topics
 {
-    public class TopicsController : MonoBehaviour
+    public class TopicsController : IFixedTickable
     {
-        [Header("Dependencies")]
-        [SerializeField] private List<TopicSocket> sockets;
-        [SerializeField] private TopicsRepository topicRepository;
-        [SerializeField] private ResourceConfigs resourceConfigs;
+        private const int SocketIntelPrice = 10;
         
-        [Header("Settings")]
-        [SerializeField] private int socketIntelPrice;
+        public List<TopicSocket> Sockets { get; } = new();
         
+        private readonly TopicsRepository _topicRepository;
+
+        private readonly Resource _intel;
+        private readonly Resource _motivation;
+
+        public TopicsController(TopicsRepository topicRepository, ResourceProvider resourceProvider)
+        {
+            _topicRepository = topicRepository;
+            _intel = resourceProvider.Intel;
+            _motivation = resourceProvider.Motivation;
+        }
+
         /// <summary>
         /// Вызывается сразу после создания слота.
         /// </summary>
@@ -35,12 +44,11 @@ namespace EternalReturn.Topics
         /// </summary>
         public event Action<TopicSocket> OnTopicRemoved;
 
-        public List<TopicSocket> Sockets => sockets;
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
             // Обработка кулдаунов тем и если кулдаун истёк, маркировка их для сбора. 
-            foreach (var socket in sockets)
+            foreach (var socket in Sockets)
             {
                 if (!socket.IsOccupied) continue;
                 
@@ -62,12 +70,16 @@ namespace EternalReturn.Topics
 
         public void CreateSocket()
         {
-            // todo если сокет первый, то он стоит 0
-            var intel = resourceConfigs.Intel;
+            var price = SocketIntelPrice;
             
-            if (socketIntelPrice > intel.Amount) return;
+            if (Sockets.Count == 0)
+            {
+                price = 0;
+            }
             
-            intel.Decrease(socketIntelPrice);
+            if (price > _intel.Amount) return;
+            
+            _intel.Decrease(SocketIntelPrice);
             
             var socket = new TopicSocket();
             Sockets.Add(socket);
@@ -78,7 +90,7 @@ namespace EternalReturn.Topics
         {
             if (socket.IsOccupied) return;
             
-            var config = topicRepository.GetRandomTopic();
+            var config = _topicRepository.GetRandomTopic();
             
             var topic = new DailyTopic(config);
             topic.Cooldown = topic.BaseCooldown;
@@ -93,7 +105,7 @@ namespace EternalReturn.Topics
         {
             var motivationGain = socket.Topic.MotivationGain;
             
-            resourceConfigs.Motivation.Increase(motivationGain);
+            _motivation.Increase(motivationGain);
 
             socket.Topic = null;
             socket.IsOccupied = false;

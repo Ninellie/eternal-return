@@ -7,7 +7,7 @@ namespace EternalReturn.Resources_Feature
     {
         public ResourceName Name;
         
-        public int Amount;
+        public int BaseAmount;
         public int MaxAmount;
         public bool EmptyOnFill;
         public bool IsIncreaseBlocked;

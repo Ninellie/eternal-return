@@ -18,7 +18,7 @@ namespace EternalReturn.Skills
         private readonly SkillSocketView _viewSocketPrefab;
         private readonly RectTransform _contentContainer;
         private readonly Button _buySocketButton;
-        private readonly TMP_Text _buySocketButtonLabel;
+        private readonly TextMeshProUGUI _buySocketButtonLabel;
         private readonly Resource _intel;
 
         private readonly List<SkillSocketView> _socketViews = new();
@@ -26,9 +26,9 @@ namespace EternalReturn.Skills
         public SkillsViewController(
             SkillsController controller,
             SkillSocketView viewSocketPrefab,
-            RectTransform contentContainer,
+            [Key("skills")] RectTransform contentContainer,
             [Key("skills")] Button buySocketButton,
-            [Key("skills")] TMP_Text buySocketButtonLabel,
+            [Key("skills")] TextMeshProUGUI buySocketButtonLabel,
             ResourceProvider resourceProvider)
         {
             _controller = controller;
@@ -88,6 +88,8 @@ namespace EternalReturn.Skills
             
             socketView.Filler.rectTransform.anchorMax = new Vector2(0, 1);
             socketView.Label.text = "Свободный слот";
+            
+            RefreshView(_intel.Amount);
         }
 
         private void SetSocketViewOccupied(SkillSocket socket)
@@ -99,7 +101,7 @@ namespace EternalReturn.Skills
 
         private void RefreshView(int intelValue)
         {
-            var isSocketsListEmpty = _controller.Sockets.Count > 0;
+            var isSocketsListEmpty = _controller.Sockets.Count == 0;
 
             var price = SocketIntelPrice;
             

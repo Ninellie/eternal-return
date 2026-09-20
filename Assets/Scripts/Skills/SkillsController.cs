@@ -51,12 +51,7 @@ namespace EternalReturn.Skills
 
         public void CreateSocket()
         {
-            var price = SocketIntelPrice;
-            
-            if (Sockets.Count > 0)
-            {
-                price = 0;
-            }
+            var price = Sockets.Count == 0 ? 0 : SocketIntelPrice;
             
             if (price > _intel.Amount) return;
             
