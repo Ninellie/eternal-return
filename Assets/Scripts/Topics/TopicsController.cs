@@ -1,28 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using EternalReturn.Burnout;
 using EternalReturn.Resources_Feature;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace EternalReturn.Topics
 {
-    public class TopicsController : IFixedTickable
+    public class TopicsController : IStartable, IFixedTickable, ISlowableByBurnout
     {
+        private const float Slowdown = 0.05f;
         private const int SocketIntelPrice = 10;
         
         public List<TopicSocket> Sockets { get; } = new();
-        
-        private readonly TopicsRepository _topicRepository;
 
-        private readonly Resource _intel;
-        private readonly Resource _motivation;
-
-        public TopicsController(TopicsRepository topicRepository, ResourceProvider resourceProvider)
-        {
-            _topicRepository = topicRepository;
-            _intel = resourceProvider.Intel;
-            _motivation = resourceProvider.Motivation;
-        }
+        public bool IsSlowed { get; private set; }
 
         /// <summary>
         /// Вызывается сразу после создания слота.
@@ -43,10 +35,36 @@ namespace EternalReturn.Topics
         /// Сразу после сбора темы и освобождения слота.
         /// </summary>
         public event Action<TopicSocket> OnTopicRemoved;
+        
+        private readonly TopicsRepository _topicRepository;
 
+        private readonly Resource _intel;
+        private readonly Resource _motivation;
+        private readonly Resource _burnout;
+
+        public TopicsController(TopicsRepository topicRepository, ResourceProvider resourceProvider)
+        {
+            _topicRepository = topicRepository;
+            _intel = resourceProvider.Intel;
+            _motivation = resourceProvider.Motivation;
+            _burnout = resourceProvider.Burnout;
+        }
+
+        public void Start()
+        {
+            _burnout.OnFill += Slow;
+            _burnout.OnDecrease += _ => Unslow();
+        }
 
         public void FixedTick()
         {
+            var deltaTime = Time.deltaTime;
+
+            if (IsSlowed)
+            {
+                deltaTime *= Slowdown;
+            }
+
             // Обработка кулдаунов тем и если кулдаун истёк, маркировка их для сбора. 
             foreach (var socket in Sockets)
             {
@@ -56,7 +74,7 @@ namespace EternalReturn.Topics
                 
                 if (topic.IsHarvestable) continue;
                 
-                topic.Cooldown -= Time.deltaTime;
+                topic.Cooldown -= deltaTime;
                 
                 if (topic.Cooldown > 0) continue;
 
@@ -66,6 +84,16 @@ namespace EternalReturn.Topics
                 
                 OnTopicCooldownExpired?.Invoke(socket);
             }
+        }
+
+        public void Slow()
+        {
+            IsSlowed = true;
+        }
+
+        public void Unslow()
+        {
+            IsSlowed = false;
         }
 
         public void CreateSocket()

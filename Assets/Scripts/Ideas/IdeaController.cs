@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using EternalReturn.Burnout;
+using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +9,10 @@ using VContainer.Unity;
 
 namespace EternalReturn.Ideas
 {
-    public class IdeaController : IStartable, IFixedTickable
+    public class IdeaController : IStartable, IFixedTickable, ISlowableByBurnout
     {
+        private const float Slowdown = 0.05f;
+
         public float BaseCooldown { get; private set; }
         public float BasePostHarvestCooldown { get; private set; }
         
@@ -19,6 +23,8 @@ namespace EternalReturn.Ideas
 
         public bool IsHarvestable { get; private set; }
 
+        public bool IsSlowed { get; private set; }
+
         public event Action OnIdeaCooldownStarted;
         public event Action OnIdeaPostHarvestCooldownExpired;
         public event Action OnIdeaHarvestable;
@@ -27,26 +33,41 @@ namespace EternalReturn.Ideas
         private readonly IdeasRepository _ideaRepository;
         private readonly SkillsController _skillsController;
         private readonly Button _ideaButton;
+        private readonly Resource _burnout;
 
         private Idea _idea;
 
-        public IdeaController(IdeasRepository ideaRepository, SkillsController skillsController, IdeaView ideaView)
+        public IdeaController(
+            IdeasRepository ideaRepository,
+            SkillsController skillsController,
+            IdeaView ideaView,
+            ResourceProvider resourceProvider)
         {
             _ideaRepository = ideaRepository;
             _skillsController = skillsController;
             _ideaButton = ideaView.Button;
+            _burnout = resourceProvider.Burnout;
         }
 
         public void Start()
         {
             _ideaButton.onClick.AddListener(GetIdea);
+            _burnout.OnFill += Slow;
+            _burnout.OnDecrease += _ => Unslow();
         }
 
         public void FixedTick()
         {
+            var deltaTime = Time.fixedDeltaTime;
+
+            if (IsSlowed)
+            {
+                deltaTime *= Slowdown;
+            }
+
             if (IsOnPostHarvestCooldown)
             {
-                PostHarvestCooldown -= Time.fixedDeltaTime;
+                PostHarvestCooldown -= deltaTime;
                 
                 if (PostHarvestCooldown > 0) return;
                 
@@ -59,7 +80,7 @@ namespace EternalReturn.Ideas
             
             if (!IsOnCooldown) return;
             
-            Cooldown -= Time.fixedDeltaTime;
+            Cooldown -= deltaTime;
             
             if (Cooldown > 0) return;
             
@@ -69,6 +90,16 @@ namespace EternalReturn.Ideas
             IsHarvestable = true;
             
             OnIdeaHarvestable?.Invoke();
+        }
+
+        public void Slow()
+        {
+            IsSlowed = true;
+        }
+
+        public void Unslow()
+        {
+            IsSlowed = false;
         }
 
         private void GetIdea()
