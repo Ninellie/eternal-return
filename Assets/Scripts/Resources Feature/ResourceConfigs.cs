@@ -10,5 +10,6 @@ namespace EternalReturn.Resources_Feature
         public ResourceConfig Likes;
         public ResourceConfig Overheat;
         public ResourceConfig Stress;
+        public ResourceConfig Burnout;
     }
 }

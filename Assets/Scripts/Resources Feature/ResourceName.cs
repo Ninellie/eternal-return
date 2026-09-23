@@ -7,5 +7,6 @@
         Intel,
         Motivation,
         Stress,
+        Burnout,
     }
 }

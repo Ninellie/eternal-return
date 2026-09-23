@@ -10,6 +10,7 @@ namespace EternalReturn.Resources_Feature
         public Resource Intel;
         public Resource Motivation;
         public Resource Stress;
+        public Resource Burnout;
 
         public ResourceProvider(ResourceConfigs resourceConfig)
         {
@@ -18,6 +19,7 @@ namespace EternalReturn.Resources_Feature
             Intel = new Resource(resourceConfig.Intel);
             Motivation = new Resource(resourceConfig.Motivation);
             Stress = new Resource(resourceConfig.Stress);
+            Burnout = new Resource(resourceConfig.Burnout);
         }
     }
 }

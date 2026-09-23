@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EternalReturn.Burnout;
 using EternalReturn.Ideas;
 using EternalReturn.Likes;
 using EternalReturn.Resources_Feature;
@@ -21,6 +22,7 @@ namespace EternalReturn
         [SerializeField] private TextMeshProUGUI intelIndicator;
         [SerializeField] private TextMeshProUGUI motivationIndicator;
         [SerializeField] private TextMeshProUGUI stressIndicator;
+        [SerializeField] private TextMeshProUGUI burnoutIndicator;
         
         // Ideas
         [SerializeField] private IdeasRepository ideasRepository;
@@ -58,7 +60,8 @@ namespace EternalReturn
             {
                 { resourceProvider.Intel, intelIndicator },
                 { resourceProvider.Motivation, motivationIndicator },
-                { resourceProvider.Stress, stressIndicator }
+                { resourceProvider.Stress, stressIndicator },
+                { resourceProvider.Burnout, burnoutIndicator }
             };
 
             var imageIndicators = new Dictionary<Resource, Image>()
@@ -81,6 +84,9 @@ namespace EternalReturn
             
             // Stress
             builder.RegisterEntryPoint<StressController>();
+
+            // Burnout
+            builder.RegisterEntryPoint<BurnoutController>();
             
             // Idea
             builder.RegisterEntryPoint<IdeaController>().AsSelf();

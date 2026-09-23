@@ -11,34 +11,40 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d38b3ed44bf40fb83bd8fd72401abba, type: 3}
   m_Name: Resource Repository
-  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.ResourceRepository
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Resources_Feature.ResourceConfigs
   Intel:
     Name: 2
-    Amount: 0
+    BaseAmount: 0
     MaxAmount: 100
     EmptyOnFill: 0
     IsIncreaseBlocked: 0
   Motivation:
     Name: 3
-    Amount: 0
+    BaseAmount: 0
     MaxAmount: 100
     EmptyOnFill: 0
     IsIncreaseBlocked: 0
   Likes:
     Name: 0
-    Amount: 0
+    BaseAmount: 0
     MaxAmount: 40
     EmptyOnFill: 1
     IsIncreaseBlocked: 0
   Overheat:
     Name: 1
-    Amount: 0
+    BaseAmount: 0
     MaxAmount: 100
     EmptyOnFill: 0
     IsIncreaseBlocked: 0
   Stress:
     Name: 4
-    Amount: 0
+    BaseAmount: 0
     MaxAmount: 100
+    EmptyOnFill: 0
+    IsIncreaseBlocked: 0
+  Burnout:
+    Name: 5
+    BaseAmount: 0
+    MaxAmount: 3
     EmptyOnFill: 0
     IsIncreaseBlocked: 0
