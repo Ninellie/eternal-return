@@ -31,14 +31,16 @@ namespace EternalReturn.Ideas
         {
             if (_ideaController.IsOnCooldown)
             {
-                SetReady();
+                SetOnCooldown();
+                return;
             }
 
             if (_ideaController.IsHarvestable)
             {
                 SetHarvestable();
+                return;
             }
-            
+
             SetReady();
         }
 

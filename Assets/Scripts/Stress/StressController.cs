@@ -32,7 +32,7 @@ namespace EternalReturn.Stress
 
         private void OnLikesFill()
         {
-            var r = Random.Range(0, 1);
+            var r = Random.Range(1, 5);
             _stress.Increase(r);
         }
         
