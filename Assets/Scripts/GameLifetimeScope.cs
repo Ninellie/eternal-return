@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using EternalReturn.Burnout;
-using EternalReturn.Ideas;
-using EternalReturn.Likes;
-using EternalReturn.Resources_Feature;
-using EternalReturn.Skills;
-using EternalReturn.Stress;
-using EternalReturn.Topics;
+﻿using EternalReturn.GameTime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,102 +9,25 @@ namespace EternalReturn
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        // Resources
-        [SerializeField] private ResourceConfigs resourceConfigs;
-        [SerializeField] private ResourceProvider resourceProvider;
-        [SerializeField] private TextMeshProUGUI intelIndicator;
-        [SerializeField] private TextMeshProUGUI motivationIndicator;
-        [SerializeField] private TextMeshProUGUI stressIndicator;
-        [SerializeField] private TextMeshProUGUI burnoutIndicator;
-        
-        // Ideas
-        [SerializeField] private IdeasRepository ideasRepository;
-        [SerializeField] private IdeaView ideaView;
-        
-        // Likes
-        [SerializeField] private Image likesIndicator;
-        [SerializeField] private Image overheatIndicator;
-        [SerializeField] private Button likeButton;
-        
-        // Skills
-        [SerializeField] private SkillSocketView skillSocketPrefab;
-        [SerializeField] private RectTransform skillSocketContentContainer;
-        [SerializeField] private Button buySkillSocketButton;
-        [SerializeField] private TextMeshProUGUI buySkillSocketButtonLabel;
-        
-        // Topics
-        [SerializeField] private TopicsRepository topicsRepository;
-        [SerializeField] private TopicSocketView topicSocketPrefab;
-        [SerializeField] private RectTransform topicSocketContentContainer;
-        [SerializeField] private Button buyTopicSocketButton;
-        [SerializeField] private TextMeshProUGUI buyTopicSocketButtonLabel;
-        
-        
+        [SerializeField] private GameTimeSettings gameTimeSettings;
+        [SerializeField] private TextMeshProUGUI clockIndicator;
+        [SerializeField] private Button endDayButton;
+        [SerializeField] private TextMeshProUGUI endDayButtonLabel;
+        [SerializeField] private Button startDayButton;
+
         protected override void Configure(IContainerBuilder builder)
         {
-            // Resources
-            resourceProvider = new ResourceProvider(resourceConfigs);
-            builder.RegisterInstance(resourceProvider);
+            builder.RegisterInstance(gameTimeSettings);
+            builder.RegisterInstance(clockIndicator);
+            builder.RegisterInstance(endDayButton).Keyed("end-day");
+            builder.RegisterInstance(endDayButtonLabel).Keyed("end-day");
+            builder.RegisterInstance(startDayButton).Keyed("start-day");
 
-            // Indicators
-            builder.RegisterEntryPoint<ResourceIndicatorViewController>();
-            
-            var textIndicators = new Dictionary<Resource, TextMeshProUGUI>
-            {
-                { resourceProvider.Intel, intelIndicator },
-                { resourceProvider.Motivation, motivationIndicator },
-                { resourceProvider.Stress, stressIndicator },
-                { resourceProvider.Burnout, burnoutIndicator }
-            };
-
-            var imageIndicators = new Dictionary<Resource, Image>()
-            {
-                { resourceProvider.Likes, likesIndicator },
-                { resourceProvider.Overheat, overheatIndicator },
-            };
-            
-            builder.RegisterInstance(textIndicators);
-            builder.RegisterInstance(imageIndicators);
-            
-            
-            // Likes
-            builder.RegisterEntryPoint<LikesBlockController>();
-            builder.RegisterEntryPoint<MotivationIncreaseFromLikesController>();
-            builder.RegisterEntryPoint<OverheatController>();
-            builder.RegisterEntryPoint<LikesViewController>();
-            builder.RegisterInstance(likeButton).Keyed("likes");
-            
-            
-            // Stress
-            builder.RegisterEntryPoint<StressController>();
-
-            // Burnout
-            builder.RegisterEntryPoint<BurnoutController>();
-            
-            // Idea
-            builder.RegisterEntryPoint<IdeaController>().AsSelf();
-            builder.RegisterEntryPoint<IdeaButtonViewController>();
-            builder.RegisterEntryPoint<IdeaButtonLabelViewController>();
-            builder.RegisterEntryPoint<IdeaCooldownIndicatorViewController>();
-            builder.RegisterInstance(ideasRepository);
-            builder.RegisterInstance(ideaView);
-            
-            // Skills
-            builder.RegisterEntryPoint<SkillsController>().AsSelf();
-            builder.RegisterEntryPoint<SkillsViewController>();
-            builder.RegisterInstance(buySkillSocketButton).Keyed("skills");
-            builder.RegisterInstance(buySkillSocketButtonLabel).Keyed("skills"); // todo объединить
-            builder.RegisterInstance(skillSocketContentContainer).Keyed("skills");
-            builder.RegisterInstance(skillSocketPrefab);
-            
-            // Topics
-            builder.RegisterEntryPoint<TopicsController>().AsSelf();
-            builder.RegisterEntryPoint<TopicsViewController>();
-            builder.RegisterInstance(topicsRepository);
-            builder.RegisterInstance(topicSocketPrefab);
-            builder.RegisterInstance(topicSocketContentContainer).Keyed("topics"); // todo объединить
-            builder.RegisterInstance(buyTopicSocketButton).Keyed("topics");
-            builder.RegisterInstance(buyTopicSocketButtonLabel).Keyed("topics");
+            builder.RegisterEntryPoint<GameTimeController>().AsSelf();
+            builder.RegisterEntryPoint<DayCycleController>().AsSelf();
+            builder.RegisterEntryPoint<ClockViewController>();
+            builder.RegisterEntryPoint<EndDayButtonViewController>();
+            builder.RegisterEntryPoint<StartDayButtonViewController>();
         }
     }
 }
