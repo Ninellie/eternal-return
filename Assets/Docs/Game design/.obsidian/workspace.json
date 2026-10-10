@@ -231,8 +231,10 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "69aca3956ade0e2a",
+  "active": "e45412360c8bfae0",
   "lastOpenFiles": [
+    "topic-messages-intervals.md.meta",
+    "topic-messages-intervals.md",
     "user-stories/topic-mini-game.md.meta",
     "user-stories/topic-mini-game.md",
     "user-stories/day-night-swap.md.meta",
@@ -253,7 +255,6 @@
     "Выгорание-mini-game.md.meta",
     "stage-night.md.meta",
     "learning-mini-game.md.meta",
-    "topic-mini-game.md.meta",
     "stage-night.md",
     "stage-day.md",
     "topic-mini-game.md",

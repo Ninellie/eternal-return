@@ -11,10 +11,16 @@ namespace EternalReturn.Topics
         [Header("Topic")]
         [Tooltip("Длительность темы (min, max).")]
         public Vector2 TopicDuration = new Vector2(100f, 200f);
-        [Tooltip("Время, которое живёт сообщение пока не будет сочтено неотвеченным.")]
-        public float MessageAnswerTime;
         [Tooltip("Среднее количество сообщений в секунду. Количество сообщений в теме = длительность * это значение.")]
         public float AverageMessagesPerSecond;
+
+        [Header("Messages")]
+        [Tooltip("Время, которое живёт сообщение пока не будет сочтено неотвеченным.")]
+        public float MessageAnswerTime;
+        [Tooltip("Количество символов в сообщении (min, max).")]
+        public Vector2 SymbolsAmount = new Vector2(1f, 7f);
+        [Tooltip("Символы, из которых случайно составляются сообщения.")]
+        public string AllowedSymbols = "abcdefghijklmnopqrstuvwxyz";
 
         [Header("Intervals")]
         [Tooltip("Пресеты интервалов. На каждую тему выбирается один случайный.")]
@@ -68,6 +74,10 @@ namespace EternalReturn.Topics
             var maxDuration = Mathf.Max(TopicDuration.x, TopicDuration.y);
             TopicDuration = new Vector2(minDuration, maxDuration);
             AverageMessagesPerSecond = Mathf.Max(AverageMessagesPerSecond, 0f);
+
+            var minSymbols = Mathf.Max(Mathf.Min(SymbolsAmount.x, SymbolsAmount.y), 1f);
+            var maxSymbols = Mathf.Max(SymbolsAmount.x, SymbolsAmount.y, minSymbols);
+            SymbolsAmount = new Vector2(minSymbols, maxSymbols);
         }
     }
 }

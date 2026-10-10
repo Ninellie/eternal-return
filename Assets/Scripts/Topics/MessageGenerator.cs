@@ -26,10 +26,37 @@ namespace EternalReturn.Topics
 
             foreach (var interval in intervals)
             {
-                messages.Enqueue(new TopicMessage(Array.Empty<MessageSymbol>(), interval, _settings.MessageAnswerTime));
+                messages.Enqueue(new TopicMessage(CreateSymbols(), interval, _settings.MessageAnswerTime));
             }
 
             return messages;
+        }
+
+        private MessageSymbol[] CreateSymbols()
+        {
+            var allowedSymbols = _settings.AllowedSymbols;
+            if (string.IsNullOrEmpty(allowedSymbols))
+            {
+                throw new InvalidOperationException("TopicSettings has no allowed symbols.");
+            }
+
+            var amount = RollSymbolsAmount();
+            var symbols = new MessageSymbol[amount];
+            for (var i = 0; i < amount; i++)
+            {
+                symbols[i] = new MessageSymbol { Text = allowedSymbols[Random.Range(0, allowedSymbols.Length)] };
+            }
+
+            return symbols;
+        }
+
+        private int RollSymbolsAmount()
+        {
+            var range = _settings.SymbolsAmount;
+            var min = Mathf.RoundToInt(range.x);
+            var max = Mathf.RoundToInt(range.y);
+            var amount = Mathf.FloorToInt(Roll(new Vector2(min, max + 1)));
+            return Mathf.Clamp(amount, min, max);
         }
 
         public float[] GenerateIntervals(float duration)
