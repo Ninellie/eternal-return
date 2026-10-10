@@ -1,6 +1,7 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.GameTime
@@ -15,7 +16,7 @@ namespace EternalReturn.GameTime
         private readonly DayCycleController _dayCycleController;
 
         public ClockViewController(
-            TextMeshProUGUI clockIndicator,
+            [Key("clock")] TextMeshProUGUI clockIndicator,
             GameTimeController gameTimeController,
             DayCycleController dayCycleController)
         {

@@ -20,7 +20,7 @@ namespace EternalReturn.Topics
         [Tooltip("Количество символов в сообщении (min, max).")]
         public Vector2 SymbolsAmount = new Vector2(1f, 7f);
         [Tooltip("Символы, из которых случайно составляются сообщения.")]
-        public string AllowedSymbols = "abcdefghijklmnopqrstuvwxyz";
+        public string AllowedSymbols = "qwe";
 
         [Header("Intervals")]
         [Tooltip("Пресеты интервалов. На каждую тему выбирается один случайный.")]
