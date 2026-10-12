@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
 
@@ -6,11 +7,8 @@ namespace EternalReturn.Input
 {
     public class InputManager : IInitializable
     {
-        public Action OnSelectSlot1;
-        public Action OnSelectSlot2;
-        public Action OnSelectSlot3;
-        public Action OnSelectSlot4;
-        public Action OnSelectSlot5;
+        public event Action<int> OnSelectSlot;
+        public event Action<KeyCode> OnKeyPressed;
         
         private InputActionMap _playerMap;
         
@@ -20,11 +18,17 @@ namespace EternalReturn.Input
             
             _playerMap = InputSystem.actions.FindActionMap("Player");
             
-            _playerMap.FindAction("SelectSlot1").performed += _ => OnSelectSlot1?.Invoke();
-            _playerMap.FindAction("SelectSlot2").performed += _ => OnSelectSlot2?.Invoke();
-            _playerMap.FindAction("SelectSlot3").performed += _ => OnSelectSlot3?.Invoke();
-            _playerMap.FindAction("SelectSlot4").performed += _ => OnSelectSlot4?.Invoke();
-            _playerMap.FindAction("SelectSlot5").performed += _ => OnSelectSlot5?.Invoke();
+            _playerMap.FindAction("SelectSlot1").performed += _ => OnSelectSlot?.Invoke(1);
+            _playerMap.FindAction("SelectSlot2").performed += _ => OnSelectSlot?.Invoke(2);
+            _playerMap.FindAction("SelectSlot3").performed += _ => OnSelectSlot?.Invoke(3);
+            _playerMap.FindAction("SelectSlot4").performed += _ => OnSelectSlot?.Invoke(4);
+            _playerMap.FindAction("SelectSlot5").performed += _ => OnSelectSlot?.Invoke(5);
+            
+            _playerMap.FindAction("Q").performed += _ => OnKeyPressed?.Invoke(KeyCode.Q);
+            _playerMap.FindAction("W").performed += _ => OnKeyPressed?.Invoke(KeyCode.W);
+            _playerMap.FindAction("E").performed += _ => OnKeyPressed?.Invoke(KeyCode.E);
+            _playerMap.FindAction("R").performed += _ => OnKeyPressed?.Invoke(KeyCode.R);
+            _playerMap.FindAction("T").performed += _ => OnKeyPressed?.Invoke(KeyCode.T);
             
             SwitchToPlayerMap();
         }

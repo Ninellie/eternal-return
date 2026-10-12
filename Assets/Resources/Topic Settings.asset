@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d057bb06cd6416c85f3f33b08c97e47, type: 3}
-  m_Name: New Topic Settings
+  m_Name: Topic Settings
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicSettings
   SlotsAmount: 5
   TopicDuration: {x: 100, y: 200}
   AverageMessagesPerSecond: 0.25
   MessageAnswerTime: 5
   SymbolsAmount: {x: 1, y: 7}
-  AllowedSymbols: qwe
+  AllowedSymbols: 7100000077000000650000007200000074000000i
   Presets:
   - {fileID: 11400000, guid: 3f7b9e1c5a2d4086b1e4c7d9a0f23b58, type: 2}
   - {fileID: 11400000, guid: 8d2e6a0f4c1b49e3a7f5b2c8d1e90a36, type: 2}

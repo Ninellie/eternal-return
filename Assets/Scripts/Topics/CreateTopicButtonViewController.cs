@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 
@@ -18,6 +19,7 @@ namespace EternalReturn.Topics
         
         public void Start()
         {
+            Debug.Log("Creating topic button");
             _createTopicButton.onClick.AddListener(_forumController.CreateTopic);
         }
     }

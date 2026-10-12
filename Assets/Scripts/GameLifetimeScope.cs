@@ -45,9 +45,9 @@ namespace EternalReturn
             builder.RegisterInstance(topicSettings);
             builder.RegisterInstance(createTopicButton).Keyed("create-topic");
             builder.RegisterEntryPoint<ForumController>().AsSelf();
-            builder.RegisterEntryPoint<CreateTopicButtonViewController>();
-            builder.RegisterEntryPoint<TopicSlotsViewController>();
             
+            builder.RegisterEntryPoint<TopicSlotsViewController>();
+            builder.RegisterEntryPoint<CreateTopicButtonViewController>();
             builder.RegisterInstance(topicSlot1).Keyed("topic-slot-1");
             builder.RegisterInstance(topicSlot2).Keyed("topic-slot-2");
             builder.RegisterInstance(topicSlot3).Keyed("topic-slot-3");

@@ -8,7 +8,9 @@ namespace EternalReturn.Topics
     public class Topic
     {
         public event Action<TopicMessage> OnNewMessage;
+        
         public event Action OnMessageLost;
+        public event Action OnMessageComplete;
         
         public Queue<TopicMessage> FeatureMessages { get; }
         public Queue<TopicMessage> CurrentMessages { get; }
@@ -67,6 +69,19 @@ namespace EternalReturn.Topics
             }
                 
             OnNewMessage?.Invoke(newMessage);
+        }
+
+        public void TryPressKey(KeyCode key)
+        {
+            if (!CurrentMessages.TryPeek(out var message)) return;
+
+            message.TryPressKey(key);
+            
+            if (!message.IsCompleted()) return;
+            
+            CurrentMessages.Dequeue();
+            
+            OnMessageComplete?.Invoke();
         }
     }
 }

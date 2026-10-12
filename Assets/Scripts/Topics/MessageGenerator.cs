@@ -26,28 +26,27 @@ namespace EternalReturn.Topics
 
             foreach (var interval in intervals)
             {
-                messages.Enqueue(new TopicMessage(CreateSymbols(), interval, _settings.MessageAnswerTime));
+                messages.Enqueue(new TopicMessage(CreateMessageKeys(), interval, _settings.MessageAnswerTime));
             }
 
             return messages;
         }
 
-        private MessageSymbol[] CreateSymbols()
+        private MessageKey[] CreateMessageKeys()
         {
-            var allowedSymbols = _settings.AllowedSymbols;
-            if (string.IsNullOrEmpty(allowedSymbols))
-            {
-                throw new InvalidOperationException("TopicSettings has no allowed symbols.");
-            }
+            var allowedKeys = _settings.AllowedKeys;
 
             var amount = RollSymbolsAmount();
-            var symbols = new MessageSymbol[amount];
+            var keys = new MessageKey[amount];
+
             for (var i = 0; i < amount; i++)
             {
-                symbols[i] = new MessageSymbol { Text = allowedSymbols[Random.Range(0, allowedSymbols.Length)] };
+                var randomIndex = Random.Range(0, allowedKeys.Length);
+                var randomKeyCode = allowedKeys[randomIndex];
+                keys[i] = new MessageKey(randomKeyCode);
             }
 
-            return symbols;
+            return keys;
         }
 
         private int RollSymbolsAmount()

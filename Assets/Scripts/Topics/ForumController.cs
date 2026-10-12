@@ -16,8 +16,6 @@ namespace EternalReturn.Topics
         public event Action<Topic> OnTopicOpened;
         public event Action<Topic> OnTopicClosed;
         public event Action<TopicSlot> OnTopicSlotSelected;
-        public event Action<TopicMessage> OnMessageComplete;
-        public event Action<TopicMessage> OnSymbolPressed;
         
         public ForumController(TopicSettings settings, InputManager inputManager)
         {
@@ -42,61 +40,12 @@ namespace EternalReturn.Topics
             _slots[0].Status = SlotStatus.Unoccupied;
             _slots[0].IsSelected = true;
 
-            _inputManager.OnSelectSlot1 += () => SelectTopic(1);
-            _inputManager.OnSelectSlot2 += () => SelectTopic(2);
-            _inputManager.OnSelectSlot3 += () => SelectTopic(3);
-            _inputManager.OnSelectSlot4 += () => SelectTopic(4);
-            _inputManager.OnSelectSlot5 += () => SelectTopic(5);
+            _inputManager.OnSelectSlot += SelectTopic;
+            _inputManager.OnKeyPressed += PressKey;
         }
 
-        public void SelectTopic(int id)
-        {
-            foreach (var slot in _slots)
-            {
-                slot.IsSelected = slot.Id == id;
-            }
-            
-            OnTopicSlotSelected?.Invoke(_slots[id - 1]);
-        }
-        
         public void Tick()
         {
-            foreach (var slot in _slots)
-            {
-                // Если слот не занят - далее
-                if (slot.Status is not SlotStatus.Occupied) continue;
-                
-                // Если слот не выбран - далее
-                if (!slot.IsSelected) continue;
-
-                return;
-                // todo позже перевести на InputController и добавить сброс при неправильном нажатии
-                
-                // Найти первое сообщение топика в очереди. Если нет - далее
-                if (!slot.Topic.CurrentMessages.TryPeek(out var message)) continue;
-                
-                // Найди следующий активный символ
-                var nextSymbol = message.Symbols[message.Pointer]; 
-                    
-                // Проверить действительно ли символ был нажат. Если нет - далее
-                // if (!Input.GetKey((KeyCode)nextSymbol.Text)) continue;
-
-                OnSymbolPressed?.Invoke(message);
-
-                // Символ успешно нажат - увеличить указатель
-                message.Pointer++;
-                message.Symbols[message.Pointer].IsPressed = true;
-                        
-                // Проверить нажаты ли все символы. Если нет - далее
-                if (message.Pointer < message.Symbols.Length) continue;
-                        
-                // Сообщение завершено так как все символы нажаты
-                var completedMessage = slot.Topic.CurrentMessages.Dequeue();
-                            
-                // Вызвать событие
-                OnMessageComplete?.Invoke(completedMessage);
-            }
-            
             foreach (var slot in _slots)
             {
                 if (slot.Status is not SlotStatus.Occupied) continue;
@@ -113,7 +62,7 @@ namespace EternalReturn.Topics
                 slot.Status = SlotStatus.Unoccupied;    
             }
         }
-        
+
         public void CreateTopic()
         {
             var slot = _slots.First(x => x.IsSelected);
@@ -126,6 +75,28 @@ namespace EternalReturn.Topics
             slot.Status = SlotStatus.Occupied;
 
             OnTopicOpened?.Invoke(slot.Topic);
+            Debug.Log("Topic Created");
+        }
+
+        private void SelectTopic(int id)
+        {
+            foreach (var slot in _slots)
+            {
+                slot.IsSelected = slot.Id == id;
+            }
+            
+            OnTopicSlotSelected?.Invoke(_slots[id - 1]);
+        }
+
+        private void PressKey(KeyCode key)
+        {
+            var slot = _slots.First(x => x.IsSelected);
+            
+            if (slot.Status is not SlotStatus.Occupied) return;
+            
+            var selectedTopic = slot.Topic;
+
+            selectedTopic.TryPressKey(key);
         }
     }
 }

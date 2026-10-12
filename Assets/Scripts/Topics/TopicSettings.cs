@@ -10,24 +10,27 @@ namespace EternalReturn.Topics
 
         [Header("Topic")]
         [Tooltip("Длительность темы (min, max).")]
-        public Vector2 TopicDuration = new Vector2(100f, 200f);
+        public Vector2 TopicDuration = new(100f, 200f);
+        
         [Tooltip("Среднее количество сообщений в секунду. Количество сообщений в теме = длительность * это значение.")]
         public float AverageMessagesPerSecond;
 
         [Header("Messages")]
         [Tooltip("Время, которое живёт сообщение пока не будет сочтено неотвеченным.")]
         public float MessageAnswerTime;
+        
         [Tooltip("Количество символов в сообщении (min, max).")]
-        public Vector2 SymbolsAmount = new Vector2(1f, 7f);
+        public Vector2 SymbolsAmount = new(1f, 7f);
+        
         [Tooltip("Символы, из которых случайно составляются сообщения.")]
-        public string AllowedSymbols = "qwe";
+        public KeyCode[] AllowedKeys = { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T  };
 
         [Header("Intervals")]
         [Tooltip("Пресеты интервалов. На каждую тему выбирается один случайный.")]
         public IntervalsPreset[] Presets;
 
         [Header("Preview")]
-        public AnimationCurve PreviewCurve = new AnimationCurve();
+        public AnimationCurve PreviewCurve = new();
 
         [ContextMenu("Generate Preview Curve")]
         public void GeneratePreviewCurve()
