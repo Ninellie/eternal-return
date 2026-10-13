@@ -1,45 +1,56 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace EternalReturn.Topics
 {
-    
-    
-    
     public class TopicSlotsViewController : IStartable
     {
-        private readonly ForumController _forumController;
-        private readonly RectTransform[] _topicSlots;
+        private const int TopicCount = 5;
         
-        public TopicSlotsViewController(
-            [Key("topic-slot-1")]RectTransform topicSlot1,
-            [Key("topic-slot-2")]RectTransform topicSlot2,
-            [Key("topic-slot-3")]RectTransform topicSlot3,
-            [Key("topic-slot-4")]RectTransform topicSlot4,
-            [Key("topic-slot-5")]RectTransform topicSlot5,
-            ForumController forumController)
+        private readonly ForumController _forumController;
+        private readonly RectTransform _topicSlotsRoot;
+        private readonly TopicView _topicSlotPrefab;
+        
+        private readonly List<TopicView> _topicViews;
+        
+        public TopicSlotsViewController(ForumController forumController,
+            [Key("topics-root")] RectTransform topicSlotsRoot,
+            TopicView topicSlotPrefab)
         {
             _forumController = forumController;
-            _topicSlots = new[] { topicSlot1, topicSlot2, topicSlot3, topicSlot4,  topicSlot5 };
+            _topicSlotsRoot = topicSlotsRoot;
+            _topicSlotPrefab = topicSlotPrefab;
+            
+            _topicViews = new List<TopicView>();
         }
         
         public void Start()
         {
+            for (var i = 0; i < TopicCount; i++)
+            {
+                var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
+                _topicViews.Add(topicView);
+                topicView.SetId(i + 1, TopicCount);
+                topicView.Deselect();
+            }
+            
+            _topicViews[0].Select();
+            
             _forumController.OnTopicSlotSelected += SelectTopic;
         }
 
         private void SelectTopic(TopicSlot value)
         {
-            var topicSlot = _topicSlots[value.Id - 1];
-            topicSlot.SetAsFirstSibling();
-            
-            for (var i = 0; i < _topicSlots.Length; i++)
+            foreach (var view in _topicViews)
             {
-                var button = _topicSlots[i].GetComponentInChildren<Button>();
-
-                button.interactable = i == value.Id - 1;
+                if (view.Id == value.Id)
+                {
+                    view.Select();
+                    continue;
+                }
+                view.Deselect();
             }
         }
     }
