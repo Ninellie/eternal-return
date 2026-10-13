@@ -7,8 +7,6 @@ namespace EternalReturn.Topics
 {
     public class TopicSlotsViewController : IStartable
     {
-        private const int TopicCount = 5;
-        
         private readonly ForumController _forumController;
         private readonly RectTransform _topicSlotsRoot;
         private readonly TopicView _topicSlotPrefab;
@@ -28,17 +26,19 @@ namespace EternalReturn.Topics
         
         public void Start()
         {
-            for (var i = 0; i < TopicCount; i++)
-            {
-                var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
-                _topicViews.Add(topicView);
-                topicView.SetId(i + 1, TopicCount);
-                topicView.Deselect();
-            }
-            
-            _topicViews[0].Select();
-            
+            _forumController.OnTopicOpened += CreateTopic;
             _forumController.OnTopicSlotSelected += SelectTopic;
+        }
+
+        private void CreateTopic(TopicSlot topic)
+        {
+            var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
+            topicView.SetId(topic.Id, _topicViews.Count);
+            topic.Topic.OnNewMessage += topicView.CreateMessage;
+            
+            
+            _topicViews.Add(topicView);
+            SelectTopic(topic);
         }
 
         private void SelectTopic(TopicSlot value)

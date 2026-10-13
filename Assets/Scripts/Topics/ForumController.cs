@@ -13,7 +13,7 @@ namespace EternalReturn.Topics
         private readonly int _slotsAmount;
         private readonly TopicSlot[] _slots;
         
-        public event Action<Topic> OnTopicOpened;
+        public event Action<TopicSlot> OnTopicOpened;
         public event Action<Topic> OnTopicClosed;
         public event Action<TopicSlot> OnTopicSlotSelected;
         
@@ -74,7 +74,7 @@ namespace EternalReturn.Topics
             slot.Topic = new Topic(duration, messages);
             slot.Status = SlotStatus.Occupied;
 
-            OnTopicOpened?.Invoke(slot.Topic);
+            OnTopicOpened?.Invoke(slot);
             Debug.Log("Topic Created");
         }
 

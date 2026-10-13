@@ -17,9 +17,13 @@ namespace EternalReturn.Topics
         [SerializeField] private Image alertPanel;
         
         [SerializeField] private RectTransform contentRoot;
-        [SerializeField] private List<RectTransform> messages;
+        [SerializeField] private TopicMessageView messageViewPrefab;
+        [SerializeField] private List<TopicMessageView> messages;
         
         public int Id => id;
+        public List<TopicMessageView> Messages => messages;
+
+        private TopicSlot _slot;
         
         public void Select()
         {
@@ -32,10 +36,15 @@ namespace EternalReturn.Topics
             tabButton.interactable = true;
         }
 
+        public void SetSlot(TopicSlot slot)
+        {
+            _slot = slot;
+        }
+        
         public void SetId(int value, int tabsCount)
         {
             id = value;
-            tabButtonLabel.text = value.ToString();
+            tabButtonLabel.text = id.ToString();
 
             if (tabsCount == 0) return; 
             
@@ -48,9 +57,12 @@ namespace EternalReturn.Topics
             tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
         }
         
-        public void Lock()
+        public void CreateMessage(TopicMessage value)
         {
-            
+            var messageView = Instantiate(messageViewPrefab, contentRoot);
+            messageView.Message = value;
+            Messages.Add(messageView);
+            messageView.transform.SetAsLastSibling();
         }
     }
 }
