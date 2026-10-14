@@ -11,7 +11,7 @@ namespace EternalReturn.Topics
         private readonly RectTransform _topicSlotsRoot;
         private readonly TopicView _topicSlotPrefab;
         
-        private readonly List<TopicView> _topicViews;
+        private readonly Dictionary<Topic, TopicView> _topicViewsByTopic;
         
         public ForumViewController(ForumController forumController,
             [Key("topics-root")] RectTransform topicSlotsRoot,
@@ -21,46 +21,51 @@ namespace EternalReturn.Topics
             _topicSlotsRoot = topicSlotsRoot;
             _topicSlotPrefab = topicSlotPrefab;
             
-            _topicViews = new List<TopicView>();
+            _topicViewsByTopic = new Dictionary<Topic, TopicView>();
         }
         
         public void Start()
         {
             _forumController.OnTopicOpened += CreateTopic;
+            _forumController.OnTopicClosed += CloseTopic;
             _forumController.OnTopicSlotSelected += SelectTopic;
         }
 
         public void Tick()
         {
-            foreach (var topicView in _topicViews)
+            foreach (var topicView in _topicViewsByTopic.Values)
             {
-                var messages = topicView.Messages;
-                
-                foreach (var messageView in messages)
-                {
-                    messageView.UpdateDuration();
-                }
+                topicView.Tick();
             }
+        }
+
+        private void CloseTopic(Topic topic)
+        {
+            _topicViewsByTopic.Remove(topic, out var topicView);
+            
+            Object.Destroy(topicView.gameObject);
         }
 
         private void CreateTopic(TopicSlot topicSlot)
         {
             var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
             
-            topicView.SetId(topicSlot.Id, _topicViews.Count);
+            topicView.Init(topicSlot.Topic, _topicViewsByTopic.Count);
+            
             topicSlot.Topic.OnNewMessage += topicView.CreateMessage;
             topicSlot.Topic.OnMessageLost += topicView.DeleteMessage; 
             topicSlot.Topic.OnMessageComplete += topicView.DeleteMessage;
             
-            _topicViews.Add(topicView);
+            _topicViewsByTopic.Add(topicSlot.Topic, topicView);
+            
             SelectTopic(topicSlot);
         }
 
         private void SelectTopic(TopicSlot value)
         {
-            foreach (var view in _topicViews)
+            foreach (var view in _topicViewsByTopic.Values)
             {
-                if (view.Id == value.Id)
+                if (view.SlotId == value.Id)
                 {
                     view.Select();
                     continue;

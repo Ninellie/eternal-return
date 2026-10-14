@@ -8,26 +8,24 @@ namespace EternalReturn.Topics
 {
     public class ForumController : IStartable, ITickable
     {
+        public event Action<TopicSlot> OnTopicOpened;
+        public event Action<TopicSlot> OnTopicSlotSelected;
+        public event Action<Topic> OnTopicClosed;
+        
         private readonly InputManager _inputManager;
         private readonly MessageGenerator _messageGenerator;
-        private readonly int _slotsAmount;
         private readonly TopicSlot[] _slots;
-        
-        public event Action<TopicSlot> OnTopicOpened;
-        public event Action<Topic> OnTopicClosed;
-        public event Action<TopicSlot> OnTopicSlotSelected;
         
         public ForumController(TopicSettings settings, InputManager inputManager)
         {
             _inputManager = inputManager;
             _messageGenerator = new MessageGenerator(settings);
-            _slotsAmount = settings.SlotsAmount;
-            _slots = new TopicSlot[_slotsAmount];
+            _slots = new TopicSlot[settings.SlotsAmount];
         }
         
         public void Start()
         {
-            for (var i = 0; i < _slotsAmount; i++)
+            for (var i = 0; i < _slots.Length; i++)
             {
                 _slots[i] = new TopicSlot
                 {
@@ -46,32 +44,30 @@ namespace EternalReturn.Topics
 
         public void Tick()
         {
-            foreach (var slot in _slots)
+            foreach (var slot in _slots.Where(x => x.Status == SlotStatus.Occupied))
             {
-                if (slot.Status is not SlotStatus.Occupied) continue;
-
                 var topic = slot.Topic;
+                
                 topic.Tick(Time.deltaTime);
 
                 // Если тема мёртвая - надо закрыть.
                 if (!topic.IsDead()) continue;
-                
-                OnTopicClosed?.Invoke(topic);
 
                 slot.Topic = null;
-                slot.Status = SlotStatus.Unoccupied;    
+                slot.Status = SlotStatus.Unoccupied;
+                
+                OnTopicClosed?.Invoke(topic);
             }
         }
 
         public void CreateTopic()
         {
-            var slot = _slots.First(x => x.IsSelected);
-            if (slot.Status is not SlotStatus.Unoccupied) return;
-
+            var slot = _slots.First(x => x.Status == SlotStatus.Unoccupied);
+            
             var duration = _messageGenerator.RollDuration();
             var messages = _messageGenerator.Generate(duration);
 
-            slot.Topic = new Topic(duration, messages);
+            slot.Topic = new Topic(slot.Id, duration, messages);
             slot.Status = SlotStatus.Occupied;
 
             OnTopicOpened?.Invoke(slot);
@@ -80,7 +76,11 @@ namespace EternalReturn.Topics
 
         private void SelectTopic(int id)
         {
-            foreach (var slot in _slots)
+            if (_slots[id-1].Status != SlotStatus.Occupied) return;
+            
+            var selectableSlots = _slots.Where(x => x.Status == SlotStatus.Occupied);
+            
+            foreach (var slot in selectableSlots)
             {
                 slot.IsSelected = slot.Id == id;
             }

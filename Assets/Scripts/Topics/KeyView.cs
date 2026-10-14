@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace EternalReturn.Topics
 {
-    public class MessageKeyView : MonoBehaviour
+    public class KeyView : MonoBehaviour
     {
         [SerializeField] private TMP_Text text;
         [SerializeField] private Color normalColor;
         [SerializeField] private Color pressedColor;
         
-        public void SetKey(KeyCode key)
+        public void Init(KeyCode key)
         {
             text.text = key.ToString();
         }

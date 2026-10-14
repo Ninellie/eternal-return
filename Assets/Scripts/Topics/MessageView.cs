@@ -2,22 +2,30 @@
 
 namespace EternalReturn.Topics
 {
-    public class TopicMessageView : MonoBehaviour
+    public class MessageView : MonoBehaviour
     {
-        [SerializeField] private MessageKeyView keyViewPrefab;
+        [SerializeField] private KeyView keyViewPrefab;
         [SerializeField] private RectTransform keysRoot;
         [SerializeField] private RectTransform durationBar;
-        
-        public TopicMessage Message { get; private set; }
 
-        private MessageKeyView[] _keys;
-
+        private TopicMessage _message;
+        private KeyView[] _keys;
         private bool _isInitialized;
-        
+
+        public void Init(TopicMessage message)
+        {
+            if (_isInitialized) return;
+            _message = message;
+            CreateKeys();
+            message.OnNextKeyPressed += PressNextKey;
+            message.OnKeysReset += ResetKeys;
+            _isInitialized = true;
+        }
+
         public void UpdateDuration()
         {
-            var baseDuration = Message.BaseDuration;
-            var currentDuration = Message.Duration;
+            var baseDuration = _message.BaseDuration;
+            var currentDuration = _message.Duration;
             if (baseDuration <= 0f) return;
 
             var fill = Mathf.Clamp01(currentDuration / baseDuration);
@@ -31,24 +39,14 @@ namespace EternalReturn.Topics
             durationBar.offsetMax = new Vector2(0f, durationBar.offsetMax.y);
         }
 
-        public void Init(TopicMessage message)
-        {
-            if (_isInitialized) return;
-            Message = message;
-            CreateKeys();
-            message.OnNextKeyPressed += PressNextKey;
-            message.OnKeysReset += ResetKeys;
-            _isInitialized = true;
-        }
-        
         private void CreateKeys()
         {
-            var keys = Message.Keys;
-            _keys = new MessageKeyView[keys.Length];
+            var keys = _message.Keys;
+            _keys = new KeyView[keys.Length];
             for (var i = 0; i < keys.Length; i++)
             {
                 var keyView = Instantiate(keyViewPrefab, keysRoot);
-                keyView.SetKey(keys[i].Key);
+                keyView.Init(keys[i].Key);
                 keyView.Unpress();
                 _keys[i] = keyView;
             }

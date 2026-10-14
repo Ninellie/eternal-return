@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +7,7 @@ namespace EternalReturn.Topics
 {
     public class TopicView : MonoBehaviour
     {
-        [SerializeField] private int id;
+        [SerializeField] private int slotSlotId;
         [SerializeField] private RectTransform topicSlot;
         
         [SerializeField] private RectTransform tabButtonRect;
@@ -18,13 +17,28 @@ namespace EternalReturn.Topics
         [SerializeField] private Image alertPanel;
         
         [SerializeField] private RectTransform contentRoot;
-        [SerializeField] private TopicMessageView messageViewPrefab;
-        [SerializeField] private List<TopicMessageView> messages;
+        [SerializeField] private MessageView messageViewPrefab;
         
-        public int Id => id;
-        public List<TopicMessageView> Messages => messages;
+        private Dictionary<TopicMessage, MessageView> _messageViewsByMessage;
+        
+        public int SlotId => slotSlotId;
 
-        // private TopicSlot _slot;
+        public void Init(Topic topic, int tabsCount)
+        {
+            _messageViewsByMessage = new Dictionary<TopicMessage, MessageView>();
+            slotSlotId = topic.SlotId;
+            tabButtonLabel.text = slotSlotId.ToString();
+
+            if (tabsCount == 0) return; 
+            
+            var anchorHorizontalStep = 1 / (float) tabsCount;
+            
+            var anchorMin = (slotSlotId - 1) * anchorHorizontalStep;
+            var anchorMax = slotSlotId * anchorHorizontalStep;
+            
+            tabButtonRect.anchorMin = new Vector2(anchorMin, tabButtonRect.anchorMin.y);
+            tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
+        }
         
         public void Select()
         {
@@ -36,42 +50,32 @@ namespace EternalReturn.Topics
         {
             tabButton.interactable = true;
         }
-
-        // public void SetSlot(TopicSlot slot)
-        // {
-        //     _slot = slot;
-        // }
-        
-        public void SetId(int value, int tabsCount)
-        {
-            id = value;
-            tabButtonLabel.text = id.ToString();
-
-            if (tabsCount == 0) return; 
-            
-            var anchorHorizontalStep = 1 / (float) tabsCount;
-            
-            var anchorMin = (id - 1) * anchorHorizontalStep;
-            var anchorMax = id * anchorHorizontalStep;
-            
-            tabButtonRect.anchorMin = new Vector2(anchorMin, tabButtonRect.anchorMin.y);
-            tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
-        }
         
         public void CreateMessage(TopicMessage message)
         {
             var messageView = Instantiate(messageViewPrefab, contentRoot);
+            
             messageView.Init(message);
-            Messages.Add(messageView);
+            
+            _messageViewsByMessage.Add(message, messageView);
+            
             messageView.transform.SetAsLastSibling();
         }
 
         public void DeleteMessage(TopicMessage message)
         {
-            var messageView = Messages.First(x => x.Message == message);
-            Messages.Remove(messageView);
+            _messageViewsByMessage.Remove(message, out var messageView);
+            
             messageView.gameObject.SetActive(false);
             Destroy(messageView.gameObject);
+        }
+
+        public void Tick()
+        {
+            foreach (var messageView in _messageViewsByMessage.Values)
+            {
+                messageView.UpdateDuration();
+            }
         }
     }
 }

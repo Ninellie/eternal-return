@@ -8,29 +8,30 @@ namespace EternalReturn.Topics
     public class Topic
     {
         public event Action<TopicMessage> OnNewMessage;
-        
         public event Action<TopicMessage> OnMessageLost;
         public event Action<TopicMessage> OnMessageComplete;
         
-        public Queue<TopicMessage> FeatureMessages { get; }
-        public Queue<TopicMessage> CurrentMessages { get; }
+        public int SlotId { get; }
         public float Duration { get; set; }
         public float BaseDuration { get; }
         
+        private readonly Queue<TopicMessage> _featureMessages;
+        private readonly Queue<TopicMessage> _currentMessages;
         private float _timeToNextMessage;
 
-        public Topic(float baseDuration, Queue<TopicMessage> featureMessages)
+        public Topic(int slotId, float baseDuration, Queue<TopicMessage> featureMessages)
         {
+            SlotId = slotId;
             BaseDuration = baseDuration;
             Duration = baseDuration;
-            FeatureMessages = featureMessages;
-            CurrentMessages = new Queue<TopicMessage>();
+            _featureMessages = featureMessages;
+            _currentMessages = new Queue<TopicMessage>();
             _timeToNextMessage = featureMessages.Peek().Interval;
         }
 
         public bool IsDead()
         {
-            return CurrentMessages.Count == 0 && Duration <= 0;
+            return _currentMessages.Count == 0 && Duration <= 0;
         }
         
         public void Tick(float deltaTime)
@@ -39,16 +40,16 @@ namespace EternalReturn.Topics
             if (Duration > 0) Duration -= deltaTime;
             
             // Текущие сообщения ждущие набора символов
-            foreach (var currentMessage in CurrentMessages.ToList())
+            foreach (var currentMessage in _currentMessages.ToList())
             {
                 currentMessage.Duration -= deltaTime;
                 if (currentMessage.Duration > 0) continue;
-                CurrentMessages.Dequeue();
+                _currentMessages.Dequeue();
                 OnMessageLost?.Invoke(currentMessage);
             }
             
             // В очереди есть сообщения 
-            var hasMessagesInQueue = FeatureMessages.Count > 0;
+            var hasMessagesInQueue = _featureMessages.Count > 0;
             
             // Выйти если нет
             if (!hasMessagesInQueue) return;
@@ -59,11 +60,11 @@ namespace EternalReturn.Topics
             // Если время до нового сообщения вышло
             if (_timeToNextMessage > 0) return;
             
-            var newMessage = FeatureMessages.Dequeue();
+            var newMessage = _featureMessages.Dequeue();
                 
-            CurrentMessages.Enqueue(newMessage);
+            _currentMessages.Enqueue(newMessage);
                 
-            if (FeatureMessages.TryPeek(out var nextMessage))
+            if (_featureMessages.TryPeek(out var nextMessage))
             {
                 _timeToNextMessage = nextMessage.Interval;
             }
@@ -73,13 +74,13 @@ namespace EternalReturn.Topics
 
         public void TryPressKey(KeyCode key)
         {
-            if (!CurrentMessages.TryPeek(out var message)) return;
+            if (!_currentMessages.TryPeek(out var message)) return;
 
             message.TryPressKey(key);
             
             if (!message.IsCompleted()) return;
             
-            CurrentMessages.Dequeue();
+            _currentMessages.Dequeue();
             
             OnMessageComplete?.Invoke(message);
         }
