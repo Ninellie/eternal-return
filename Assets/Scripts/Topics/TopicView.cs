@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ namespace EternalReturn.Topics
         public int Id => id;
         public List<TopicMessageView> Messages => messages;
 
-        private TopicSlot _slot;
+        // private TopicSlot _slot;
         
         public void Select()
         {
@@ -36,10 +37,10 @@ namespace EternalReturn.Topics
             tabButton.interactable = true;
         }
 
-        public void SetSlot(TopicSlot slot)
-        {
-            _slot = slot;
-        }
+        // public void SetSlot(TopicSlot slot)
+        // {
+        //     _slot = slot;
+        // }
         
         public void SetId(int value, int tabsCount)
         {
@@ -57,12 +58,20 @@ namespace EternalReturn.Topics
             tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
         }
         
-        public void CreateMessage(TopicMessage value)
+        public void CreateMessage(TopicMessage message)
         {
             var messageView = Instantiate(messageViewPrefab, contentRoot);
-            messageView.Message = value;
+            messageView.Init(message);
             Messages.Add(messageView);
             messageView.transform.SetAsLastSibling();
+        }
+
+        public void DeleteMessage(TopicMessage message)
+        {
+            var messageView = Messages.First(x => x.Message == message);
+            Messages.Remove(messageView);
+            messageView.gameObject.SetActive(false);
+            Destroy(messageView.gameObject);
         }
     }
 }

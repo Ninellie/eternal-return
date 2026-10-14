@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace EternalReturn.Topics
 {
-    public class TopicSlotsViewController : IStartable
+    public class ForumViewController : IStartable, ITickable
     {
         private readonly ForumController _forumController;
         private readonly RectTransform _topicSlotsRoot;
@@ -13,7 +13,7 @@ namespace EternalReturn.Topics
         
         private readonly List<TopicView> _topicViews;
         
-        public TopicSlotsViewController(ForumController forumController,
+        public ForumViewController(ForumController forumController,
             [Key("topics-root")] RectTransform topicSlotsRoot,
             TopicView topicSlotPrefab)
         {
@@ -30,15 +30,30 @@ namespace EternalReturn.Topics
             _forumController.OnTopicSlotSelected += SelectTopic;
         }
 
-        private void CreateTopic(TopicSlot topic)
+        public void Tick()
+        {
+            foreach (var topicView in _topicViews)
+            {
+                var messages = topicView.Messages;
+                
+                foreach (var messageView in messages)
+                {
+                    messageView.UpdateDuration();
+                }
+            }
+        }
+
+        private void CreateTopic(TopicSlot topicSlot)
         {
             var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
-            topicView.SetId(topic.Id, _topicViews.Count);
-            topic.Topic.OnNewMessage += topicView.CreateMessage;
             
+            topicView.SetId(topicSlot.Id, _topicViews.Count);
+            topicSlot.Topic.OnNewMessage += topicView.CreateMessage;
+            topicSlot.Topic.OnMessageLost += topicView.DeleteMessage; 
+            topicSlot.Topic.OnMessageComplete += topicView.DeleteMessage;
             
             _topicViews.Add(topicView);
-            SelectTopic(topic);
+            SelectTopic(topicSlot);
         }
 
         private void SelectTopic(TopicSlot value)

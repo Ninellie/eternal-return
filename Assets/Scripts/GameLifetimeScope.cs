@@ -43,7 +43,7 @@ namespace EternalReturn
             builder.RegisterInstance(createTopicButton).Keyed("create-topic");
             builder.RegisterEntryPoint<ForumController>().AsSelf();
             
-            builder.RegisterEntryPoint<TopicSlotsViewController>();
+            builder.RegisterEntryPoint<ForumViewController>();
             builder.RegisterEntryPoint<CreateTopicButtonViewController>();
             builder.RegisterInstance(topicSlotsRoot).Keyed("topics-root");
             builder.RegisterInstance(topicViewPrefab);

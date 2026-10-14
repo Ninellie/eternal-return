@@ -9,8 +9,8 @@ namespace EternalReturn.Topics
     {
         public event Action<TopicMessage> OnNewMessage;
         
-        public event Action OnMessageLost;
-        public event Action OnMessageComplete;
+        public event Action<TopicMessage> OnMessageLost;
+        public event Action<TopicMessage> OnMessageComplete;
         
         public Queue<TopicMessage> FeatureMessages { get; }
         public Queue<TopicMessage> CurrentMessages { get; }
@@ -44,7 +44,7 @@ namespace EternalReturn.Topics
                 currentMessage.Duration -= deltaTime;
                 if (currentMessage.Duration > 0) continue;
                 CurrentMessages.Dequeue();
-                OnMessageLost?.Invoke();
+                OnMessageLost?.Invoke(currentMessage);
             }
             
             // В очереди есть сообщения 
@@ -81,7 +81,7 @@ namespace EternalReturn.Topics
             
             CurrentMessages.Dequeue();
             
-            OnMessageComplete?.Invoke();
+            OnMessageComplete?.Invoke(message);
         }
     }
 }

@@ -5,23 +5,22 @@ namespace EternalReturn.Topics
 {
     public class TopicMessage
     {
-        public event Action OnKeyPressed;
-        public event Action OnMessageReset;
+        public event Action<int> OnNextKeyPressed;
+        public event Action OnKeysReset;
         
         public float Interval { get; } // Время которое нужно ждать до появления ЭТОГО сообщения. 
         public float Duration { get; set; } // Оставшееся время ожидания ответа на сообщение.
         public float BaseDuration { get; } // Базовое время ожидания ответа на сообщение.
         
         public MessageKey[] Keys { get; }
+        public int Pointer { get; private set; } // Указатель на текущий символ который игрок должен нажать.
         
-        private MessageKey NextKey => Keys[_pointer];
-        
-        private int _pointer; // Указатель на текущий символ который игрок должен нажать.
+        private MessageKey NextKey => Keys[Pointer];
         
         public TopicMessage(MessageKey[] keys, float interval, float duration)
         {
             Keys = keys;
-            _pointer = 0;
+            Pointer = 0;
             Interval = interval;
             BaseDuration = duration;
             Duration = duration;
@@ -35,25 +34,24 @@ namespace EternalReturn.Topics
             if (NextKey.Key == key)
             {
                 NextKey.IsPressed = true;
-                _pointer++;
-
-                OnKeyPressed?.Invoke();
+                OnNextKeyPressed?.Invoke(Pointer);
+                Pointer++;
                 return;
             }
             
-            _pointer = 0;
+            Pointer = 0;
             
             foreach (var symbol in Keys)
             {
                 symbol.IsPressed = false;
             }
             
-            OnMessageReset?.Invoke();
+            OnKeysReset?.Invoke();
         }
 
         public bool IsCompleted()
         {
-            return _pointer >= Keys.Length;
+            return Pointer >= Keys.Length;
         }
     }
 }

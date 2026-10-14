@@ -16,8 +16,8 @@ MonoBehaviour:
   TopicDuration: {x: 100, y: 200}
   AverageMessagesPerSecond: 0.25
   MessageAnswerTime: 5
-  SymbolsAmount: {x: 1, y: 7}
-  AllowedSymbols: 7100000077000000650000007200000074000000i
+  SymbolsAmount: {x: 1, y: 4}
+  AllowedKeys: 71000000770000006500000072000000i
   Presets:
   - {fileID: 11400000, guid: 3f7b9e1c5a2d4086b1e4c7d9a0f23b58, type: 2}
   - {fileID: 11400000, guid: 8d2e6a0f4c1b49e3a7f5b2c8d1e90a36, type: 2}
