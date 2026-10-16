@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a58b28cd7fe44689f117a80f7041766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Topics.TopicView
-  slotSlotId: 0
-  topicSlot: {fileID: 7654046459661325029}
+  slotId: 0
+  topicTab: {fileID: 7654046459661325029}
   tabButtonRect: {fileID: 3900973802224774478}
   tabButton: {fileID: 6221824909918876250}
   tabButtonLabel: {fileID: 5642467950538407617}

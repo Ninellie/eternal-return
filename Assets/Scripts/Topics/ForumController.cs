@@ -76,7 +76,7 @@ namespace EternalReturn.Topics
 
         private void SelectTopic(int id)
         {
-            if (_slots[id-1].Status != SlotStatus.Occupied) return;
+            if (_slots[id - 1].Status != SlotStatus.Occupied) return;
             
             var selectableSlots = _slots.Where(x => x.Status == SlotStatus.Occupied);
             

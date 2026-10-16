@@ -7,8 +7,8 @@ namespace EternalReturn.Topics
 {
     public class TopicView : MonoBehaviour
     {
-        [SerializeField] private int slotSlotId;
-        [SerializeField] private RectTransform topicSlot;
+        [SerializeField] private int slotId;
+        [SerializeField] private RectTransform topicTab;
         
         [SerializeField] private RectTransform tabButtonRect;
         [SerializeField] private Button tabButton;
@@ -20,25 +20,24 @@ namespace EternalReturn.Topics
         [SerializeField] private RectTransform contentRoot;
         [SerializeField] private MessageView messageViewPrefab;
         
+        public int SlotId => slotId;
+        
         private Dictionary<TopicMessage, MessageView> _messageViewsByMessage;
-        
-        public int SlotId => slotSlotId;
-        
         private Topic _topic;
 
         public void Init(Topic topic, int tabsCount)
         {
             _topic = topic;
             _messageViewsByMessage = new Dictionary<TopicMessage, MessageView>();
-            slotSlotId = topic.SlotId;
-            tabButtonLabel.text = slotSlotId.ToString();
+            slotId = topic.SlotId;
+            tabButtonLabel.text = slotId.ToString();
 
             if (tabsCount == 0) return; 
             
             var anchorHorizontalStep = 1 / (float) tabsCount;
             
-            var anchorMin = (slotSlotId - 1) * anchorHorizontalStep;
-            var anchorMax = slotSlotId * anchorHorizontalStep;
+            var anchorMin = (slotId - 1) * anchorHorizontalStep;
+            var anchorMax = slotId * anchorHorizontalStep;
             
             tabButtonRect.anchorMin = new Vector2(anchorMin, tabButtonRect.anchorMin.y);
             tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
@@ -47,7 +46,7 @@ namespace EternalReturn.Topics
         public void Select()
         {
             tabButton.interactable = false;
-            topicSlot.SetAsFirstSibling();
+            topicTab.SetAsFirstSibling();
         }
 
         public void Deselect()

@@ -61,11 +61,11 @@ namespace EternalReturn.Topics
             SelectTopic(topicSlot);
         }
 
-        private void SelectTopic(TopicSlot value)
+        private void SelectTopic(TopicSlot slot)
         {
             foreach (var view in _topicViewsByTopic.Values)
             {
-                if (view.SlotId == value.Id)
+                if (view.SlotId == slot.Id)
                 {
                     view.Select();
                     continue;
