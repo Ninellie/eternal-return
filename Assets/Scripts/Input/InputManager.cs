@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace EternalReturn.Input
 {
-    public class InputManager : IInitializable
+    public class InputManager : IInitializable, IDisposable
     {
         public event Action<int> OnSelectSlot;
         public event Action<KeyCode> OnKeyPressed;
@@ -18,20 +18,47 @@ namespace EternalReturn.Input
             
             _playerMap = InputSystem.actions.FindActionMap("Player");
             
-            _playerMap.FindAction("SelectSlot1").performed += _ => OnSelectSlot?.Invoke(1);
-            _playerMap.FindAction("SelectSlot2").performed += _ => OnSelectSlot?.Invoke(2);
-            _playerMap.FindAction("SelectSlot3").performed += _ => OnSelectSlot?.Invoke(3);
-            _playerMap.FindAction("SelectSlot4").performed += _ => OnSelectSlot?.Invoke(4);
-            _playerMap.FindAction("SelectSlot5").performed += _ => OnSelectSlot?.Invoke(5);
+            _playerMap.FindAction("SelectSlot1").performed += SelectSlot1;
+            _playerMap.FindAction("SelectSlot2").performed += SelectSlot2;
+            _playerMap.FindAction("SelectSlot3").performed += SelectSlot3;
+            _playerMap.FindAction("SelectSlot4").performed += SelectSlot4;
+            _playerMap.FindAction("SelectSlot5").performed += SelectSlot5;
             
-            _playerMap.FindAction("Q").performed += _ => OnKeyPressed?.Invoke(KeyCode.Q);
-            _playerMap.FindAction("W").performed += _ => OnKeyPressed?.Invoke(KeyCode.W);
-            _playerMap.FindAction("E").performed += _ => OnKeyPressed?.Invoke(KeyCode.E);
-            _playerMap.FindAction("R").performed += _ => OnKeyPressed?.Invoke(KeyCode.R);
-            _playerMap.FindAction("T").performed += _ => OnKeyPressed?.Invoke(KeyCode.T);
+            _playerMap.FindAction("Q").performed += PressQ;
+            _playerMap.FindAction("W").performed += PressW;
+            _playerMap.FindAction("E").performed += PressE;
+            _playerMap.FindAction("R").performed += PressR;
+            _playerMap.FindAction("T").performed += PressT;
             
             SwitchToPlayerMap();
         }
+
+        public void Dispose()
+        {
+            _playerMap.FindAction("SelectSlot1").performed -= SelectSlot1;
+            _playerMap.FindAction("SelectSlot2").performed -= SelectSlot2;
+            _playerMap.FindAction("SelectSlot3").performed -= SelectSlot3;
+            _playerMap.FindAction("SelectSlot4").performed -= SelectSlot4;
+            _playerMap.FindAction("SelectSlot5").performed -= SelectSlot5;
+            
+            _playerMap.FindAction("Q").performed -= PressQ;
+            _playerMap.FindAction("W").performed -= PressW;
+            _playerMap.FindAction("E").performed -= PressE;
+            _playerMap.FindAction("R").performed -= PressR;
+            _playerMap.FindAction("T").performed -= PressT;
+        }
+        
+        private void SelectSlot1(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(1);
+        private void SelectSlot2(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(2);
+        private void SelectSlot3(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(3);
+        private void SelectSlot4(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(4);
+        private void SelectSlot5(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(5);
+        
+        private void PressQ(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.Q);
+        private void PressW(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.W);
+        private void PressE(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.E);
+        private void PressR(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.R);
+        private void PressT(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.T);
         
         private void SwitchToPlayerMap()
         {
