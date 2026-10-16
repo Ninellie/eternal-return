@@ -24,25 +24,14 @@ namespace EternalReturn.Topics
 
         public void UpdateDuration()
         {
-            var baseDuration = _message.BaseDuration;
-            var currentDuration = _message.Duration;
-            if (baseDuration <= 0f) return;
-
-            var fill = Mathf.Clamp01(currentDuration / baseDuration);
-            var anchorMin = durationBar.anchorMin;
-            var anchorMax = durationBar.anchorMax;
-            anchorMin.x = 0f;
-            anchorMax.x = fill;
-            durationBar.anchorMin = anchorMin;
-            durationBar.anchorMax = anchorMax;
-            durationBar.offsetMin = new Vector2(0f, durationBar.offsetMin.y);
-            durationBar.offsetMax = new Vector2(0f, durationBar.offsetMax.y);
+            ViewHelper.UpdateDurationBar(_message.BaseDuration, _message.Duration, durationBar);
         }
 
         private void CreateKeys()
         {
             var keys = _message.Keys;
             _keys = new KeyView[keys.Length];
+            
             for (var i = 0; i < keys.Length; i++)
             {
                 var keyView = Instantiate(keyViewPrefab, keysRoot);
