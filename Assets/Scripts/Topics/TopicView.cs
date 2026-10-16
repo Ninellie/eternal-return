@@ -15,6 +15,7 @@ namespace EternalReturn.Topics
         [SerializeField] private TMP_Text tabButtonLabel;
         
         [SerializeField] private Image alertPanel;
+        [SerializeField] private RectTransform durationBar;
         
         [SerializeField] private RectTransform contentRoot;
         [SerializeField] private MessageView messageViewPrefab;
@@ -22,9 +23,12 @@ namespace EternalReturn.Topics
         private Dictionary<TopicMessage, MessageView> _messageViewsByMessage;
         
         public int SlotId => slotSlotId;
+        
+        private Topic _topic;
 
         public void Init(Topic topic, int tabsCount)
         {
+            _topic = topic;
             _messageViewsByMessage = new Dictionary<TopicMessage, MessageView>();
             slotSlotId = topic.SlotId;
             tabButtonLabel.text = slotSlotId.ToString();
@@ -72,6 +76,8 @@ namespace EternalReturn.Topics
 
         public void Tick()
         {
+            ViewHelper.UpdateDurationBar(_topic.BaseDuration, _topic.Duration, durationBar);
+            
             foreach (var messageView in _messageViewsByMessage.Values)
             {
                 messageView.UpdateDuration();
