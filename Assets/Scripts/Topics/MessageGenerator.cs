@@ -32,18 +32,18 @@ namespace EternalReturn.Topics
             return messages;
         }
 
-        private MessageKey[] CreateMessageKeys()
+        private KeyCode[] CreateMessageKeys()
         {
             var allowedKeys = _settings.AllowedKeys;
 
             var amount = RollSymbolsAmount();
-            var keys = new MessageKey[amount];
+            var keys = new KeyCode[amount];
 
             for (var i = 0; i < amount; i++)
             {
                 var randomIndex = Random.Range(0, allowedKeys.Length);
                 var randomKeyCode = allowedKeys[randomIndex];
-                keys[i] = new MessageKey(randomKeyCode);
+                keys[i] = randomKeyCode;
             }
 
             return keys;
@@ -58,7 +58,7 @@ namespace EternalReturn.Topics
             return Mathf.Clamp(amount, min, max);
         }
 
-        public float[] GenerateIntervals(float duration)
+        private float[] GenerateIntervals(float duration)
         {
             var preset = RollPreset();
             var amount = Mathf.Max(1, Mathf.RoundToInt(duration * _settings.AverageMessagesPerSecond));

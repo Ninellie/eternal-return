@@ -46,7 +46,7 @@ namespace EternalReturn.Topics
             for (var i = 0; i < keys.Length; i++)
             {
                 var keyView = Instantiate(keyViewPrefab, keysRoot);
-                keyView.Init(keys[i].Key);
+                keyView.Init(keys[i]);
                 keyView.Unpress();
                 _keys[i] = keyView;
             }

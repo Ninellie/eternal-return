@@ -12,12 +12,12 @@ namespace EternalReturn.Topics
         public float Duration { get; set; } // Оставшееся время ожидания ответа на сообщение.
         public float BaseDuration { get; } // Базовое время ожидания ответа на сообщение.
         
-        public MessageKey[] Keys { get; }
+        public KeyCode[] Keys { get; }
         public int Pointer { get; private set; } // Указатель на текущий символ который игрок должен нажать.
         
-        private MessageKey NextKey => Keys[Pointer];
+        private KeyCode NextKey => Keys[Pointer];
         
-        public TopicMessage(MessageKey[] keys, float interval, float duration)
+        public TopicMessage(KeyCode[] keys, float interval, float duration)
         {
             Keys = keys;
             Pointer = 0;
@@ -31,20 +31,14 @@ namespace EternalReturn.Topics
         /// </summary>
         public void TryPressKey(KeyCode key)
         {
-            if (NextKey.Key == key)
+            if (NextKey == key)
             {
-                NextKey.IsPressed = true;
                 OnNextKeyPressed?.Invoke(Pointer);
                 Pointer++;
                 return;
             }
             
             Pointer = 0;
-            
-            foreach (var symbol in Keys)
-            {
-                symbol.IsPressed = false;
-            }
             
             OnKeysReset?.Invoke();
         }
