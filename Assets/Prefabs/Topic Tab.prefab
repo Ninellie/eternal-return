@@ -65,6 +65,7 @@ MonoBehaviour:
   tabButtonRect: {fileID: 3900973802224774478}
   tabButton: {fileID: 6221824909918876250}
   tabButtonLabel: {fileID: 5642467950538407617}
+  styles: {fileID: 11400000, guid: ad8ad07a4a3fa444f916b796696644d9, type: 2}
   alertPanel: {fileID: 0}
   durationBar: {fileID: 6535195932209521404}
   contentRoot: {fileID: 1027709639401886357}
@@ -209,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18431373, g: 0.18431373, b: 0.19607843, a: 1}
+  m_Color: {r: 0.19607843, g: 0.1859896, b: 0.18431373, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -580,11 +581,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3900973802224774478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 5}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 5, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2365310803584098511
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -606,7 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.24286455, g: 0.61960787, b: 0.19999999, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -722,7 +723,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.24313726, g: 0.5764706, b: 0.8156863, a: 1}
+    m_NormalColor: {r: 0.6698113, g: 0, b: 0.42175746, a: 1}
     m_HighlightedColor: {r: 0.24313726, g: 0.5764706, b: 0.8156863, a: 1}
     m_PressedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
     m_SelectedColor: {r: 0.24313726, g: 0.5764706, b: 0.8156863, a: 1}

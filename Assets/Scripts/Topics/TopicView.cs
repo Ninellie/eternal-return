@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EternalReturn.ViewStyles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace EternalReturn.Topics
         [SerializeField] private RectTransform tabButtonRect;
         [SerializeField] private Button tabButton;
         [SerializeField] private TMP_Text tabButtonLabel;
+        [SerializeField] private ButtonStyles styles;
         
         [SerializeField] private Image alertPanel;
         [SerializeField] private RectTransform durationBar;
@@ -45,13 +47,13 @@ namespace EternalReturn.Topics
         
         public void Select()
         {
-            tabButton.interactable = false;
+            ViewHelper.SetColors(tabButton, styles.Active);
             topicTab.SetAsLastSibling();
         }
 
         public void Deselect()
         {
-            tabButton.interactable = true;
+            ViewHelper.SetColors(tabButton, styles.Main);
         }
         
         public void CreateMessage(TopicMessage message)
@@ -75,7 +77,7 @@ namespace EternalReturn.Topics
 
         public void Tick()
         {
-            ViewHelper.UpdateDurationBar(_topic.BaseDuration, _topic.Duration, durationBar);
+            ViewHelper.UpdateDurationBar(_topic.BaseDuration, _topic.Duration, durationBar, ViewHelper.DurationBarMode.TopToBottom);
             
             foreach (var messageView in _messageViewsByMessage.Values)
             {

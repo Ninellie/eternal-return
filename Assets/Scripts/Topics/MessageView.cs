@@ -24,7 +24,7 @@ namespace EternalReturn.Topics
 
         public void UpdateDuration()
         {
-            ViewHelper.UpdateDurationBar(_message.BaseDuration, _message.Duration, durationBar);
+            ViewHelper.UpdateDurationBar(_message.BaseDuration, _message.Duration, durationBar, ViewHelper.DurationBarMode.RightToLeft);
         }
 
         private void CreateKeys()
