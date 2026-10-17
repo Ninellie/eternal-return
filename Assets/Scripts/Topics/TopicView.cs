@@ -17,6 +17,9 @@ namespace EternalReturn.Topics
         [SerializeField] private ButtonStyles styles;
         
         [SerializeField] private Image alertPanel;
+        [SerializeField] private float alertBlinkSpeed = 2f;
+        [SerializeField, Range(0f, 1f)] private float alertMaxAlpha = 1f;
+        
         [SerializeField] private RectTransform durationBar;
         
         [SerializeField] private RectTransform contentRoot;
@@ -27,12 +30,18 @@ namespace EternalReturn.Topics
         private Dictionary<TopicMessage, MessageView> _messageViewsByMessage;
         private Topic _topic;
 
+
+        private bool _isSelected;
+        
+        private bool _hasNewMessages;
+
         public void Init(Topic topic, int tabsCount)
         {
             _topic = topic;
             _messageViewsByMessage = new Dictionary<TopicMessage, MessageView>();
             slotId = topic.SlotId;
             tabButtonLabel.text = slotId.ToString();
+            SetAlertAlpha(0f);
 
             if (tabsCount == 0) return; 
             
@@ -44,18 +53,39 @@ namespace EternalReturn.Topics
             tabButtonRect.anchorMin = new Vector2(anchorMin, tabButtonRect.anchorMin.y);
             tabButtonRect.anchorMax = new Vector2(anchorMax, tabButtonRect.anchorMax.y);
         }
-        
+
+        public void Tick()
+        {
+            if (_hasNewMessages)
+            {
+                SetAlertAlpha(Mathf.PingPong(Time.time * alertBlinkSpeed, alertMaxAlpha));
+            }
+            
+            ViewHelper.UpdateDurationBar(_topic.BaseDuration, _topic.Duration, durationBar, ViewHelper.DurationBarMode.TopToBottom);
+            
+            foreach (var messageView in _messageViewsByMessage.Values)
+            {
+                messageView.UpdateDuration();
+            }
+        }
+
         public void Select()
         {
+            _isSelected = true;
+            _hasNewMessages = false;
+            
+            SetAlertAlpha(0f);
+            
             ViewHelper.SetColors(tabButton, styles.Active);
             topicTab.SetAsLastSibling();
         }
 
         public void Deselect()
         {
+            _isSelected = false;
             ViewHelper.SetColors(tabButton, styles.Main);
         }
-        
+
         public void CreateMessage(TopicMessage message)
         {
             var messageView = Instantiate(messageViewPrefab, contentRoot);
@@ -65,6 +95,11 @@ namespace EternalReturn.Topics
             _messageViewsByMessage.Add(message, messageView);
             
             messageView.transform.SetAsLastSibling();
+
+            if (!_isSelected)
+            {
+                _hasNewMessages = true;
+            }
         }
 
         public void DeleteMessage(TopicMessage message)
@@ -75,14 +110,11 @@ namespace EternalReturn.Topics
             Destroy(messageView.gameObject);
         }
 
-        public void Tick()
+        private void SetAlertAlpha(float alpha)
         {
-            ViewHelper.UpdateDurationBar(_topic.BaseDuration, _topic.Duration, durationBar, ViewHelper.DurationBarMode.TopToBottom);
-            
-            foreach (var messageView in _messageViewsByMessage.Values)
-            {
-                messageView.UpdateDuration();
-            }
+            var color = alertPanel.color;
+            color.a = alpha;
+            alertPanel.color = color;
         }
     }
 }
