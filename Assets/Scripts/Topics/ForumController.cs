@@ -12,6 +12,8 @@ namespace EternalReturn.Topics
         public event Action<TopicSlot> OnTopicSlotSelected;
         public event Action<Topic> OnTopicClosed;
         
+        public bool HasUnoccupiedSlot => _slots.Any(x => x.Status == SlotStatus.Unoccupied);
+        
         private readonly InputManager _inputManager;
         private readonly MessageGenerator _messageGenerator;
         private readonly TopicSlot[] _slots;
@@ -38,6 +40,8 @@ namespace EternalReturn.Topics
             _slots[0].Status = SlotStatus.Unoccupied;
             _slots[0].IsSelected = true;
 
+            _slots[1].Status = SlotStatus.Unoccupied;
+            
             _inputManager.OnSelectSlot += SelectTopic;
             _inputManager.OnKeyPressed += PressKey;
         }

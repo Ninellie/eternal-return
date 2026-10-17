@@ -21,6 +21,19 @@ namespace EternalReturn.Topics
         {
             Debug.Log("Creating topic button");
             _createTopicButton.onClick.AddListener(_forumController.CreateTopic);
+
+            _forumController.OnTopicClosed += UpdateButtonState;
+            _forumController.OnTopicOpened += UpdateButtonState;
+        }
+
+        private void UpdateButtonState(TopicSlot _) => UpdateButtonState();
+
+        private void UpdateButtonState(Topic _) => UpdateButtonState();
+
+        private void UpdateButtonState()
+        {
+            _createTopicButton.interactable = _forumController.HasUnoccupiedSlot;
+            
         }
     }
 }
