@@ -46,7 +46,7 @@ namespace EternalReturn.Topics
         public void Select()
         {
             tabButton.interactable = false;
-            topicTab.SetAsFirstSibling();
+            topicTab.SetAsLastSibling();
         }
 
         public void Deselect()

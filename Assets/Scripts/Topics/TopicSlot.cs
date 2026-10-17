@@ -3,7 +3,6 @@
     public class TopicSlot
     {
         public int Id { get; set; }
-        public bool IsSelected { get; set; }
         public SlotStatus Status { get; set; }
         public Topic Topic { get; set; }
     }

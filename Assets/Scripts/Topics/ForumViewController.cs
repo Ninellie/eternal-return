@@ -28,7 +28,7 @@ namespace EternalReturn.Topics
         {
             _forumController.OnTopicOpened += CreateTopic;
             _forumController.OnTopicClosed += CloseTopic;
-            _forumController.OnTopicSlotSelected += SelectTopic;
+            _forumController.OnTopicSelected += SelectTopic;
         }
 
         public void Tick()
@@ -50,22 +50,20 @@ namespace EternalReturn.Topics
         {
             var topicView = Object.Instantiate(_topicSlotPrefab, _topicSlotsRoot);
             
-            topicView.Init(topicSlot.Topic, _topicViewsByTopic.Count);
+            topicView.Init(topicSlot.Topic, _forumController.SlotCount);
             
             topicSlot.Topic.OnNewMessage += topicView.CreateMessage;
             topicSlot.Topic.OnMessageLost += topicView.DeleteMessage; 
             topicSlot.Topic.OnMessageComplete += topicView.DeleteMessage;
             
             _topicViewsByTopic.Add(topicSlot.Topic, topicView);
-            
-            SelectTopic(topicSlot);
         }
 
-        private void SelectTopic(TopicSlot slot)
+        private void SelectTopic(Topic topic)
         {
             foreach (var view in _topicViewsByTopic.Values)
             {
-                if (view.SlotId == slot.Id)
+                if (view.SlotId == topic.SlotId)
                 {
                     view.Select();
                     continue;

@@ -9,14 +9,17 @@ namespace EternalReturn.Topics
     public class ForumController : IStartable, ITickable
     {
         public event Action<TopicSlot> OnTopicOpened;
-        public event Action<TopicSlot> OnTopicSlotSelected;
+        public event Action<Topic> OnTopicSelected;
         public event Action<Topic> OnTopicClosed;
         
         public bool HasUnoccupiedSlot => _slots.Any(x => x.Status == SlotStatus.Unoccupied);
-        
+        public int SlotCount => _slots.Length;
+
         private readonly InputManager _inputManager;
         private readonly MessageGenerator _messageGenerator;
         private readonly TopicSlot[] _slots;
+        
+        private Topic _selectedTopic;
         
         public ForumController(TopicSettings settings, InputManager inputManager)
         {
@@ -32,15 +35,9 @@ namespace EternalReturn.Topics
                 _slots[i] = new TopicSlot
                 {
                     Id = i + 1,
-                    Status = SlotStatus.Locked,
-                    IsSelected = false
+                    Status = SlotStatus.Unoccupied,
                 };
             }
-            
-            _slots[0].Status = SlotStatus.Unoccupied;
-            _slots[0].IsSelected = true;
-
-            _slots[1].Status = SlotStatus.Unoccupied;
             
             _inputManager.OnSelectSlot += SelectTopic;
             _inputManager.OnKeyPressed += PressKey;
@@ -50,57 +47,70 @@ namespace EternalReturn.Topics
         {
             foreach (var slot in _slots.Where(x => x.Status == SlotStatus.Occupied))
             {
-                var topic = slot.Topic;
-                
-                topic.Tick(Time.deltaTime);
+                slot.Topic.Tick(Time.deltaTime);
 
                 // Если тема мёртвая - надо закрыть.
-                if (!topic.IsDead()) continue;
+                if (!slot.Topic.IsDead()) continue;
 
-                slot.Topic = null;
-                slot.Status = SlotStatus.Unoccupied;
-                
-                OnTopicClosed?.Invoke(topic);
+                CloseTopicInSlot(slot);
             }
+        }
+
+        private void CloseTopicInSlot(TopicSlot topicSlot)
+        {
+            var closedTopic = topicSlot.Topic;
+            
+            topicSlot.Topic = null;
+            topicSlot.Status = SlotStatus.Unoccupied;
+            
+            OnTopicClosed?.Invoke(closedTopic);
+            
+            var hasOccupiedSlot = _slots.Any(x => x.Status == SlotStatus.Occupied);
+
+            if (!hasOccupiedSlot)
+            {
+                _selectedTopic = null;
+                return;
+            }
+            
+            var first = _slots.First(x => x.Status == SlotStatus.Occupied);
+            
+            SelectTopic(first.Id);
         }
 
         public void CreateTopic()
         {
-            var slot = _slots.First(x => x.Status == SlotStatus.Unoccupied);
+            var topicSlot = _slots.First(x => x.Status == SlotStatus.Unoccupied);
             
             var duration = _messageGenerator.RollDuration();
             var messages = _messageGenerator.Generate(duration);
 
-            slot.Topic = new Topic(slot.Id, duration, messages);
-            slot.Status = SlotStatus.Occupied;
-
-            OnTopicOpened?.Invoke(slot);
+            topicSlot.Topic = new Topic(topicSlot.Id, duration, messages);
+            topicSlot.Status = SlotStatus.Occupied;
+            
+            OnTopicOpened?.Invoke(topicSlot);
+            
+            SelectTopic(topicSlot.Id);
+            
             Debug.Log("Topic Created");
         }
 
         private void SelectTopic(int id)
         {
-            if (_slots[id - 1].Status != SlotStatus.Occupied) return;
+            var topicSlot = _slots.First(x => x.Id == id);
             
-            var selectableSlots = _slots.Where(x => x.Status == SlotStatus.Occupied);
+            if (topicSlot.Status != SlotStatus.Occupied) return;
             
-            foreach (var slot in selectableSlots)
-            {
-                slot.IsSelected = slot.Id == id;
-            }
+            _selectedTopic = topicSlot.Topic;
             
-            OnTopicSlotSelected?.Invoke(_slots[id - 1]);
+            Debug.Log($"Topic {id} selected.");
+            
+            OnTopicSelected?.Invoke(topicSlot.Topic);
         }
 
         private void PressKey(KeyCode key)
         {
-            var slot = _slots.First(x => x.IsSelected);
-            
-            if (slot.Status is not SlotStatus.Occupied) return;
-            
-            var selectedTopic = slot.Topic;
-
-            selectedTopic.TryPressKey(key);
+            _selectedTopic?.TryPressKey(key);
         }
     }
 }
