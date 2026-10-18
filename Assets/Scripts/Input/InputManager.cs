@@ -9,6 +9,7 @@ namespace EternalReturn.Input
     {
         public event Action<int> OnSelectSlot;
         public event Action<KeyCode> OnKeyPressed;
+        public event Action<Vector2> OnClick;
         
         private InputActionMap _playerMap;
         
@@ -30,7 +31,18 @@ namespace EternalReturn.Input
             _playerMap.FindAction("R").performed += PressR;
             _playerMap.FindAction("T").performed += PressT;
             
+            _playerMap.FindAction("Click").performed += Click;
+            
             SwitchToPlayerMap();
+        }
+
+        private void Click(InputAction.CallbackContext context)
+        {
+            if (context.control.device is not Pointer pointer) return;
+
+            var position = pointer.position.ReadValue();
+            Debug.Log($"Click: {position}");
+            OnClick?.Invoke(position);
         }
 
         public void Dispose()
@@ -46,6 +58,8 @@ namespace EternalReturn.Input
             _playerMap.FindAction("E").performed -= PressE;
             _playerMap.FindAction("R").performed -= PressR;
             _playerMap.FindAction("T").performed -= PressT;
+
+            _playerMap.FindAction("Click").performed -= Click;
         }
         
         private void SelectSlot1(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(1);

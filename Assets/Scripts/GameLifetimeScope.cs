@@ -1,5 +1,6 @@
 ﻿using EternalReturn.GameTime;
 using EternalReturn.Input;
+using EternalReturn.Learning;
 using EternalReturn.Topics;
 using TMPro;
 using UnityEngine;
@@ -22,6 +23,10 @@ namespace EternalReturn
         
         [SerializeField] private RectTransform topicSlotsRoot;
         [SerializeField] private TopicView topicViewPrefab;
+
+        [SerializeField] private Button startLearningButton;
+        [SerializeField] private LearningGraphic learningGraphic;
+        [SerializeField] private LearningProcessSettings learningProcessSettings;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -47,6 +52,13 @@ namespace EternalReturn
             builder.RegisterEntryPoint<CreateTopicButtonViewController>();
             builder.RegisterInstance(topicSlotsRoot).Keyed("topics-root");
             builder.RegisterInstance(topicViewPrefab);
+
+            builder.RegisterInstance(learningProcessSettings);
+            builder.RegisterEntryPoint<LearningController>().AsSelf();
+            builder.RegisterInstance(startLearningButton).Keyed("start-learning");
+            builder.RegisterEntryPoint<StartLearningButtonViewController>();
+            builder.RegisterInstance(learningGraphic);
+            builder.RegisterEntryPoint<LearningViewController>();
         }
     }
 }
