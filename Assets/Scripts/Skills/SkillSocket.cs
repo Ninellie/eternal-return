@@ -2,8 +2,9 @@
 {
     public class SkillSocket
     {
-        public Skill Skill { get; set; }
+        public Skill Skill { get; private set; }
         public bool IsLocked { get; private set; }
+        public bool IsFilled { get; private set; }
 
         public SkillSocket(bool isLocked)
         {
@@ -12,14 +13,17 @@
 
         public void SetSkill(Skill skill)
         {
+            if (IsLocked) return;
             Skill = skill;
             Skill.SkillSocket = this;
+            IsFilled = true;
         }
 
         public void Empty()
         {
             Skill.SkillSocket = null;
             Skill = null;
+            IsFilled = false;
         }
     }
 }

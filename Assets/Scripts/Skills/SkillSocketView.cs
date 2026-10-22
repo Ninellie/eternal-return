@@ -1,11 +1,31 @@
-﻿using UnityEngine.UI;
+﻿using EternalReturn.ViewStyles;
+using UnityEngine;
 
 namespace EternalReturn.Skills
 {
-    public class SkillSocketView
+    public class SkillSocketView : MonoBehaviour
     {
-        private Image _background;
+        [SerializeField] private H_SDFUIOutline background;
+        [SerializeField] private ButtonStyles buttonStyle;
         
         public SkillView SkillView { get; set; }
+
+        private SkillSocket _skillSocket;
+        
+        public void SetSocket(SkillSocket socket)
+        {
+            _skillSocket = socket;
+
+            background.FillCenter = _skillSocket.IsLocked;
+            
+            if (_skillSocket.IsLocked)
+            {
+                background.color = buttonStyle.Active.disabledColor;
+            }
+            else
+            {
+                background.color = buttonStyle.Active.normalColor;
+            }
+        }
     }
 }

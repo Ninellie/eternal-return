@@ -1,6 +1,7 @@
 ﻿using EternalReturn.GameTime;
 using EternalReturn.Input;
 using EternalReturn.Learning;
+using EternalReturn.Skills;
 using EternalReturn.Topics;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,10 @@ namespace EternalReturn
         [SerializeField] private Button startLearningButton;
         [SerializeField] private LearningGraphic learningGraphic;
         [SerializeField] private LearningProcessSettings learningProcessSettings;
+        
+        [SerializeField] private Transform skillsPanel;
+        [SerializeField] private SkillSocketView skillSocketViewPrefab;
+        [SerializeField] private SkillView skillViewPrefab;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -59,6 +64,13 @@ namespace EternalReturn
             builder.RegisterEntryPoint<StartLearningButtonViewController>();
             builder.RegisterInstance(learningGraphic);
             builder.RegisterEntryPoint<LearningViewController>();
+            
+            // Skills
+            builder.RegisterEntryPoint<SkillsController>().AsSelf();
+            builder.RegisterEntryPoint<SkillsViewController>();
+            builder.RegisterInstance(skillsPanel).Keyed("skills-panel");
+            builder.RegisterInstance(skillSocketViewPrefab);
+            builder.RegisterInstance(skillViewPrefab);
         }
     }
 }
