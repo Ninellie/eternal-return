@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -23,7 +24,7 @@ namespace EternalReturn.Skills
         private bool _isDragging;
         private readonly Vector3[] _worldCorners = new Vector3[4];
         
-        private SkillSocketView _lastHighlightedSocketView;
+        private SkillSocketView _currentEmptyOverlappedSocketView;
         
         public SkillsViewController([Key("skills-panel")] Transform skillsPanel,
             SkillView skillViewPrefab,
@@ -52,10 +53,9 @@ namespace EternalReturn.Skills
                 
                 var skillView = Object.Instantiate(_skillViewPrefab, skillSocketView.gameObject.transform);
                 skillView.SetSkill(skillSocket.Skill);
-                skillView.SetSkillSocketView(skillSocketView);
                 skillView.SkillsViewController = this;
-                    
-                skillSocketView.SkillView = skillView;
+                
+                skillSocketView.SetSkillView(skillView);
             }
         }
 
@@ -72,12 +72,12 @@ namespace EternalReturn.Skills
 
             if (!TryGetClosestOverlappedSocket(out var socketView))
             {
-                if (_lastHighlightedSocketView != null)
+                if (_currentEmptyOverlappedSocketView != null)
                 {
-                    _lastHighlightedSocketView.SetNormal();
+                    _currentEmptyOverlappedSocketView.SetNormal();
                 }
 
-                _lastHighlightedSocketView = null;
+                _currentEmptyOverlappedSocketView = null;
                 
                 return;
             }
@@ -85,7 +85,7 @@ namespace EternalReturn.Skills
             if (socketView.SkillSocket.IsLocked) return;
             
             socketView.SetHighlighted();
-            _lastHighlightedSocketView = socketView;
+            _currentEmptyOverlappedSocketView = socketView;
                 
             foreach (var skillSocketView in _skillSocketViews)
             {
@@ -194,11 +194,31 @@ namespace EternalReturn.Skills
 
         private void EndDrag()
         {
-            _draggingSkillView.transform.SetParent(_draggingSkillView.Socket.transform);
-            _draggingSkillView.transform.position = _draggingSkillView.Socket.transform.position;
+            if (_currentEmptyOverlappedSocketView != null)
+            {
+                _currentEmptyOverlappedSocketView.SetNormal();
+                
+                var socket = _currentEmptyOverlappedSocketView.SkillSocket;
+                var skill = _draggingSkillView.Skill;
+
+                if (!socket.IsFilled)
+                {
+                    _skillsController.FillSocketWithSkill(skill, socket);
+                    var socketOfDraggingSkill = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
+                    
+                    socketOfDraggingSkill.EmptySkillView();
+                    
+                    _currentEmptyOverlappedSocketView.SetSkillView(_draggingSkillView);
+                }
+            }
+
+            var socketView = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
+            var socketTransform = socketView.transform;
             
-            _lastHighlightedSocketView.SetNormal();
-            _lastHighlightedSocketView = null;
+            _draggingSkillView.transform.SetParent(socketTransform);
+            _draggingSkillView.transform.position = socketTransform.position;
+            
+            _currentEmptyOverlappedSocketView = null;
             _isDragging = false;
             _draggingSkillView = null;
         }

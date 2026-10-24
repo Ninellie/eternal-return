@@ -15,13 +15,12 @@
         {
             if (IsLocked) return;
             Skill = skill;
-            Skill.SkillSocket = this;
+            
             IsFilled = true;
         }
 
         public void Empty()
         {
-            Skill.SkillSocket = null;
             Skill = null;
             IsFilled = false;
         }
