@@ -13,14 +13,15 @@ namespace EternalReturn.Skills
         [SerializeField] private MaskableGraphic background;
         
         [SerializeField] private ButtonStyles _buttonStyles;
-        
+        [SerializeField] private RectTransform rectTransform;
+
+        public RectTransform RectTransform => rectTransform;
         public SkillsViewController SkillsViewController { get; set; }
         public Skill Skill { get; private set; }
         
-
         public void OnPointerDown(PointerEventData eventData)
         {
-            SkillsViewController.Press(this, eventData.position);
+            SkillsViewController.StartDrag(this, eventData.position);
         }
 
         public void OnPointerUp(PointerEventData eventData)

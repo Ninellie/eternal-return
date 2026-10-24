@@ -17,12 +17,12 @@ namespace EternalReturn.Skills
         private readonly SkillSocketView _skillSocketViewPrefab;
         private readonly SkillsController _skillsController;
         private readonly List<SkillSocketView> _skillSocketViews;
+        private readonly SkillSocketOverlapHelper _overlapHelper;
         
         private SkillView _pressedSkillView;
         private Vector2 _pressPosition;
         private SkillView _draggingSkillView;
         private bool _isDragging;
-        private readonly Vector3[] _worldCorners = new Vector3[4];
         
         private SkillSocketView _currentEmptyOverlappedSocketView;
         
@@ -38,6 +38,7 @@ namespace EternalReturn.Skills
             _skillsController = skillsController;
             _draggingSkillContainer = draggingSkillContainer;
             _skillSocketViews = new List<SkillSocketView>();
+            _overlapHelper = new SkillSocketOverlapHelper(_skillSocketViews);
         }
 
         public void Start()
@@ -59,6 +60,23 @@ namespace EternalReturn.Skills
             }
         }
 
+        public void StartDrag(SkillView skillView, Vector2 pressPosition)
+        {
+            _pressedSkillView = skillView;
+            _pressPosition = pressPosition;
+        }
+
+        private void TryStartDrag(Vector2 pointerPosition)
+        {
+            if (_pressedSkillView == null || _isDragging) return;
+            if (Vector2.Distance(pointerPosition, _pressPosition) < DragThresholdPixels) return;
+            _draggingSkillView = _pressedSkillView;
+            _isDragging = true;
+            
+            _draggingSkillContainer.transform.position = _pressedSkillView.transform.position;
+            _pressedSkillView.transform.SetParent(_draggingSkillContainer);
+        }
+
         public void Tick()
         {
             if (_pressedSkillView == null && !_isDragging) return;
@@ -70,7 +88,9 @@ namespace EternalReturn.Skills
 
             _draggingSkillContainer.transform.position = new Vector3(pointerPosition.x, pointerPosition.y);
 
-            var isOverlapping = TryGetClosestOverlappedSocket(out var socketView); 
+            var draggingRectTransform = _draggingSkillView.RectTransform;
+            
+            var isOverlapping = _overlapHelper.TryGetClosestOverlappedSocket(draggingRectTransform, out var socketView); 
             
             if (!isOverlapping)
             {
@@ -98,35 +118,6 @@ namespace EternalReturn.Skills
                     
                 skillSocketView.SetNormal();
             }
-        }
-
-        private bool TryGetClosestOverlappedSocket(out SkillSocketView socketView)
-        {
-            var draggingRect = GetWorldRect((RectTransform)_draggingSkillView.transform);
-            socketView = null;
-            var closestDistance = float.MaxValue;
-
-            foreach (var skillSocketView in _skillSocketViews)
-            {
-                var socketRect = GetWorldRect((RectTransform)skillSocketView.transform);
-                if (!draggingRect.Overlaps(socketRect)) continue;
-
-                var distance = Vector2.Distance(draggingRect.center, socketRect.center);
-                if (distance >= closestDistance) continue;
-
-                closestDistance = distance;
-                socketView = skillSocketView;
-            }
-
-            return socketView != null;
-        }
-
-        private Rect GetWorldRect(RectTransform rectTransform)
-        {
-            rectTransform.GetWorldCorners(_worldCorners);
-            var bottomLeft = _worldCorners[0];
-            var topRight = _worldCorners[2];
-            return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         }
 
         public void Hover(SkillView skillView)
@@ -165,12 +156,6 @@ namespace EternalReturn.Skills
                 if (!skillSocketView.SkillSocket.IsFilled) continue;
                 skillSocketView.SkillView.SetNormal();
             }
-        }
-
-        public void Press(SkillView skillView, Vector2 pressPosition)
-        {
-            _pressedSkillView = skillView;
-            _pressPosition = pressPosition;
         }
 
         public void EndDrag()
@@ -222,17 +207,6 @@ namespace EternalReturn.Skills
             _currentEmptyOverlappedSocketView = null;
             _isDragging = false;
             _draggingSkillView = null;
-        }
-
-        private void TryStartDrag(Vector2 pointerPosition)
-        {
-            if (_pressedSkillView == null || _isDragging) return;
-            if (Vector2.Distance(pointerPosition, _pressPosition) < DragThresholdPixels) return;
-            _draggingSkillView = _pressedSkillView;
-            _isDragging = true;
-            
-            _draggingSkillContainer.transform.position = _pressedSkillView.transform.position;
-            _pressedSkillView.transform.SetParent(_draggingSkillContainer);
         }
     }
 }

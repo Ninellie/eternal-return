@@ -469,3 +469,4 @@ MonoBehaviour:
   tier: {fileID: 1082611483744583702}
   background: {fileID: 2159745064100945905}
   _buttonStyles: {fileID: 11400000, guid: ad8ad07a4a3fa444f916b796696644d9, type: 2}
+  rectTransform: {fileID: 7094876749726917343}
