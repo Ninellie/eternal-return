@@ -49,8 +49,8 @@ namespace EternalReturn.Skills
             SkillSockets[0].SetSkill(new Skill("C#", 1, SkillSockets[0]));
             SkillSockets[1].SetSkill(new Skill("C++", 1, SkillSockets[1]));
             SkillSockets[2].SetSkill(new Skill("ASM", 1, SkillSockets[2]));
-            SkillSockets[3].SetSkill(new Skill("Py", 1, SkillSockets[3]));
-            SkillSockets[4].SetSkill(new Skill("php", 1, SkillSockets[4]));
+            // SkillSockets[3].SetSkill(new Skill("Py", 1, SkillSockets[3]));
+            // SkillSockets[4].SetSkill(new Skill("php", 1, SkillSockets[4]));
         }
     }
 }
