@@ -1,5 +1,4 @@
-﻿using System;
-using EternalReturn.ViewStyles;
+﻿using EternalReturn.ViewStyles;
 using TMPro;
 using UnityEngine;
 
@@ -35,6 +34,16 @@ namespace EternalReturn.Skills
         {
             if (isLocked) return  (buttonStyle.Disabled.normalColor,  buttonStyle.Disabled.pressedColor);
             return  (buttonStyle.Main.normalColor,  buttonStyle.Main.pressedColor);
+        }
+
+        public void SetHighlighted()
+        {
+            background.color = buttonStyle.Main.highlightedColor;
+        }
+        
+        public void SetNormal()
+        {
+            background.color = buttonStyle.Main.pressedColor;
         }
     }
 }
