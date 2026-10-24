@@ -12,13 +12,13 @@ namespace EternalReturn.Skills
         [SerializeField] private ButtonStyles buttonStyle;
         [SerializeField] private TMP_Text lockText;
         
+        public SkillSocket SkillSocket { get; private set; }
         public SkillView SkillView { get; set; }
         
-        private SkillSocket _skillSocket;
         
         public void SetSocket(SkillSocket socket)
         {
-            _skillSocket = socket;
+            SkillSocket = socket;
             
             var style = GetSocketStyle(socket.IsLocked);
 
@@ -28,7 +28,7 @@ namespace EternalReturn.Skills
             background.color = style.backgroundColor;
             
             lockText.color = buttonStyle.Active.normalColor;
-            lockText.text = !_skillSocket.IsLocked ? "" : "Lock";
+            lockText.text = !SkillSocket.IsLocked ? "" : "Lock";
         }
         
         private (Color outlineColor, Color backgroundColor) GetSocketStyle(bool isLocked)

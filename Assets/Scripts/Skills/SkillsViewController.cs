@@ -21,7 +21,7 @@ namespace EternalReturn.Skills
         private Vector2 _pressPosition;
         private SkillView _draggingSkillView;
         private bool _isDragging;
-
+        
         public SkillsViewController([Key("skills-panel")] Transform skillsPanel,
             SkillView skillViewPrefab,
             SkillSocketView skillSocketViewPrefab,
@@ -44,7 +44,7 @@ namespace EternalReturn.Skills
                 _skillSocketViews.Add(skillSocketView);
                 
                 skillSocketView.SetSocket(skillSocket);
-
+                
                 if (!skillSocket.IsFilled) continue;
                 
                 var skillView = Object.Instantiate(_skillViewPrefab, skillSocketView.gameObject.transform);
@@ -66,6 +66,44 @@ namespace EternalReturn.Skills
             if (!_isDragging) return;
 
             _draggingSkillContainer.transform.position = new Vector3(pointerPosition.x, pointerPosition.y);
+        }
+
+        public void Hover(SkillView skillView)
+        {
+            var discipline = skillView.Skill.Discipline;
+            var tier = skillView.Skill.Tier;
+            
+            foreach (var skillSocketView in _skillSocketViews)
+            {
+                if (!skillSocketView.SkillSocket.IsFilled) continue;
+                
+                var skill = skillSocketView.SkillView.Skill;
+
+                var isSameDiscipline = string.Equals(discipline, skill.Discipline);
+
+                if (!isSameDiscipline)
+                {
+                    skillSocketView.SkillView.SetDisabled();
+                    continue;
+                }
+
+                if (tier.Equals(skill.Tier))
+                {
+                    skillSocketView.SkillView.SetHighlighted();
+                    continue;
+                }
+                
+                skillSocketView.SkillView.SetNormal();
+            }
+        }
+
+        public void EndHover()
+        {
+            foreach (var skillSocketView in _skillSocketViews)
+            {
+                if (!skillSocketView.SkillSocket.IsFilled) continue;
+                skillSocketView.SkillView.SetNormal();
+            }
         }
 
         public void Press(SkillView skillView, Vector2 pressPosition)

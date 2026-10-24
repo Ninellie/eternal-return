@@ -20,7 +20,7 @@ namespace EternalReturn.Skills
 
         public bool CanMerge(Skill a, Skill b)
         {
-            if (!a.Disciple.Equals(b.Disciple)) return false;
+            if (!a.Discipline.Equals(b.Discipline)) return false;
             return a.Tier == b.Tier;
         }
 

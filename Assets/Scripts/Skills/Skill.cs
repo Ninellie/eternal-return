@@ -3,12 +3,12 @@
     public class Skill
     {
         public SkillSocket SkillSocket { get; set; }
-        public string Disciple { get; set; }
+        public string Discipline { get; set; }
         public int Tier { get; set; }
 
-        public Skill(string disciple, int tier, SkillSocket skillSocket)
+        public Skill(string discipline, int tier, SkillSocket skillSocket)
         {
-            Disciple = disciple;
+            Discipline = discipline;
             Tier = tier;
             SkillSocket = skillSocket;
         }

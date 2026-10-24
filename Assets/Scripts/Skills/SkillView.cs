@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace EternalReturn.Skills
 {
-    public class SkillView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class SkillView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private TMP_Text disciple;
         [SerializeField] private TMP_Text tier;
@@ -28,6 +28,16 @@ namespace EternalReturn.Skills
             SkillsViewController.Release();
         }
 
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            SkillsViewController.Hover(this);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            SkillsViewController.EndHover();
+        }
+
         public void SetSkill(Skill skill)
         {
             background.color = _buttonStyles.Active.normalColor;
@@ -36,7 +46,7 @@ namespace EternalReturn.Skills
             tier.color = _buttonStyles.Main.normalColor;
             
             Skill = skill;
-            disciple.text = skill.Disciple;
+            disciple.text = skill.Discipline;
             tier.text = skill.Tier.ToRoman();
         }
 
@@ -44,10 +54,20 @@ namespace EternalReturn.Skills
         {
             Socket = skillSocketView;
         }
+
+        public void SetNormal()
+        {
+            background.color = _buttonStyles.Active.normalColor;
+        }
         
         public void SetHighlighted()
         {
-            // outline.
+            background.color = _buttonStyles.Active.highlightedColor;
+        }
+        
+        public void SetDisabled()
+        {
+            background.color = _buttonStyles.Active.disabledColor;
         }
     }
 }
