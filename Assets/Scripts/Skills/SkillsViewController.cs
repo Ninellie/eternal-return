@@ -8,28 +8,31 @@ namespace EternalReturn.Skills
 {
     public class SkillsViewController : ITickable, IStartable
     {
-        private const float DragThresholdPixels = 24f;
-
-        private SkillView _pressedSkillView;
-        private Vector2 _pressPosition;
-        private SkillView _draggingSkillView;
-        private bool _isDragging;
+        private const float DragThresholdPixels = 28f;
         
         private readonly Transform _skillsPanel;
+        private readonly Transform _draggingSkillContainer;
         private readonly SkillView _skillViewPrefab;
         private readonly SkillSocketView _skillSocketViewPrefab;
         private readonly SkillsController _skillsController;
         private readonly List<SkillSocketView> _skillSocketViews;
+        
+        private SkillView _pressedSkillView;
+        private Vector2 _pressPosition;
+        private SkillView _draggingSkillView;
+        private bool _isDragging;
 
         public SkillsViewController([Key("skills-panel")] Transform skillsPanel,
             SkillView skillViewPrefab,
             SkillSocketView skillSocketViewPrefab,
-            SkillsController skillsController)
+            SkillsController skillsController,
+            [Key("skill-container")] Transform draggingSkillContainer)
         {
             _skillsPanel = skillsPanel;
             _skillViewPrefab = skillViewPrefab;
             _skillSocketViewPrefab = skillSocketViewPrefab;
             _skillsController = skillsController;
+            _draggingSkillContainer = draggingSkillContainer;
             _skillSocketViews = new List<SkillSocketView>();
         }
 
@@ -46,6 +49,7 @@ namespace EternalReturn.Skills
                 
                 var skillView = Object.Instantiate(_skillViewPrefab, skillSocketView.gameObject.transform);
                 skillView.SetSkill(skillSocket.Skill);
+                skillView.SetSkillSocketView(skillSocketView);
                 skillView.SkillsViewController = this;
                     
                 skillSocketView.SkillView = skillView;
@@ -61,7 +65,7 @@ namespace EternalReturn.Skills
 
             if (!_isDragging) return;
 
-            _draggingSkillView.transform.position = new Vector3(pointerPosition.x, pointerPosition.y);
+            _draggingSkillContainer.transform.position = new Vector3(pointerPosition.x, pointerPosition.y);
         }
 
         public void Press(SkillView skillView, Vector2 pressPosition)
@@ -88,10 +92,16 @@ namespace EternalReturn.Skills
         {
             _draggingSkillView = skillView;
             _isDragging = true;
+            
+            _draggingSkillContainer.transform.position = skillView.transform.position;
+            skillView.transform.SetParent(_draggingSkillContainer);
         }
 
         private void StopDrag()
         {
+            _draggingSkillView.transform.SetParent(_draggingSkillView.Socket.transform);
+            _draggingSkillView.transform.position = _draggingSkillView.Socket.transform.position;
+            
             _isDragging = false;
             _draggingSkillView = null;
         }

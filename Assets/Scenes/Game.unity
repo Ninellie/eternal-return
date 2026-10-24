@@ -119,6 +119,41 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &261405843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 261405844}
+  m_Layer: 5
+  m_Name: Dragging Skill Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &261405844
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261405843}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1672485329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &469101068
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +491,7 @@ MonoBehaviour:
   learningGraphic: {fileID: 2115561253}
   learningProcessSettings: {fileID: 11400000, guid: 0b9d4e7a2c5f4813a6e0d3b8f1c75a46, type: 2}
   skillsPanel: {fileID: 801522688}
+  draggingSkillContainer: {fileID: 261405844}
   skillSocketViewPrefab: {fileID: 4201728661650565128, guid: 0f3ad26a9d369a74ba33d19c74479eb2, type: 3}
   skillViewPrefab: {fileID: 6444151111713806563, guid: 6ea433549a2b1b84fbb85060aafd915a, type: 3}
 --- !u!1 &519420028
@@ -1974,6 +2010,7 @@ RectTransform:
   - {fileID: 1291605978}
   - {fileID: 2115561251}
   - {fileID: 801522688}
+  - {fileID: 261405844}
   m_Father: {fileID: 789544524}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

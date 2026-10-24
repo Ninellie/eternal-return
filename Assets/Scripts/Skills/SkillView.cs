@@ -16,6 +16,7 @@ namespace EternalReturn.Skills
         
         public SkillsViewController SkillsViewController { get; set; }
         public Skill Skill { get; private set; }
+        public SkillSocketView Socket { get; private set; }
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -37,6 +38,11 @@ namespace EternalReturn.Skills
             Skill = skill;
             disciple.text = skill.Disciple;
             tier.text = skill.Tier.ToRoman();
+        }
+
+        public void SetSkillSocketView(SkillSocketView skillSocketView)
+        {
+            Socket = skillSocketView;
         }
         
         public void SetHighlighted()

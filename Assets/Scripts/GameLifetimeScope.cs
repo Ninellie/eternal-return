@@ -30,6 +30,7 @@ namespace EternalReturn
         [SerializeField] private LearningProcessSettings learningProcessSettings;
         
         [SerializeField] private Transform skillsPanel;
+        [SerializeField] private Transform draggingSkillContainer;
         [SerializeField] private SkillSocketView skillSocketViewPrefab;
         [SerializeField] private SkillView skillViewPrefab;
 
@@ -69,6 +70,7 @@ namespace EternalReturn
             builder.RegisterEntryPoint<SkillsController>().AsSelf();
             builder.RegisterEntryPoint<SkillsViewController>();
             builder.RegisterInstance(skillsPanel).Keyed("skills-panel");
+            builder.RegisterInstance(draggingSkillContainer).Keyed("skill-container");
             builder.RegisterInstance(skillSocketViewPrefab);
             builder.RegisterInstance(skillViewPrefab);
         }
