@@ -25,7 +25,7 @@ namespace EternalReturn.Skills
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            SkillsViewController.Release();
+            SkillsViewController.EndDrag();
         }
 
         public void OnPointerEnter(PointerEventData eventData)

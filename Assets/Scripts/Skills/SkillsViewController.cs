@@ -70,19 +70,23 @@ namespace EternalReturn.Skills
 
             _draggingSkillContainer.transform.position = new Vector3(pointerPosition.x, pointerPosition.y);
 
-            if (!TryGetClosestOverlappedSocket(out var socketView))
+            var isOverlapping = TryGetClosestOverlappedSocket(out var socketView); 
+            
+            if (!isOverlapping)
             {
-                if (_currentEmptyOverlappedSocketView != null)
-                {
-                    _currentEmptyOverlappedSocketView.SetNormal();
-                }
-
+                _currentEmptyOverlappedSocketView?.SetNormal();
                 _currentEmptyOverlappedSocketView = null;
-                
                 return;
             }
-
-            if (socketView.SkillSocket.IsLocked) return;
+            
+            var isLocked = socketView.SkillSocket.IsLocked;
+            
+            if (isLocked)
+            {
+                _currentEmptyOverlappedSocketView?.SetNormal();
+                _currentEmptyOverlappedSocketView = null;
+                return;
+            }
             
             socketView.SetHighlighted();
             _currentEmptyOverlappedSocketView = socketView;
@@ -169,47 +173,44 @@ namespace EternalReturn.Skills
             _pressPosition = pressPosition;
         }
 
-        public void Release()
+        public void EndDrag()
         {
             _pressedSkillView = null;
-            EndDrag();
-        }
 
-        private void TryStartDrag(Vector2 pointerPosition)
-        {
-            if (_pressedSkillView == null || _isDragging) return;
-            if (Vector2.Distance(pointerPosition, _pressPosition) < DragThresholdPixels) return;
-
-            StartDrag(_pressedSkillView);
-        }
-
-        private void StartDrag(SkillView skillView)
-        {
-            _draggingSkillView = skillView;
-            _isDragging = true;
-            
-            _draggingSkillContainer.transform.position = skillView.transform.position;
-            skillView.transform.SetParent(_draggingSkillContainer);
-        }
-
-        private void EndDrag()
-        {
+            if (!_isDragging) return; 
             if (_currentEmptyOverlappedSocketView != null)
             {
                 _currentEmptyOverlappedSocketView.SetNormal();
                 
-                var socket = _currentEmptyOverlappedSocketView.SkillSocket;
-                var skill = _draggingSkillView.Skill;
+                var targetSkill = _draggingSkillView.Skill;
+                var targetSocket = _currentEmptyOverlappedSocketView.SkillSocket;
 
-                if (!socket.IsFilled)
+                var isFilled = targetSocket.IsFilled; 
+                
+                // Свап
+                _skillsController.FillSocketWithSkill(targetSkill, targetSocket);
+                
+                // Найти вью сокета где до этого был скилл
+                var otherSocketView = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
+                
+                if (!isFilled)
                 {
-                    _skillsController.FillSocketWithSkill(skill, socket);
-                    var socketOfDraggingSkill = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
-                    
-                    socketOfDraggingSkill.EmptySkillView();
-                    
-                    _currentEmptyOverlappedSocketView.SetSkillView(_draggingSkillView);
+                    otherSocketView.EmptySkillView();
                 }
+                else
+                {
+                    // Найти другой скилл
+                    var otherSkillView = _currentEmptyOverlappedSocketView.SkillView;
+                    
+                    // Установить в прошлый сокет другой скилл
+                    otherSocketView.SetSkillView(otherSkillView);
+                    
+                    otherSkillView.transform.SetParent(otherSocketView.transform);
+                    otherSkillView.transform.position = otherSocketView.transform.position;
+                }
+                
+                // Установить в таргетный сокет новый скилл
+                _currentEmptyOverlappedSocketView.SetSkillView(_draggingSkillView);
             }
 
             var socketView = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
@@ -221,6 +222,17 @@ namespace EternalReturn.Skills
             _currentEmptyOverlappedSocketView = null;
             _isDragging = false;
             _draggingSkillView = null;
+        }
+
+        private void TryStartDrag(Vector2 pointerPosition)
+        {
+            if (_pressedSkillView == null || _isDragging) return;
+            if (Vector2.Distance(pointerPosition, _pressPosition) < DragThresholdPixels) return;
+            _draggingSkillView = _pressedSkillView;
+            _isDragging = true;
+            
+            _draggingSkillContainer.transform.position = _pressedSkillView.transform.position;
+            _pressedSkillView.transform.SetParent(_draggingSkillContainer);
         }
     }
 }
