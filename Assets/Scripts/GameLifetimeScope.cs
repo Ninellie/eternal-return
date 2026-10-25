@@ -27,6 +27,7 @@ namespace EternalReturn
 
         [SerializeField] private Button startLearningButton;
         [SerializeField] private LearningGraphic learningGraphic;
+        [SerializeField] private RectTransform learningDurationBar;
         [SerializeField] private LearningProcessSettings learningProcessSettings;
         
         [SerializeField] private Transform skillsPanel;
@@ -64,6 +65,7 @@ namespace EternalReturn
             builder.RegisterInstance(startLearningButton).Keyed("start-learning");
             builder.RegisterEntryPoint<StartLearningButtonViewController>();
             builder.RegisterInstance(learningGraphic);
+            builder.RegisterInstance(learningDurationBar).Keyed("learning-duration");
             builder.RegisterEntryPoint<LearningViewController>();
             
             // Skills
