@@ -22,6 +22,7 @@ namespace EternalReturn.Skills
         
         public bool CanMerge(Skill a, Skill b)
         {
+            if (ReferenceEquals(a, b)) return false;
             if (!a.Discipline.Equals(b.Discipline)) return false;
             return a.Tier == b.Tier;
         }
@@ -64,10 +65,9 @@ namespace EternalReturn.Skills
             };
             
             SkillSockets[0].SetSkill(new Skill("C#", 1));
-            SkillSockets[1].SetSkill(new Skill("C++", 1));
-            SkillSockets[2].SetSkill(new Skill("ASM", 1));
-            // SkillSockets[3].SetSkill(new Skill("Py", 1, SkillSockets[3]));
-            // SkillSockets[4].SetSkill(new Skill("php", 1, SkillSockets[4]));
+            SkillSockets[1].SetSkill(new Skill("C#", 1));
+            SkillSockets[2].SetSkill(new Skill("C#", 1));
+            SkillSockets[3].SetSkill(new Skill("C#", 1));
         }
     }
 }

@@ -167,13 +167,29 @@ namespace EternalReturn.Skills
             {
                 _currentEmptyOverlappedSocketView.SetNormal();
                 
-                var targetSkill = _draggingSkillView.Skill;
+                var draggedSkill = _draggingSkillView.Skill;
                 var targetSocket = _currentEmptyOverlappedSocketView.SkillSocket;
 
-                var isFilled = targetSocket.IsFilled; 
-                
-                // Свап
-                _skillsController.FillSocketWithSkill(targetSkill, targetSocket);
+                if (targetSocket.IsFilled && _skillsController.CanMerge(targetSocket.Skill, draggedSkill))
+                {
+                    var sourceSocketView = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
+                    var survivorView = _currentEmptyOverlappedSocketView.SkillView;
+
+                    _skillsController.Merge(targetSocket.Skill, draggedSkill);
+
+                    sourceSocketView.EmptySkillView();
+                    Object.Destroy(_draggingSkillView.gameObject);
+                    survivorView.SetSkill(targetSocket.Skill);
+
+                    _currentEmptyOverlappedSocketView = null;
+                    _isDragging = false;
+                    _draggingSkillView = null;
+                    return;
+                }
+
+                var isFilled = targetSocket.IsFilled;
+
+                _skillsController.FillSocketWithSkill(draggedSkill, targetSocket);
                 
                 // Найти вью сокета где до этого был скилл
                 var otherSocketView = _skillSocketViews.First(x => x.SkillView == _draggingSkillView);
