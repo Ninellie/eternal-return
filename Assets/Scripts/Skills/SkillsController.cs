@@ -1,11 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using VContainer.Unity;
 
 namespace EternalReturn.Skills
 {
     public class SkillsController : IInitializable 
     {
+        public event Action OnSocketsChanged;
+        public event Action<SkillSocket> OnSkillPlaced;
+
         public SkillSocket[] SkillSockets { get; private set; }
+
+        public bool HasEmptySocket => SkillSockets.Any(socket => !socket.IsLocked && !socket.IsFilled);
 
         public SkillsController()
         {
@@ -17,6 +23,7 @@ namespace EternalReturn.Skills
             a.Tier++;
             var socket = SkillSockets.First(x=>x.Skill == b);
             socket.Empty();
+            OnSocketsChanged?.Invoke();
             return a;
         }
         
@@ -46,6 +53,17 @@ namespace EternalReturn.Skills
 
             source?.Empty();
             socket.SetSkill(skill);
+        }
+
+        public bool TryPlaceInNearestSocket(Skill skill)
+        {
+            var socket = SkillSockets.FirstOrDefault(candidate => !candidate.IsLocked && !candidate.IsFilled);
+            if (socket == null) return false;
+
+            socket.SetSkill(skill);
+            OnSkillPlaced?.Invoke(socket);
+            OnSocketsChanged?.Invoke();
+            return true;
         }
 
         public void Initialize()

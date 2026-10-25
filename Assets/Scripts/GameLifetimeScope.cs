@@ -64,6 +64,7 @@ namespace EternalReturn
             builder.RegisterEntryPoint<LearningController>().AsSelf();
             builder.RegisterInstance(startLearningButton).Keyed("start-learning");
             builder.RegisterEntryPoint<StartLearningButtonViewController>();
+            builder.RegisterEntryPoint<LearningSkillChoiceViewController>();
             builder.RegisterInstance(learningGraphic);
             builder.RegisterInstance(learningDurationBar).Keyed("learning-duration");
             builder.RegisterEntryPoint<LearningViewController>();

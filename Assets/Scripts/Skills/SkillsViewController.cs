@@ -43,6 +43,8 @@ namespace EternalReturn.Skills
 
         public void Start()
         {
+            _skillsController.OnSkillPlaced += ShowPlacedSkill;
+
             foreach (var skillSocket in _skillsController.SkillSockets)
             {
                 var skillSocketView = Object.Instantiate(_skillSocketViewPrefab, _skillsPanel);
@@ -51,13 +53,23 @@ namespace EternalReturn.Skills
                 skillSocketView.SetSocket(skillSocket);
                 
                 if (!skillSocket.IsFilled) continue;
-                
-                var skillView = Object.Instantiate(_skillViewPrefab, skillSocketView.gameObject.transform);
-                skillView.SetSkill(skillSocket.Skill);
-                skillView.SkillsViewController = this;
-                
-                skillSocketView.SetSkillView(skillView);
+
+                AttachSkillView(skillSocketView, skillSocket.Skill);
             }
+        }
+
+        private void ShowPlacedSkill(SkillSocket socket)
+        {
+            var socketView = _skillSocketViews.First(view => view.SkillSocket == socket);
+            AttachSkillView(socketView, socket.Skill);
+        }
+
+        private void AttachSkillView(SkillSocketView socketView, Skill skill)
+        {
+            var skillView = Object.Instantiate(_skillViewPrefab, socketView.transform);
+            skillView.SetSkill(skill);
+            skillView.SkillsViewController = this;
+            socketView.SetSkillView(skillView);
         }
 
         public void StartDrag(SkillView skillView, Vector2 pressPosition)
