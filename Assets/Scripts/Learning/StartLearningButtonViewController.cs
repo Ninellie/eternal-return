@@ -23,11 +23,7 @@ namespace EternalReturn.Learning
 
         public void Start()
         {
-            _startLearningButton.onClick.AddListener(_learningController.OpenSkillChoice);
-
             _skillsController.OnSocketsChanged += UpdateButtonState;
-            _learningController.OnSkillChoiceOpened += UpdateButtonState;
-            _learningController.OnSkillChoiceClosed += UpdateButtonState;
             _learningController.OnLearningStarted += UpdateButtonState;
             _learningController.OnLearningFinished += UpdateButtonState;
 
@@ -37,7 +33,6 @@ namespace EternalReturn.Learning
         private void UpdateButtonState()
         {
             var isInteractable = _skillsController.HasEmptySocket
-                && !_learningController.IsChoosingSkill
                 && !_learningController.IsLearning;
             _startLearningButton.interactable = isInteractable;
         }

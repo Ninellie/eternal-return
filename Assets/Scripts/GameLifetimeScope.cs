@@ -31,9 +31,12 @@ namespace EternalReturn
         [SerializeField] private LearningProcessSettings learningProcessSettings;
         
         [SerializeField] private Transform skillsPanel;
+        [SerializeField] private Transform skillsChoicePanel;
         [SerializeField] private Transform draggingSkillContainer;
         [SerializeField] private SkillSocketView skillSocketViewPrefab;
         [SerializeField] private SkillView skillViewPrefab;
+        [SerializeField] private SkillCardView skillCardViewPrefab;
+        [SerializeField] private SkillsConfig skillsConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -60,14 +63,22 @@ namespace EternalReturn
             builder.RegisterInstance(topicSlotsRoot).Keyed("topics-root");
             builder.RegisterInstance(topicViewPrefab);
 
-            builder.RegisterInstance(learningProcessSettings);
+            // Learning
             builder.RegisterEntryPoint<LearningController>().AsSelf();
-            builder.RegisterInstance(startLearningButton).Keyed("start-learning");
-            builder.RegisterEntryPoint<StartLearningButtonViewController>();
-            builder.RegisterEntryPoint<LearningSkillChoiceViewController>();
+            builder.RegisterEntryPoint<LearningViewController>();
             builder.RegisterInstance(learningGraphic);
             builder.RegisterInstance(learningDurationBar).Keyed("learning-duration");
-            builder.RegisterEntryPoint<LearningViewController>();
+            builder.RegisterInstance(learningProcessSettings);
+            
+            // Learning start
+            builder.RegisterEntryPoint<StartLearningButtonViewController>();
+            builder.RegisterInstance(startLearningButton).Keyed("start-learning");
+
+            // Choosing skills
+            builder.RegisterEntryPoint<SkillChoiceViewController>();
+            builder.RegisterInstance(skillCardViewPrefab);
+            builder.RegisterInstance(skillsChoicePanel);
+            builder.RegisterInstance(skillsConfig);
             
             // Skills
             builder.RegisterEntryPoint<SkillsController>().AsSelf();

@@ -4,26 +4,18 @@ using Random = UnityEngine.Random;
 
 namespace EternalReturn.Learning
 {
-    public static class SkillOfferRoller
+    [CreateAssetMenu(menuName = "Eternal Return/Skills Config")]
+    public class SkillsConfig : ScriptableObject
     {
-        public const int OfferCount = 3;
+        [SerializeField] private SkillConfig[] skills;
+        [SerializeField] private int offerCount;
 
-        private static readonly string[] Disciplines =
+        public Skill[] Roll()
         {
-            "C#",
-            "Unity",
-            "SQL",
-            "Git",
-            "Linux",
-            "OOP",
-            "HTTP",
-            "CSS",
-        };
-
-        public static Skill[] Roll()
-        {
-            var count = Mathf.Min(OfferCount, Disciplines.Length);
-            var order = new int[Disciplines.Length];
+            var count = Mathf.Min(offerCount, skills.Length);
+            
+            var order = new int[skills.Length];
+            
             for (var i = 0; i < order.Length; i++)
             {
                 order[i] = i;
@@ -36,9 +28,10 @@ namespace EternalReturn.Learning
             }
 
             var offers = new Skill[count];
+            
             for (var i = 0; i < count; i++)
             {
-                offers[i] = new Skill(Disciplines[order[i]], 1);
+                offers[i] = new Skill(skills[order[i]].Discipline, 1);
             }
 
             return offers;
