@@ -11,6 +11,18 @@ namespace EternalReturn.GameTime
         public TimeOfDay NormalBedtime;
         public TimeOfDay LateBedtime;
         public float MinutesPerRealSecond;
+        public float FastModeTimeScaler;
+        public bool IsAccelerationEnabled;
+
+        public float GetMinutesPerRealSecond()
+        {
+            if (IsAccelerationEnabled)
+            {
+                return MinutesPerRealSecond * FastModeTimeScaler;
+            }
+
+            return MinutesPerRealSecond;
+        }
 
         [Serializable]
         public struct TimeOfDay

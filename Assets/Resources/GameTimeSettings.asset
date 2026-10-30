@@ -25,3 +25,5 @@ MonoBehaviour:
     Hours: 1
     Minutes: 0
   MinutesPerRealSecond: 2
+  FastModeTimeScaler: 200
+  IsAccelerationEnabled: 0

@@ -27,7 +27,7 @@ namespace EternalReturn.GameTime
         {
             if (!_isRunning) return;
             
-            var next = GameTime.AddMinutes(Time.fixedDeltaTime * _settings.MinutesPerRealSecond);
+            var next = GameTime.AddMinutes(Time.fixedDeltaTime * _settings.GetMinutesPerRealSecond());
             
             if (!_midnightWasReached)
             {
