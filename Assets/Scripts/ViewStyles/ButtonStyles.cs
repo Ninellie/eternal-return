@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace EternalReturn.ViewStyles
 {
-    [CreateAssetMenu(menuName = "Eternal Return/Button Styles")]
+    [CreateAssetMenu(menuName = "Eternal Return/Style/Button Styles")]
     public class ButtonStyles : ScriptableObject
     {
         [field: SerializeField]

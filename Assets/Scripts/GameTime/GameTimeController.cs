@@ -23,6 +23,11 @@ namespace EternalReturn.GameTime
             _settings = settings;
         }
 
+        public int GetDay()
+        {
+            return GameTime.Day;
+        }
+        
         public void FixedTick()
         {
             if (!_isRunning) return;

@@ -15,6 +15,7 @@ namespace EternalReturn
     {
         [SerializeField] private GameTimeSettings gameTimeSettings;
         [SerializeField] private TextMeshProUGUI clockIndicator;
+        [SerializeField] private TextMeshProUGUI dayIndicator;
         [SerializeField] private Button endDayButton;
         [SerializeField] private TextMeshProUGUI endDayButtonLabel;
         [SerializeField] private Button startDayButton;
@@ -44,6 +45,7 @@ namespace EternalReturn
             
             builder.RegisterInstance(gameTimeSettings);
             builder.RegisterInstance(clockIndicator).Keyed("clock");
+            builder.RegisterInstance(dayIndicator).Keyed("day");
             builder.RegisterInstance(endDayButton).Keyed("end-day");
             builder.RegisterInstance(endDayButtonLabel).Keyed("end-day");
             builder.RegisterInstance(startDayButton).Keyed("start-day");
