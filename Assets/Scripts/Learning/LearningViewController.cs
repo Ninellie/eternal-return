@@ -31,6 +31,7 @@ namespace EternalReturn.Learning
             _inputManager.OnClick += HitNodesAtPosition;
             _learningController.OnLearningStarted += OnLearningStarted;
             _learningController.OnLearningFinished += OnLearningFinished;
+            _learningController.OnLearningAborted += OnLearningAborted;
             _durationBar.gameObject.SetActive(false);
         }
 
@@ -49,6 +50,12 @@ namespace EternalReturn.Learning
         }
 
         private void OnLearningFinished()
+        {
+            _learningGraphic.Stop();
+            _durationBar.gameObject.SetActive(false);
+        }
+
+        private void OnLearningAborted()
         {
             _learningGraphic.Stop();
             _durationBar.gameObject.SetActive(false);

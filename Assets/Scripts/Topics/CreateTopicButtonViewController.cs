@@ -23,6 +23,7 @@ namespace EternalReturn.Topics
             _createTopicButton.onClick.AddListener(_forumController.CreateTopic);
 
             _forumController.OnTopicClosed += UpdateButtonState;
+            _forumController.OnTopicAborted += UpdateButtonState;
             _forumController.OnTopicOpened += UpdateButtonState;
         }
 

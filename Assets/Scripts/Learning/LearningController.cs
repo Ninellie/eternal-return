@@ -1,26 +1,38 @@
 using System;
+using EternalReturn.GameTime;
 using EternalReturn.Skills;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace EternalReturn.Learning
 {
-    public class LearningController : ITickable
+    public class LearningController : IStartable, ITickable
     {
         public event Action OnLearningStarted;
         public event Action OnLearningFinished;
+        public event Action OnLearningAborted;
         public bool IsLearning { get; private set; }
         public LearningProcess Process { get; private set; }
 
         private readonly NodeGenerator _nodeGenerator;
         private readonly SkillsController _skillsController;
+        private readonly DayCycleController _dayCycleController;
         
         private Skill _reward;
 
-        public LearningController(LearningProcessSettings settings, SkillsController skillsController)
+        public LearningController(
+            LearningProcessSettings settings,
+            SkillsController skillsController,
+            DayCycleController dayCycleController)
         {
             _nodeGenerator = new NodeGenerator(settings);
             _skillsController = skillsController;
+            _dayCycleController = dayCycleController;
+        }
+
+        public void Start()
+        {
+            _dayCycleController.OnDayEnded += Abort;
         }
 
         public void Tick()
@@ -50,6 +62,16 @@ namespace EternalReturn.Learning
             Process = _nodeGenerator.Generate();
             IsLearning = true;
             OnLearningStarted?.Invoke();
+        }
+
+        public void Abort()
+        {
+            if (!IsLearning) return;
+
+            _reward = null;
+            Process = null;
+            IsLearning = false;
+            OnLearningAborted?.Invoke();
         }
     }
 }

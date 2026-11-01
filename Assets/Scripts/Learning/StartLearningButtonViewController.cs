@@ -26,6 +26,7 @@ namespace EternalReturn.Learning
             _skillsController.OnSocketsChanged += UpdateButtonState;
             _learningController.OnLearningStarted += UpdateButtonState;
             _learningController.OnLearningFinished += UpdateButtonState;
+            _learningController.OnLearningAborted += UpdateButtonState;
 
             UpdateButtonState();
         }

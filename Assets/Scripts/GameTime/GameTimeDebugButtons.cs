@@ -1,10 +1,18 @@
-﻿using UnityEngine;
+﻿using EternalReturn.Learning;
+using EternalReturn.Topics;
+using UnityEngine;
 using VContainer;
 
 namespace EternalReturn.GameTime
 { 
     public class GameTimeDebugButtons : MonoBehaviour
     {
+        private const float ButtonX = 120f;
+        private const float ButtonY = 40f;
+        private const float ButtonWidth = 240f;
+        private const float ButtonHeight = 60f;
+        private const float ButtonStep = 70f;
+
         private enum FastTimeMode
         {
             ToBadTime,
@@ -13,29 +21,46 @@ namespace EternalReturn.GameTime
         
         [Inject] private readonly GameTimeController _gameTimeController;
         [Inject] private readonly GameTimeSettings _settings;
+        [Inject] private readonly ForumController _forumController;
+        [Inject] private readonly LearningController _learningController;
 
         private FastTimeMode _mode;
 
         private void OnGUI()
         {
-            if(GUI.Button(new Rect(120, 40,80,20), "Ускорить до времени спать"))
+            if (GUI.Button(ButtonRect(0), "Ускорить до времени спать"))
             {
                 _gameTimeController.OnBedtime += StopAccelerationToBadTime;
                 _mode = FastTimeMode.ToBadTime;
                 _settings.IsAccelerationEnabled = true;
             }
             
-            if(GUI.Button(new Rect(120, 80,80,20), "Ускорить до завершения дня"))
+            if (GUI.Button(ButtonRect(1), "Ускорить до завершения дня"))
             {
                 _gameTimeController.OnLateBedtime += StopAccelerationToLateBadTime;
                 _mode = FastTimeMode.ToLateBadTime;
                 _settings.IsAccelerationEnabled = true;
             }
             
-            if(GUI.Button(new Rect(120, 120,80,20), "Остановить ускорение"))
+            if (GUI.Button(ButtonRect(2), "Остановить ускорение"))
             {
                 StopAcceleration();
             }
+
+            if (GUI.Button(ButtonRect(3), "Abort тем"))
+            {
+                _forumController.Abort();
+            }
+
+            if (GUI.Button(ButtonRect(4), "Abort обучения"))
+            {
+                _learningController.Abort();
+            }
+        }
+
+        private static Rect ButtonRect(int index)
+        {
+            return new Rect(ButtonX, ButtonY + ButtonStep * index, ButtonWidth, ButtonHeight);
         }
 
         private void StopAcceleration()

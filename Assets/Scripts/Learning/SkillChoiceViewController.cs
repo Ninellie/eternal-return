@@ -45,6 +45,7 @@ namespace EternalReturn.Learning
             {
                 var card = Object.Instantiate(_skillViewPrefab, _viewRoot);
                 card.Init(this, skill);
+                _cards.Add(card);
             }
             
             _viewRoot.gameObject.SetActive(true);
@@ -64,6 +65,8 @@ namespace EternalReturn.Learning
             {
                 Object.Destroy(card.gameObject);
             }
+
+            _cards.Clear();
         }
     }
 }

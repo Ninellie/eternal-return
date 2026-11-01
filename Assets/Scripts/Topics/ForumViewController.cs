@@ -28,6 +28,7 @@ namespace EternalReturn.Topics
         {
             _forumController.OnTopicOpened += CreateTopic;
             _forumController.OnTopicClosed += CloseTopic;
+            _forumController.OnTopicAborted += AbortTopic;
             _forumController.OnTopicSelected += SelectTopic;
         }
 
@@ -43,6 +44,13 @@ namespace EternalReturn.Topics
         {
             _topicViewsByTopic.Remove(topic, out var topicView);
             
+            Object.Destroy(topicView.gameObject);
+        }
+
+        private void AbortTopic(Topic topic)
+        {
+            _topicViewsByTopic.Remove(topic, out var topicView);
+
             Object.Destroy(topicView.gameObject);
         }
 
