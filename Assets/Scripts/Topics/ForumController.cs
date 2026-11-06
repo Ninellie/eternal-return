@@ -13,6 +13,7 @@ namespace EternalReturn.Topics
         public event Action<Topic> OnTopicSelected;
         public event Action<Topic> OnTopicClosed;
         public event Action<Topic> OnTopicAborted;
+        public event Action OnMessageLost;
         
         public bool HasUnoccupiedSlot => _slots.Any(x => x.Status == SlotStatus.Unoccupied);
         public int SlotCount => _slots.Length;
@@ -93,7 +94,7 @@ namespace EternalReturn.Topics
             var duration = _messageGenerator.RollDuration();
             var messages = _messageGenerator.Generate(duration);
 
-            topicSlot.Topic = new Topic(topicSlot.Id, duration, messages);
+            topicSlot.Topic = new Topic(topicSlot.Id, duration, messages, this);
             topicSlot.Status = SlotStatus.Occupied;
             
             OnTopicOpened?.Invoke(topicSlot);
@@ -132,6 +133,11 @@ namespace EternalReturn.Topics
             }
 
             _selectedTopic = null;
+        }
+
+        public void MessageLost()
+        {
+            OnMessageLost?.Invoke();
         }
     }
 }

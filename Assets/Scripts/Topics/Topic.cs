@@ -17,14 +17,16 @@ namespace EternalReturn.Topics
         
         private readonly Queue<TopicMessage> _featureMessages;
         private readonly Queue<TopicMessage> _currentMessages;
+        private readonly ForumController _controller;
         private float _timeToNextMessage;
 
-        public Topic(int slotId, float baseDuration, Queue<TopicMessage> featureMessages)
+        public Topic(int slotId, float baseDuration, Queue<TopicMessage> featureMessages, ForumController controller)
         {
             SlotId = slotId;
             BaseDuration = baseDuration;
             Duration = baseDuration;
             _featureMessages = featureMessages;
+            _controller = controller;
             _currentMessages = new Queue<TopicMessage>();
             _timeToNextMessage = featureMessages.Peek().Interval;
         }
@@ -46,6 +48,7 @@ namespace EternalReturn.Topics
                 if (currentMessage.Duration > 0) continue;
                 _currentMessages.Dequeue();
                 OnMessageLost?.Invoke(currentMessage);
+                _controller.MessageLost();
             }
             
             // В очереди есть сообщения 
