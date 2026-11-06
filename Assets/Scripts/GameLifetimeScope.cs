@@ -1,7 +1,9 @@
 ﻿using EternalReturn.GameTime;
 using EternalReturn.Input;
 using EternalReturn.Learning;
+using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
+using EternalReturn.Stress;
 using EternalReturn.Topics;
 using TMPro;
 using UnityEngine;
@@ -38,6 +40,13 @@ namespace EternalReturn
         [SerializeField] private SkillView skillViewPrefab;
         [SerializeField] private SkillCardView skillCardViewPrefab;
         [SerializeField] private SkillsConfig skillsConfig;
+        
+        [Header("Stress")] 
+        [SerializeField] private RectTransform stressBar;
+        [SerializeField] private StressConfig stressConfig;
+        
+        [Header("Resources")] 
+        [SerializeField] private ResourceConfigs resourceConfigs;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -89,6 +98,16 @@ namespace EternalReturn
             builder.RegisterInstance(draggingSkillContainer).Keyed("skill-container");
             builder.RegisterInstance(skillSocketViewPrefab);
             builder.RegisterInstance(skillViewPrefab);
+            
+            // stress
+            builder.RegisterEntryPoint<StressGainController>();
+            builder.RegisterEntryPoint<StressBarViewController>();
+            builder.RegisterInstance(stressBar).Keyed("stress-bar");
+            builder.RegisterInstance(stressConfig);
+            
+            // resources
+            var resourceProvider = new ResourceProvider(resourceConfigs);
+            builder.RegisterInstance(resourceProvider);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace EternalReturn.Resources_Feature
 {
-    [CreateAssetMenu(menuName = "Eternal Return/Resource Configs")]
+    [CreateAssetMenu(menuName = "Eternal Return/resource-configs")]
     public class ResourceConfigs : ScriptableObject
     {
         public ResourceConfig Intel;

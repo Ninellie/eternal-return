@@ -6,24 +6,23 @@ namespace EternalReturn.Learning
 {
     public class LearningProcess
     {
-        public event Action<LearningNode> OnNewNode;
-        public event Action<LearningNode> OnNodeLost;
-        public event Action<LearningNode> OnNodeComplete;
-        
         public float Duration { get; set; }
         public float BaseDuration { get; }
         public float NodeRadius { get; }
         public List<LearningNode> CurrentNodes { get; }
 
         private readonly Queue<LearningNode> _featureNodes;
+        private readonly LearningController _controller;
+        
         private float _timeToNextNode;
 
-        public LearningProcess(float baseDuration, float nodeRadius, Queue<LearningNode> featureNodes)
+        public LearningProcess(float baseDuration, float nodeRadius, Queue<LearningNode> featureNodes, LearningController controller)
         {
             BaseDuration = baseDuration;
             Duration = baseDuration;
             NodeRadius = nodeRadius;
             _featureNodes = featureNodes;
+            _controller = controller;
             CurrentNodes = new List<LearningNode>();
             _timeToNextNode = featureNodes.Peek().Interval;
         }
@@ -39,7 +38,7 @@ namespace EternalReturn.Learning
                 node.Duration -= deltaTime;
                 if (node.Duration > 0) continue;
                 CurrentNodes.Remove(node);
-                OnNodeLost?.Invoke(node);
+                _controller.NodeLost();
             }
             
             // В очереди есть узлы
@@ -63,14 +62,14 @@ namespace EternalReturn.Learning
                 _timeToNextNode = nextMessage.Interval;
             }
                 
-            OnNewNode?.Invoke(newMessage);
+            // OnNewNode?.Invoke(newMessage);
         }
 
         public void CompleteNode(LearningNode node)
         {
             if (!CurrentNodes.Remove(node)) return;
 
-            OnNodeComplete?.Invoke(node);
+            // OnNodeComplete?.Invoke(node);
         }
     }
 }

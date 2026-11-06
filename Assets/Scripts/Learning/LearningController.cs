@@ -11,6 +11,10 @@ namespace EternalReturn.Learning
         public event Action OnLearningStarted;
         public event Action OnLearningFinished;
         public event Action OnLearningAborted;
+        public event Action<LearningNode> OnNewNode;
+        public event Action OnNodeLost;
+        public event Action<LearningNode> OnNodeComplete;
+        
         public bool IsLearning { get; private set; }
         public LearningProcess Process { get; private set; }
 
@@ -59,7 +63,7 @@ namespace EternalReturn.Learning
         public void StartLearning(Skill skill)
         {
             _reward = skill;
-            Process = _nodeGenerator.Generate();
+            Process = _nodeGenerator.Generate(this);
             IsLearning = true;
             OnLearningStarted?.Invoke();
         }
@@ -72,6 +76,11 @@ namespace EternalReturn.Learning
             Process = null;
             IsLearning = false;
             OnLearningAborted?.Invoke();
+        }
+
+        public void NodeLost()
+        {
+            OnNodeLost?.Invoke();
         }
     }
 }

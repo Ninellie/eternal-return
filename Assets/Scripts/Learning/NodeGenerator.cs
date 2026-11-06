@@ -14,11 +14,11 @@ namespace EternalReturn.Learning
             _settings = settings;
         }
 
-        public LearningProcess Generate()
+        public LearningProcess Generate(LearningController controller)
         {
             var preset = RollPreset();
             var nodes = GenerateNodes(preset.ProcessDuration, preset.NodesAmount, preset.NodeDuration);
-            return new LearningProcess(preset.ProcessDuration, preset.NodeRadius, nodes);
+            return new LearningProcess(preset.ProcessDuration, preset.NodeRadius, nodes, controller);
         }
 
         private LearningPreset RollPreset()
