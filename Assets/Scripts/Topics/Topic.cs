@@ -42,15 +42,18 @@ namespace EternalReturn.Topics
             if (Duration > 0) Duration -= deltaTime;
             
             // Текущие сообщения ждущие набора символов
-            foreach (var currentMessage in _currentMessages.ToList())
+
+            var currentMessage = _currentMessages.Peek();
+            
+            currentMessage.Duration -= deltaTime;
+            
+            if (currentMessage.Duration <= 0)
             {
-                currentMessage.Duration -= deltaTime;
-                if (currentMessage.Duration > 0) continue;
                 _currentMessages.Dequeue();
                 OnMessageLost?.Invoke(currentMessage);
                 _controller.MessageLost();
             }
-            
+
             // В очереди есть сообщения 
             var hasMessagesInQueue = _featureMessages.Count > 0;
             
