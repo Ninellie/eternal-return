@@ -40,11 +40,11 @@ MonoBehaviour:
     Name: 4
     BaseAmount: 0
     MaxAmount: 100
-    EmptyOnFill: 0
+    EmptyOnFill: 1
     IsIncreaseBlocked: 0
   Burnout:
     Name: 5
-    BaseAmount: 0
+    BaseAmount: 1
     MaxAmount: 3
     EmptyOnFill: 0
     IsIncreaseBlocked: 0

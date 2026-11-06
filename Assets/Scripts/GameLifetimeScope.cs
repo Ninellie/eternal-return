@@ -101,6 +101,7 @@ namespace EternalReturn
             
             // stress
             builder.RegisterEntryPoint<StressGainController>();
+            builder.RegisterEntryPoint<BurnoutGainController>();
             builder.RegisterEntryPoint<StressBarViewController>();
             builder.RegisterInstance(stressBar).Keyed("stress-bar");
             builder.RegisterInstance(stressConfig);

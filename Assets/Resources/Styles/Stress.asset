@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3f292d3a734d609c99d28d7e8e21e9, type: 3}
   m_Name: Stress
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.ViewStyles.ColorStyle
-  Color: {r: 0.6886792, g: 0.24363652, b: 0.7137255, a: 1}
+  Color: {r: 0.9294118, g: 0.41176474, b: 0.5372549, a: 1}
