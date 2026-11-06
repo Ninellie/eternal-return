@@ -43,15 +43,16 @@ namespace EternalReturn.Topics
             
             // Текущие сообщения ждущие набора символов
 
-            var currentMessage = _currentMessages.Peek();
-            
-            currentMessage.Duration -= deltaTime;
-            
-            if (currentMessage.Duration <= 0)
+            if (_currentMessages.TryPeek(out var message))
             {
-                _currentMessages.Dequeue();
-                OnMessageLost?.Invoke(currentMessage);
-                _controller.MessageLost();
+                message.Duration -= deltaTime;
+            
+                if (message.Duration <= 0)
+                {
+                    _currentMessages.Dequeue();
+                    OnMessageLost?.Invoke(message);
+                    _controller.MessageLost();
+                }   
             }
 
             // В очереди есть сообщения 
