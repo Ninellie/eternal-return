@@ -13,7 +13,7 @@ namespace EternalReturn.Topics
         public float BaseDuration { get; } // Базовое время ожидания ответа на сообщение.
         
         public KeyCode[] Keys { get; }
-        public int Pointer { get; private set; } // Указатель на текущий символ который игрок должен нажать.
+        private int Pointer { get; set; } // Указатель на текущий символ который игрок должен нажать.
         
         private KeyCode NextKey => Keys[Pointer];
         

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace EternalReturn.Topics
@@ -12,7 +11,7 @@ namespace EternalReturn.Topics
         public event Action<TopicMessage> OnMessageComplete;
         
         public int SlotId { get; }
-        public float Duration { get; set; }
+        public float Duration { get; private set; }
         public float BaseDuration { get; }
         
         private readonly Queue<TopicMessage> _featureMessages;
@@ -31,11 +30,6 @@ namespace EternalReturn.Topics
             _timeToNextMessage = featureMessages.Peek().Interval;
         }
 
-        public bool IsDead()
-        {
-            return _currentMessages.Count == 0 && Duration <= 0;
-        }
-        
         public void Tick(float deltaTime)
         {
             // Уменьшить длительность темы
@@ -77,6 +71,11 @@ namespace EternalReturn.Topics
             }
                 
             OnNewMessage?.Invoke(newMessage);
+        }
+
+        public bool IsDead()
+        {
+            return _currentMessages.Count == 0 && Duration <= 0;
         }
 
         public void TryPressKey(KeyCode key)
