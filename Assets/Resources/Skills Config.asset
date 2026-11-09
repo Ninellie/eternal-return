@@ -13,11 +13,44 @@ MonoBehaviour:
   m_Name: Skills Config
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Learning.SkillsConfig
   skills:
-  - Discipline: C++
-  - Discipline: Py
-  - Discipline: C#
-  - Discipline: SQL
   - Discipline: ASM
-  - Discipline: C
-  - Discipline: k8
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: Security
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: C++
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: C#
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: Py
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: SQL
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: Algorithms
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
+  - Discipline: Hardware
+    Description: 
+    BonusDescription: 
+    Icon: {fileID: 0}
+    Bonus: []
   offerCount: 3
