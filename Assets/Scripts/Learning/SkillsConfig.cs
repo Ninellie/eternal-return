@@ -1,3 +1,4 @@
+using System.Linq;
 using EternalReturn.Skills;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,9 +11,19 @@ namespace EternalReturn.Learning
         [SerializeField] private SkillConfig[] skills;
         [SerializeField] private int offerCount;
 
+        public Sprite GetIconByDiscipline(string discipline)
+        {
+            return skills.First(x => x.Discipline == discipline).Icon;
+        }
+        
         public Skill[] Roll()
         {
-            var count = Mathf.Min(offerCount, skills.Length);
+            return Roll(offerCount);
+        }
+        
+        public Skill[] Roll(int amount)
+        {
+            var count = Mathf.Min(amount, skills.Length);
             
             var order = new int[skills.Length];
             
@@ -31,7 +42,9 @@ namespace EternalReturn.Learning
             
             for (var i = 0; i < count; i++)
             {
-                offers[i] = new Skill(skills[order[i]].Discipline, 1);
+                var roll = skills[order[i]]; 
+                
+                offers[i] = new Skill(roll.Discipline, 1, roll.Description, roll.BonusDescription);
             }
 
             return offers;

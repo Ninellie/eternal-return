@@ -12,29 +12,29 @@ namespace EternalReturn.Learning
         private readonly LearningController _learningController;
         private readonly SkillCardView _skillViewPrefab;
         private readonly SkillsConfig _skillConfig;
-        private readonly Transform _viewRoot;
         private readonly List<SkillCardView> _cards;
         private readonly Button _startLearningButton;
+        private readonly SkillChoicePanel _skillChoicePanel;
 
         public SkillChoiceViewController(
             LearningController learningController,
             SkillCardView skillViewPrefab,
-            Transform viewRoot,
             SkillsConfig skillConfig,
-            [Key("start-learning")] Button startLearningButton)
+            [Key("start-learning")] Button startLearningButton,
+            SkillChoicePanel skillChoicePanel)
         {
             _learningController = learningController;
             _skillViewPrefab = skillViewPrefab;
-            _viewRoot = viewRoot;
             _cards = new List<SkillCardView>();
             _skillConfig = skillConfig;
             _startLearningButton = startLearningButton;
+            _skillChoicePanel = skillChoicePanel;
         }
 
         public void Start()
         {
             _startLearningButton.onClick.AddListener(Show);
-            _viewRoot.gameObject.SetActive(false);
+            _skillChoicePanel.gameObject.SetActive(false);
         }
 
         private void Show()
@@ -43,12 +43,26 @@ namespace EternalReturn.Learning
             
             foreach (var skill in offers)
             {
-                var card = Object.Instantiate(_skillViewPrefab, _viewRoot);
+                var card = Object.Instantiate(_skillViewPrefab, _skillChoicePanel.CardRoot);
                 card.Init(this, skill);
                 _cards.Add(card);
             }
             
-            _viewRoot.gameObject.SetActive(true);
+            _skillChoicePanel.gameObject.SetActive(true);
+        }
+
+        public void OnCardPointerEnter(Skill skill)
+        {
+            _skillChoicePanel.Discipline.text = skill.Discipline;
+            _skillChoicePanel.Description.text = skill.Description;
+            _skillChoicePanel.Bonus.text = skill.BonusDescription;
+        }
+        
+        public void OnCardPointerExit()
+        {
+            _skillChoicePanel.Discipline.text = string.Empty;
+            _skillChoicePanel.Description.text = string.Empty;
+            _skillChoicePanel.Bonus.text = string.Empty;
         }
 
         public void OnCardSelected(Skill skill)
@@ -59,7 +73,7 @@ namespace EternalReturn.Learning
 
         private void Hide()
         {
-            _viewRoot.gameObject.SetActive(false);
+            _skillChoicePanel.gameObject.SetActive(false);
             
             foreach (var card in _cards)
             {

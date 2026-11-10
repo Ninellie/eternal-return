@@ -6,6 +6,6 @@ namespace EternalReturn.Stats
     public class MaxRestrictionStatMod
     {
         public string Name;
-        public int Value;
+        public float Value;
     }
 }

@@ -1,4 +1,5 @@
-﻿using EternalReturn.ViewStyles;
+﻿using EternalReturn.Learning;
+using EternalReturn.ViewStyles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,11 +11,20 @@ namespace EternalReturn.Skills
     {
         [SerializeField] private TMP_Text disciple;
         [SerializeField] private TMP_Text tier;
+        [SerializeField] private Image icon;
+        [SerializeField] private SkillsConfig skillsConfig;
         [SerializeField] private MaskableGraphic background;
         
-        [SerializeField] private ButtonStyles buttonStyles;
         [SerializeField] private RectTransform rectTransform;
-
+        
+        [Header("Color styles")]
+        [SerializeField] private ColorStyle backgroundColor;
+        [SerializeField] private ColorStyle highlightedColor;
+        [SerializeField] private ColorStyle disabledColor;
+        [SerializeField] private ColorStyle iconColor;
+        [SerializeField] private ColorStyle tierColor;
+        
+        
         public RectTransform RectTransform => rectTransform;
         public SkillsViewController SkillsViewController { get; set; }
         public Skill Skill { get; private set; }
@@ -41,10 +51,12 @@ namespace EternalReturn.Skills
 
         public void SetSkill(Skill skill)
         {
-            background.color = buttonStyles.Active.normalColor;
+            icon.sprite = skillsConfig.GetIconByDiscipline(skill.Discipline);
+
+            background.color = backgroundColor.Color;
             
-            disciple.color = buttonStyles.Main.normalColor;
-            tier.color = buttonStyles.Main.normalColor;
+            icon.color = iconColor.Color;
+            tier.color = tierColor.Color;
             
             Skill = skill;
             disciple.text = skill.Discipline;
@@ -53,17 +65,17 @@ namespace EternalReturn.Skills
 
         public void SetNormal()
         {
-            background.color = buttonStyles.Active.normalColor;
+            background.color = backgroundColor.Color;
         }
         
         public void SetHighlighted()
         {
-            background.color = buttonStyles.Active.highlightedColor;
+            background.color = highlightedColor.Color;
         }
         
         public void SetDisabled()
         {
-            background.color = buttonStyles.Active.disabledColor;
+            background.color = disabledColor.Color;
         }
     }
 }

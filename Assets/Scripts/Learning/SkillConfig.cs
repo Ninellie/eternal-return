@@ -9,7 +9,7 @@ namespace EternalReturn.Learning
         public string Discipline;
         public string Description;
         public string BonusDescription;
-        public Texture2D Icon;
+        public Sprite Icon;
         
         public SkillBonus[] Bonus;
     }

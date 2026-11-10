@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using EternalReturn.Learning;
 using VContainer.Unity;
 
 namespace EternalReturn.Skills
@@ -13,9 +14,11 @@ namespace EternalReturn.Skills
 
         public bool HasEmptySocket => SkillSockets.Any(socket => !socket.IsLocked && !socket.IsFilled);
 
-        public SkillsController()
+        private SkillsConfig _skillsConfig;
+        
+        public SkillsController(SkillsConfig skillsConfig)
         {
-            
+            _skillsConfig = skillsConfig;
         }
         
         public Skill Merge(Skill a, Skill b)
@@ -81,11 +84,13 @@ namespace EternalReturn.Skills
                 new SkillSocket(true),
                 new SkillSocket(true),
             };
+
+            var skills = _skillsConfig.Roll(4);
             
-            SkillSockets[0].SetSkill(new Skill("C#", 1));
-            SkillSockets[1].SetSkill(new Skill("C#", 1));
-            SkillSockets[2].SetSkill(new Skill("C#", 1));
-            SkillSockets[3].SetSkill(new Skill("C#", 1));
+            SkillSockets[0].SetSkill(skills[0]);
+            SkillSockets[1].SetSkill(skills[1]);
+            SkillSockets[2].SetSkill(skills[2]);
+            SkillSockets[3].SetSkill(skills[3]);
         }
     }
 }

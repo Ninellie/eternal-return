@@ -6,8 +6,8 @@ namespace EternalReturn.Stats
     public class StatConfig
     {
         public string Name;
-        public int BaseValue;
-        public int MaxValue;
-        public int MinValue;
+        public float BaseValue;
+        public float MaxValue;
+        public float MinValue;
     }
 }

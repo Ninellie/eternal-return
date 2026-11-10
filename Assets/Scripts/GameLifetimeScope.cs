@@ -34,12 +34,12 @@ namespace EternalReturn
         [SerializeField] private LearningProcessSettings learningProcessSettings;
         
         [SerializeField] private Transform skillsPanel;
-        [SerializeField] private Transform skillsChoicePanel;
         [SerializeField] private Transform draggingSkillContainer;
         [SerializeField] private SkillSocketView skillSocketViewPrefab;
         [SerializeField] private SkillView skillViewPrefab;
         [SerializeField] private SkillCardView skillCardViewPrefab;
         [SerializeField] private SkillsConfig skillsConfig;
+        [SerializeField] private SkillChoicePanel skillChoicePanel;
         
         [Header("Stress")] 
         [SerializeField] private RectTransform stressBar;
@@ -80,6 +80,7 @@ namespace EternalReturn
             builder.RegisterInstance(learningGraphic);
             builder.RegisterInstance(learningDurationBar).Keyed("learning-duration");
             builder.RegisterInstance(learningProcessSettings);
+            builder.RegisterInstance(skillChoicePanel);
             
             // Learning start
             builder.RegisterEntryPoint<StartLearningButtonViewController>();
@@ -88,7 +89,6 @@ namespace EternalReturn
             // Choosing skills
             builder.RegisterEntryPoint<SkillChoiceViewController>();
             builder.RegisterInstance(skillCardViewPrefab);
-            builder.RegisterInstance(skillsChoicePanel);
             builder.RegisterInstance(skillsConfig);
             
             // Skills
