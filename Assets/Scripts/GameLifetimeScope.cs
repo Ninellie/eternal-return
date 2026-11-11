@@ -106,6 +106,9 @@ namespace EternalReturn
             builder.RegisterInstance(stressBar).Keyed("stress-bar");
             builder.RegisterInstance(stressConfig);
             
+            builder.RegisterEntryPoint<CollisionSystem>().AsSelf();
+            builder.RegisterEntryPoint<MovementSystem>().AsSelf();
+            
             // resources
             var resourceProvider = new ResourceProvider(resourceConfigs);
             builder.RegisterInstance(resourceProvider);
