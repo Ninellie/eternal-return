@@ -20,6 +20,7 @@ namespace EternalReturn.Stress.Mini_Game
         private readonly StressGameConfig _config;
         private readonly CollisionSystem _collisionSystem;
         private readonly MovementSystem _movementSystem;
+        private readonly PlayerMovementController _playerMovementController;
         private readonly Resource _stress;
         private readonly List<Enemy> _enemies = new();
 
@@ -32,11 +33,13 @@ namespace EternalReturn.Stress.Mini_Game
             StressGameConfig config,
             CollisionSystem collisionSystem,
             MovementSystem movementSystem,
+            PlayerMovementController playerMovementController,
             ResourceProvider resourceProvider)
         {
             _config = config;
             _collisionSystem = collisionSystem;
             _movementSystem = movementSystem;
+            _playerMovementController = playerMovementController;
             _stress = resourceProvider.Stress;
         }
 
@@ -52,6 +55,7 @@ namespace EternalReturn.Stress.Mini_Game
             _scenario = _config.Roll();
             _player = new Player(this, _config);
             _collisionSystem.Register(_player);
+            _playerMovementController.Register(_player);
             _isInProcess = true;
             OnGameStarted?.Invoke();
         }
@@ -161,6 +165,7 @@ namespace EternalReturn.Stress.Mini_Game
 
             _enemies.Clear();
             _collisionSystem.Unregister(_player);
+            _playerMovementController.Unregister();
             _scenario = null;
             _player = null;
         }

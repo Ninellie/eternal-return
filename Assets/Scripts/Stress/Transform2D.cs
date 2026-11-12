@@ -10,11 +10,23 @@ namespace EternalReturn.Stress
         public float Rotation;
         public Vector2 Scale = Vector2.one;
 
+        public bool HasValidScale => !Mathf.Approximately(Scale.x, 0f) && !Mathf.Approximately(Scale.y, 0f);
+
         public Vector2 TransformPoint(Vector2 point)
         {
-            var scaled = Vector2.Scale(point, Scale);
-            var rotated = (Vector2)(Quaternion.Euler(0f, 0f, Rotation) * scaled);
-            return Position + rotated;
+            return Position + TransformVector(point);
+        }
+
+        public Vector2 TransformVector(Vector2 vector)
+        {
+            var scaled = Vector2.Scale(vector, Scale);
+            return (Vector2)(Quaternion.Euler(0f, 0f, Rotation) * scaled);
+        }
+
+        public Vector2 InverseTransformPoint(Vector2 point)
+        {
+            var unrotated = (Vector2)(Quaternion.Euler(0f, 0f, -Rotation) * (point - Position));
+            return new Vector2(unrotated.x / Scale.x, unrotated.y / Scale.y);
         }
     }
 }

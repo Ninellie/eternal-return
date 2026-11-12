@@ -30,6 +30,10 @@ namespace EternalReturn.Stress.Mini_Game
         [Tooltip("Размер игрока в пикселях. Применяется как масштаб к единичной форме.")]
         public Vector2 PlayerScale = new(40f, 40f);
 
+        [Min(0f)]
+        [Tooltip("Скорость игрока в пикселях в секунду.")]
+        public float PlayerSpeed = 200f;
+
         [Header("Сценарий")]
         [Min(0.1f)]
         [Tooltip("Длительность сценария в секундах.")]

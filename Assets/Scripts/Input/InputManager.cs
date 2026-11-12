@@ -10,6 +10,7 @@ namespace EternalReturn.Input
         public event Action<int> OnSelectSlot;
         public event Action<KeyCode> OnKeyPressed;
         public event Action<Vector2> OnClick;
+        public event Action<Vector2> OnMove;
         
         private InputActionMap _playerMap;
         private InputActionMap _stressMap;
@@ -34,6 +35,9 @@ namespace EternalReturn.Input
             _playerMap.FindAction("T").performed += PressT;
             
             _playerMap.FindAction("Click").performed += Click;
+            
+            _stressMap.FindAction("Move").performed += Move;
+            _stressMap.FindAction("Move").canceled += StopMove;
             
             SwitchToPlayerMap();
         }
@@ -62,7 +66,13 @@ namespace EternalReturn.Input
             _playerMap.FindAction("T").performed -= PressT;
 
             _playerMap.FindAction("Click").performed -= Click;
+            
+            _stressMap.FindAction("Move").performed -= Move;
+            _stressMap.FindAction("Move").canceled -= StopMove;
         }
+        
+        private void Move(InputAction.CallbackContext context) => OnMove?.Invoke(context.ReadValue<Vector2>());
+        private void StopMove(InputAction.CallbackContext _) => OnMove?.Invoke(Vector2.zero);
         
         private void SelectSlot1(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(1);
         private void SelectSlot2(InputAction.CallbackContext _) => OnSelectSlot?.Invoke(2);

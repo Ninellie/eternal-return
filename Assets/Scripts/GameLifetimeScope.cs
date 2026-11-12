@@ -115,6 +115,7 @@ namespace EternalReturn
             
             builder.RegisterEntryPoint<CollisionSystem>().AsSelf();
             builder.RegisterEntryPoint<MovementSystem>().AsSelf();
+            builder.RegisterEntryPoint<PlayerMovementController>().AsSelf();
             builder.RegisterEntryPoint<StressGameController>().AsSelf();
             builder.RegisterEntryPoint<StressGameViewController>();
             builder.RegisterEntryPoint<StressPauseController>();

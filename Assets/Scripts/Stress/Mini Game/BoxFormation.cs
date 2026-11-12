@@ -12,12 +12,9 @@ namespace EternalReturn.Stress.Mini_Game
 
         public bool Contains(Vector2 point)
         {
-            var scale = Transform.Scale;
-            if (Mathf.Approximately(scale.x, 0f) || Mathf.Approximately(scale.y, 0f)) return false;
+            if (!Transform.HasValidScale) return false;
 
-            var offset = point - Transform.Position;
-            var unrotated = (Vector2)(Quaternion.Euler(0f, 0f, -Transform.Rotation) * offset);
-            var local = new Vector2(unrotated.x / scale.x, unrotated.y / scale.y);
+            var local = Transform.InverseTransformPoint(point);
             var half = Size * 0.5f;
 
             return Mathf.Abs(local.x) <= half.x && Mathf.Abs(local.y) <= half.y;
