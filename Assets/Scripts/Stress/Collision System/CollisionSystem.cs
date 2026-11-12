@@ -67,8 +67,8 @@ namespace EternalReturn.Stress.Collision_System
 
             if (isColliding)
             {
-                first.OnCollisionStay(second);
-                second.OnCollisionStay(first);
+                // first.OnCollisionStay(second);
+                // second.OnCollisionStay(first);
                 return;
             }
 

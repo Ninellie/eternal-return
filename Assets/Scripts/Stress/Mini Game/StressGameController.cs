@@ -10,6 +10,10 @@ namespace EternalReturn.Stress.Mini_Game
 {
     public class StressGameController : IStartable, IFixedTickable
     {
+        public Player Player => _player;
+        public IReadOnlyList<Enemy> Enemies => _enemies;
+
+        public event Action OnGameStarted;
         public event Action OnGameLost;
         public event Action OnGameWon;
 
@@ -43,10 +47,13 @@ namespace EternalReturn.Stress.Mini_Game
 
         public void StartGame()
         {
+            if (_isInProcess) return;
+
             _scenario = _config.Roll();
             _player = new Player(this, _config);
             _collisionSystem.Register(_player);
             _isInProcess = true;
+            OnGameStarted?.Invoke();
         }
 
         public void LoseGame()

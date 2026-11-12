@@ -18,9 +18,7 @@ namespace EternalReturn.Stress.Mini_Game
 
         public Vector2 GetPoint(float t)
         {
-            var scaled = Vector2.Scale(GetLocalPoint(Mathf.Clamp01(t)), Transform.Scale);
-            var rotated = (Vector2)(Quaternion.Euler(0f, 0f, Transform.Rotation) * scaled);
-            return Transform.Position + rotated;
+            return Transform.TransformPoint(GetLocalPoint(Mathf.Clamp01(t)));
         }
 
         protected abstract Vector2 GetLocalPoint(float t);

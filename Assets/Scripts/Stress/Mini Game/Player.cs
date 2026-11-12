@@ -24,6 +24,7 @@ namespace EternalReturn.Stress.Mini_Game
             }
 
             _controller = controller;
+            Transform.Scale = config.PlayerScale;
             Mesh = config.PlayerShape.Mesh;
             Health = config.PlayerStartHealth;
             TakenDamage = config.PlayerDamageTaken;

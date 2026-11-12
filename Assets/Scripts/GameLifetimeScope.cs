@@ -48,6 +48,8 @@ namespace EternalReturn
         [SerializeField] private RectTransform stressBar;
         [SerializeField] private StressConfig stressConfig;
         [SerializeField] private StressGameConfig stressGameConfig;
+        [SerializeField] private RectTransform stressGamePanel;
+        [SerializeField] private StressGameGraphic stressGameGraphic;
         
         [Header("Resources")] 
         [SerializeField] private ResourceConfigs resourceConfigs;
@@ -114,6 +116,9 @@ namespace EternalReturn
             builder.RegisterEntryPoint<CollisionSystem>().AsSelf();
             builder.RegisterEntryPoint<MovementSystem>().AsSelf();
             builder.RegisterEntryPoint<StressGameController>().AsSelf();
+            builder.RegisterEntryPoint<StressGameViewController>();
+            builder.RegisterInstance(stressGamePanel).Keyed("stress-game-panel");
+            builder.RegisterInstance(stressGameGraphic);
             
             // resources
             var resourceProvider = new ResourceProvider(resourceConfigs);

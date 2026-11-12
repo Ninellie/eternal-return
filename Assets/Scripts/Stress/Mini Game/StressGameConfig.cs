@@ -27,6 +27,9 @@ namespace EternalReturn.Stress.Mini_Game
         [Tooltip("Форма игрока.")]
         public Shape2D PlayerShape;
 
+        [Tooltip("Размер игрока в пикселях. Применяется как масштаб к единичной форме.")]
+        public Vector2 PlayerScale = new(40f, 40f);
+
         [Header("Сценарий")]
         [Min(0.1f)]
         [Tooltip("Длительность сценария в секундах.")]
@@ -56,6 +59,9 @@ namespace EternalReturn.Stress.Mini_Game
 
         [Tooltip("Форма врага.")]
         public Shape2D EnemyShape;
+
+        [Tooltip("Размер врага в пикселях. Применяется как масштаб к единичной форме.")]
+        public Vector2 EnemyScale = new(30f, 30f);
 
         [Min(0f)]
         [Tooltip("Скорость врага.")]
@@ -111,6 +117,7 @@ namespace EternalReturn.Stress.Mini_Game
             };
 
             enemy.Transform.Position = position;
+            enemy.Transform.Scale = EnemyScale;
             return enemy;
         }
     }

@@ -16,7 +16,8 @@ MonoBehaviour:
   PlayerField: {fileID: 11400000, guid: 196c436c04f820547b52f4034c9333d0, type: 2}
   PlayerStartHealth: 10
   PlayerDamageTaken: 1
-  PlayerShape: {fileID: 0}
+  PlayerShape: {fileID: 11400000, guid: d46fdffe0d355444887d902e6b33ad77, type: 2}
+  PlayerScale: {x: 40, y: 40}
   Duration: 30
   SpawnStartOffset: 1
   SpawnEndOffset: 3
@@ -25,5 +26,6 @@ MonoBehaviour:
   EnemiesAmount: 5
   UseRandomShape: 1
   EnemyShape: {fileID: 11400000, guid: 59034d342c911a74da258e472795557e, type: 2}
-  EnemySpeed: 1
+  EnemyScale: {x: 30, y: 30}
+  EnemySpeed: 150
   EnemyWaitTime: 1
