@@ -1,4 +1,5 @@
 using EternalReturn.Stress.Collision_System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -13,10 +14,17 @@ namespace EternalReturn.Stress.Mini_Game
         [SerializeField] private Color playerColor = new(0.3f, 0.85f, 1f, 1f);
         [SerializeField] private Color playerFieldColor = new(1f, 1f, 1f, 0.6f);
         [SerializeField] private float playerFieldThickness = 3f;
+        [SerializeField] private Color damageFlashColor = new(1f, 0.1f, 0.1f, 1f);
+        [SerializeField] private float damageFlashDuration = 0.25f;
+        [SerializeField] private TMP_Text healthText;
+        [SerializeField] private float healthTextOffset = 20f;
 
         [Inject] private StressGameController _controller;
         [Inject] private StressGameConfig _config;
 
+        private Player _trackedPlayer;
+        private int _trackedHealth;
+        private float _flashTimeLeft;
         private bool _isRendering;
 
         public bool IsRendering
@@ -37,7 +45,49 @@ namespace EternalReturn.Stress.Mini_Game
         {
             if (!_isRendering) return;
 
+            TrackPlayer();
+            _flashTimeLeft = Mathf.Max(_flashTimeLeft - Time.deltaTime, 0f);
             SetVerticesDirty();
+        }
+
+        private void TrackPlayer()
+        {
+            var player = _controller.Player;
+            if (player == null) return;
+
+            if (player != _trackedPlayer)
+            {
+                _trackedPlayer = player;
+                _trackedHealth = player.Health;
+                _flashTimeLeft = 0f;
+                ShowHealth(player.Health);
+                return;
+            }
+
+            if (player.Health == _trackedHealth) return;
+
+            if (player.Health < _trackedHealth)
+            {
+                _flashTimeLeft = damageFlashDuration;
+            }
+
+            _trackedHealth = player.Health;
+            ShowHealth(player.Health);
+        }
+
+        private void ShowHealth(int health)
+        {
+            if (healthText == null) return;
+
+            healthText.SetText("{0}", health);
+        }
+        
+        private Color GetPlayerColor()
+        {
+            if (_flashTimeLeft <= 0f) return playerColor;
+
+            var progress = 1f - _flashTimeLeft / damageFlashDuration;
+            return Color.Lerp(playerColor, damageFlashColor, Mathf.Sin(progress * Mathf.PI));
         }
 
         protected override void OnPopulateMesh(VertexHelper vh)
@@ -48,7 +98,7 @@ namespace EternalReturn.Stress.Mini_Game
 
             DrawPlayerField(vh);
             DrawEnemies(vh);
-            DrawMesh(vh, _controller.Player.Transform, _controller.Player.Mesh, playerColor);
+            DrawMesh(vh, _controller.Player.Transform, _controller.Player.Mesh, GetPlayerColor());
         }
 
         private void DrawPlayerField(VertexHelper vh)
