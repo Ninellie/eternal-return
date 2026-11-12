@@ -4,6 +4,9 @@ using EternalReturn.Learning;
 using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using EternalReturn.Stress;
+using EternalReturn.Stress.Collision_System;
+using EternalReturn.Stress.Mini_Game;
+using EternalReturn.Stress.Movement_System;
 using EternalReturn.Topics;
 using TMPro;
 using UnityEngine;
@@ -44,6 +47,7 @@ namespace EternalReturn
         [Header("Stress")] 
         [SerializeField] private RectTransform stressBar;
         [SerializeField] private StressConfig stressConfig;
+        [SerializeField] private StressGameConfig stressGameConfig;
         
         [Header("Resources")] 
         [SerializeField] private ResourceConfigs resourceConfigs;
@@ -105,9 +109,11 @@ namespace EternalReturn
             builder.RegisterEntryPoint<StressBarViewController>();
             builder.RegisterInstance(stressBar).Keyed("stress-bar");
             builder.RegisterInstance(stressConfig);
+            builder.RegisterInstance(stressGameConfig);
             
             builder.RegisterEntryPoint<CollisionSystem>().AsSelf();
             builder.RegisterEntryPoint<MovementSystem>().AsSelf();
+            builder.RegisterEntryPoint<StressGameController>().AsSelf();
             
             // resources
             var resourceProvider = new ResourceProvider(resourceConfigs);

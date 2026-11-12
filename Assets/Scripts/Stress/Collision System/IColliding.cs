@@ -1,16 +1,10 @@
-using UnityEngine;
-
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Collision_System
 {
     public interface IColliding
     {
-        Vector2 Position { get; }
+        Transform2D Transform { get; }
 
-        Vector2 Scale { get; }
-
-        float Rotation { get; }
-
-        Polygon[] Polygons { get; }
+        Mesh2D Mesh { get; }
 
         void OnCollisionEnter(IColliding other);
         void OnCollisionStay(IColliding other);

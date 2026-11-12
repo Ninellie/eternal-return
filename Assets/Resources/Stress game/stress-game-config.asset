@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1e4c9a2d5f4083b6a1c8e3f0d9275a, type: 3}
+  m_Name: stress-game-config
+  m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Stress.Mini_Game.StressGameConfig
+  GameField: {fileID: 11400000, guid: 94eeac36e01c40442bfc8419d08c35c4, type: 2}
+  PlayerField: {fileID: 11400000, guid: 196c436c04f820547b52f4034c9333d0, type: 2}
+  PlayerStartHealth: 10
+  PlayerDamageTaken: 1
+  PlayerShape: {fileID: 0}
+  Duration: 30
+  SpawnStartOffset: 1
+  SpawnEndOffset: 3
+  Formation: {fileID: 11400000, guid: bf73cef2a4bb7fa4daa4b8188a829c73, type: 2}
+  SpawnsAmount: 10
+  EnemiesAmount: 5
+  UseRandomShape: 1
+  EnemyShape: {fileID: 11400000, guid: 59034d342c911a74da258e472795557e, type: 2}
+  EnemySpeed: 1
+  EnemyWaitTime: 1

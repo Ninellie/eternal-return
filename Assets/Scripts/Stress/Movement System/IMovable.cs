@@ -1,11 +1,13 @@
 using UnityEngine;
 
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Movement_System
 {
     public interface IMovable
     {
-        Vector2 Velocity { get; }
+        Vector2 Direction { get; }
 
-        Vector2 Position { get; set; }
+        float Speed { get; }
+
+        Transform2D Transform { get; }
     }
 }

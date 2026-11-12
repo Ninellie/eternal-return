@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Collision_System
 {
     public class CollisionSystem : IFixedTickable
     {
@@ -82,16 +82,16 @@ namespace EternalReturn.Stress
 
         private static bool Overlaps(IColliding first, IColliding second)
         {
-            var firstPolygons = first.Polygons;
-            var secondPolygons = second.Polygons;
+            var firstPolygons = first.Mesh?.Polygons;
+            var secondPolygons = second.Mesh?.Polygons;
             if (firstPolygons == null || secondPolygons == null) return false;
 
             foreach (var firstPolygon in firstPolygons)
             {
                 foreach (var secondPolygon in secondPolygons)
                 {
-                    var firstVertices = ToWorld(firstPolygon, first.Position, first.Scale, first.Rotation);
-                    var secondVertices = ToWorld(secondPolygon, second.Position, second.Scale, second.Rotation);
+                    var firstVertices = ToWorld(firstPolygon, first.Transform);
+                    var secondVertices = ToWorld(secondPolygon, second.Transform);
 
                     if (!HasSeparatingAxis(firstVertices, secondVertices)
                         && !HasSeparatingAxis(secondVertices, firstVertices))
@@ -104,17 +104,17 @@ namespace EternalReturn.Stress
             return false;
         }
 
-        private static Vector2[] ToWorld(Polygon polygon, Vector2 position, Vector2 scale, float rotation)
+        private static Vector2[] ToWorld(Polygon polygon, Transform2D transform)
         {
-            var radians = rotation * Mathf.Deg2Rad;
+            var radians = transform.Rotation * Mathf.Deg2Rad;
             var cos = Mathf.Cos(radians);
             var sin = Mathf.Sin(radians);
 
             return new[]
             {
-                ToWorld(polygon.A, position, scale, cos, sin),
-                ToWorld(polygon.B, position, scale, cos, sin),
-                ToWorld(polygon.C, position, scale, cos, sin),
+                ToWorld(polygon.A, transform.Position, transform.Scale, cos, sin),
+                ToWorld(polygon.B, transform.Position, transform.Scale, cos, sin),
+                ToWorld(polygon.C, transform.Position, transform.Scale, cos, sin),
             };
         }
 

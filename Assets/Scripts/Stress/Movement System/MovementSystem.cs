@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Movement_System
 {
     public class MovementSystem : IFixedTickable
     {
@@ -28,7 +28,7 @@ namespace EternalReturn.Stress
             {
                 if (!_movables.Contains(movable)) continue;
 
-                movable.Position += movable.Velocity * Time.fixedDeltaTime;
+                movable.Transform.Position += movable.Direction * (movable.Speed * Time.fixedDeltaTime);
             }
         }
     }

@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Collision_System
 {
+    [Serializable]
     public struct Polygon
     {
         public Vector2 A;

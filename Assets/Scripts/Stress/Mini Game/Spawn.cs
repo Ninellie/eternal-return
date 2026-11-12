@@ -1,4 +1,4 @@
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Mini_Game
 {
     public class Spawn
     {

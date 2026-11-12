@@ -1,18 +1,20 @@
+using EternalReturn.Stress.Collision_System;
+using EternalReturn.Stress.Movement_System;
 using UnityEngine;
 
-namespace EternalReturn.Stress
+namespace EternalReturn.Stress.Mini_Game
 {
     public class Enemy : IColliding, IMovable
     {
-        public Vector2 Velocity { get; set; }
+        public float WaitTime { get; set; }
 
-        public Vector2 Position { get; set; }
+        public Vector2 Direction { get; set; }
 
-        public Vector2 Scale { get; set; } = Vector2.one;
+        public float Speed { get; set; }
 
-        public float Rotation { get; set; }
+        public Transform2D Transform { get; } = new();
 
-        public Polygon[] Polygons { get; set; }
+        public Mesh2D Mesh { get; set; }
 
         public void OnCollisionEnter(IColliding other)
         {
