@@ -1,22 +1,23 @@
 ﻿using EternalReturn.Resources_Feature;
+using EternalReturn.Stress.Mini_Game;
 using VContainer.Unity;
 
 namespace EternalReturn.Stress
 {
     public class BurnoutGainController : IStartable
     {
-        private readonly Resource _stress;
+        private readonly StressGameController _stressGameController;
         private readonly Resource _burnout;
 
-        public BurnoutGainController(ResourceProvider resourceProvider)
+        public BurnoutGainController(StressGameController stressGameController, ResourceProvider resourceProvider)
         {
-            _stress = resourceProvider.Stress;
+            _stressGameController = stressGameController;
             _burnout = resourceProvider.Burnout;
         }
         
         public void Start()
         {
-            _stress.OnFill += () => _burnout.Increase(1);
+            _stressGameController.OnGameLost += () => _burnout.Increase(1);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace EternalReturn.Stress.Mini_Game
 
         private Scenario _scenario;
         private Player _player;
+        private float _relievedStress;
 
         private bool _isInProcess;
 
@@ -56,6 +57,7 @@ namespace EternalReturn.Stress.Mini_Game
             _player = new Player(this, _config);
             _collisionSystem.Register(_player);
             _playerMovementController.Register(_player);
+            _relievedStress = 0f;
             _isInProcess = true;
             OnGameStarted?.Invoke();
         }
@@ -75,6 +77,7 @@ namespace EternalReturn.Stress.Mini_Game
 
             _isInProcess = false;
             Clear();
+            _stress.Decrease(_stress.Amount);
             OnGameWon?.Invoke();
         }
 
@@ -85,6 +88,7 @@ namespace EternalReturn.Stress.Mini_Game
             TickEnemies();
             RemoveEnemiesOutOfField();
             TickSpawns();
+            TickStress();
             TickScenarioTime();
         }
 
@@ -127,6 +131,17 @@ namespace EternalReturn.Stress.Mini_Game
             {
                 _scenario.TimeToNextSpawn = next.Interval;
             }
+        }
+
+        private void TickStress()
+        {
+            _relievedStress += _stress.MaxAmount / _config.Duration * Time.fixedDeltaTime;
+
+            var wholeAmount = Mathf.FloorToInt(_relievedStress);
+            if (wholeAmount <= 0) return;
+
+            _relievedStress -= wholeAmount;
+            _stress.Decrease(wholeAmount);
         }
 
         private void TickScenarioTime()
