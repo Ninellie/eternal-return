@@ -6,8 +6,14 @@ namespace EternalReturn.Stress.Collision_System
 
         Mesh2D Mesh { get; }
 
+        CollisionLayer Layer { get; }
+
+        CollisionLayer CollidesWith { get; }
+
         void OnCollisionEnter(IColliding other);
+
         void OnCollisionStay(IColliding other);
+
         void OnCollisionExit(IColliding other);
     }
 }

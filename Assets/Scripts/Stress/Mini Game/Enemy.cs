@@ -16,6 +16,10 @@ namespace EternalReturn.Stress.Mini_Game
 
         public Mesh2D Mesh { get; set; }
 
+        public CollisionLayer Layer => CollisionLayer.Enemy;
+
+        public CollisionLayer CollidesWith => CollisionLayer.Player;
+
         public void OnCollisionEnter(IColliding other)
         {
         }

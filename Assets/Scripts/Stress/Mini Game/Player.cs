@@ -10,6 +10,10 @@ namespace EternalReturn.Stress.Mini_Game
 
         public Mesh2D Mesh { get; }
 
+        public CollisionLayer Layer => CollisionLayer.Player;
+
+        public CollisionLayer CollidesWith => CollisionLayer.Enemy;
+
         public int Health { get; private set; }
 
         public int TakenDamage { get; }

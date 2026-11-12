@@ -6,30 +6,32 @@ namespace EternalReturn.Stress.Collision_System
 {
     public class CollisionSystem : IFixedTickable
     {
-        private readonly List<IColliding> _colliders = new();
-        private readonly List<IColliding> _snapshot = new();
-        private readonly Dictionary<IColliding, HashSet<IColliding>> _contacts = new();
+        private readonly List<Entry> _entries = new();
+        private readonly List<Entry> _snapshot = new();
+        private readonly Dictionary<IColliding, Entry> _entriesByCollider = new();
 
         public void Register(IColliding colliding)
         {
-            if (_contacts.ContainsKey(colliding)) return;
+            if (_entriesByCollider.ContainsKey(colliding)) return;
 
-            _colliders.Add(colliding);
-            _contacts.Add(colliding, new HashSet<IColliding>());
+            var entry = new Entry(colliding);
+            _entries.Add(entry);
+            _entriesByCollider.Add(colliding, entry);
         }
 
         public void Unregister(IColliding colliding)
         {
-            if (!_contacts.TryGetValue(colliding, out var contacts)) return;
+            if (!_entriesByCollider.TryGetValue(colliding, out var entry)) return;
 
-            _colliders.Remove(colliding);
-            _contacts.Remove(colliding);
+            entry.IsRegistered = false;
+            _entries.Remove(entry);
+            _entriesByCollider.Remove(colliding);
 
-            foreach (var other in contacts)
+            foreach (var other in entry.Contacts)
             {
-                if (!_contacts.TryGetValue(other, out var otherContacts)) continue;
+                if (!_entriesByCollider.TryGetValue(other, out var otherEntry)) continue;
 
-                otherContacts.Remove(colliding);
+                otherEntry.Contacts.Remove(colliding);
                 other.OnCollisionExit(colliding);
             }
         }
@@ -37,7 +39,12 @@ namespace EternalReturn.Stress.Collision_System
         public void FixedTick()
         {
             _snapshot.Clear();
-            _snapshot.AddRange(_colliders);
+            _snapshot.AddRange(_entries);
+
+            foreach (var entry in _snapshot)
+            {
+                entry.PrepareForTick();
+            }
 
             for (var i = 0; i < _snapshot.Count; i++)
             {
@@ -48,92 +55,88 @@ namespace EternalReturn.Stress.Collision_System
             }
         }
 
-        private void ProcessPair(IColliding first, IColliding second)
+        private static bool CanCollide(Entry first, Entry second)
         {
-            if (!_contacts.TryGetValue(first, out var firstContacts)) return;
-            if (!_contacts.TryGetValue(second, out var secondContacts)) return;
+            var firstCollider = first.Collider;
+            var secondCollider = second.Collider;
 
-            var wasColliding = firstContacts.Contains(second);
+            return (firstCollider.CollidesWith & secondCollider.Layer) != 0
+                && (secondCollider.CollidesWith & firstCollider.Layer) != 0;
+        }
+
+        private static void ProcessPair(Entry first, Entry second)
+        {
+            if (!first.IsRegistered || !second.IsRegistered) return;
+            if (!CanCollide(first, second)) return;
+
+            var wasColliding = first.Contacts.Contains(second.Collider);
             var isColliding = Overlaps(first, second);
 
             if (isColliding && !wasColliding)
             {
-                firstContacts.Add(second);
-                secondContacts.Add(first);
-                first.OnCollisionEnter(second);
-                second.OnCollisionEnter(first);
+                first.Contacts.Add(second.Collider);
+                second.Contacts.Add(first.Collider);
+                first.Collider.OnCollisionEnter(second.Collider);
+                second.Collider.OnCollisionEnter(first.Collider);
                 return;
             }
 
-            if (isColliding)
-            {
-                // first.OnCollisionStay(second);
-                // second.OnCollisionStay(first);
-                return;
-            }
-
+            if (isColliding) return;
             if (!wasColliding) return;
 
-            firstContacts.Remove(second);
-            secondContacts.Remove(first);
-            first.OnCollisionExit(second);
-            second.OnCollisionExit(first);
+            first.Contacts.Remove(second.Collider);
+            second.Contacts.Remove(first.Collider);
+            first.Collider.OnCollisionExit(second.Collider);
+            second.Collider.OnCollisionExit(first.Collider);
         }
 
-        private static bool Overlaps(IColliding first, IColliding second)
+        private static bool Overlaps(Entry first, Entry second)
         {
-            var firstPolygons = first.Mesh?.Polygons;
-            var secondPolygons = second.Mesh?.Polygons;
-            if (firstPolygons == null || secondPolygons == null) return false;
+            if (first.PolygonCount == 0 || second.PolygonCount == 0) return false;
+            if (!CirclesOverlap(first, second)) return false;
 
-            foreach (var firstPolygon in firstPolygons)
+            first.EnsureWorldPolygons();
+            second.EnsureWorldPolygons();
+
+            for (var i = 0; i < first.PolygonCount; i++)
             {
-                foreach (var secondPolygon in secondPolygons)
+                for (var j = 0; j < second.PolygonCount; j++)
                 {
-                    var firstVertices = ToWorld(firstPolygon, first.Transform);
-                    var secondVertices = ToWorld(secondPolygon, second.Transform);
+                    if (HasSeparatingAxis(in first.WorldPolygons[i], in second.WorldPolygons[j])) continue;
+                    if (HasSeparatingAxis(in second.WorldPolygons[j], in first.WorldPolygons[i])) continue;
 
-                    if (!HasSeparatingAxis(firstVertices, secondVertices)
-                        && !HasSeparatingAxis(secondVertices, firstVertices))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
             return false;
         }
 
-        private static Vector2[] ToWorld(Polygon polygon, Transform2D transform)
+        private static bool CirclesOverlap(Entry first, Entry second)
         {
-            var radians = transform.Rotation * Mathf.Deg2Rad;
-            var cos = Mathf.Cos(radians);
-            var sin = Mathf.Sin(radians);
+            var radius = first.Radius + second.Radius;
+            return (first.Center - second.Center).sqrMagnitude <= radius * radius;
+        }
 
-            return new[]
+        private static Vector2 GetVertex(in Polygon polygon, int index)
+        {
+            return index switch
             {
-                ToWorld(polygon.A, transform.Position, transform.Scale, cos, sin),
-                ToWorld(polygon.B, transform.Position, transform.Scale, cos, sin),
-                ToWorld(polygon.C, transform.Position, transform.Scale, cos, sin),
+                0 => polygon.A,
+                1 => polygon.B,
+                _ => polygon.C,
             };
         }
 
-        private static Vector2 ToWorld(Vector2 local, Vector2 position, Vector2 scale, float cos, float sin)
+        private static bool HasSeparatingAxis(in Polygon axisSource, in Polygon other)
         {
-            var scaled = Vector2.Scale(local, scale);
-            var rotated = new Vector2(scaled.x * cos - scaled.y * sin, scaled.x * sin + scaled.y * cos);
-            return position + rotated;
-        }
-
-        private static bool HasSeparatingAxis(Vector2[] axisSource, Vector2[] other)
-        {
-            for (var i = 0; i < axisSource.Length; i++)
+            for (var i = 0; i < 3; i++)
             {
-                var edge = axisSource[(i + 1) % axisSource.Length] - axisSource[i];
+                var edge = GetVertex(in axisSource, (i + 1) % 3) - GetVertex(in axisSource, i);
                 var axis = new Vector2(-edge.y, edge.x);
 
-                Project(axisSource, axis, out var minA, out var maxA);
-                Project(other, axis, out var minB, out var maxB);
+                Project(in axisSource, axis, out var minA, out var maxA);
+                Project(in other, axis, out var minB, out var maxB);
 
                 if (maxA < minB || maxB < minA) return true;
             }
@@ -141,16 +144,79 @@ namespace EternalReturn.Stress.Collision_System
             return false;
         }
 
-        private static void Project(Vector2[] vertices, Vector2 axis, out float min, out float max)
+        private static void Project(in Polygon polygon, Vector2 axis, out float min, out float max)
         {
-            min = float.MaxValue;
-            max = float.MinValue;
+            var a = Vector2.Dot(polygon.A, axis);
+            var b = Vector2.Dot(polygon.B, axis);
+            var c = Vector2.Dot(polygon.C, axis);
 
-            foreach (var vertex in vertices)
+            min = Mathf.Min(a, Mathf.Min(b, c));
+            max = Mathf.Max(a, Mathf.Max(b, c));
+        }
+
+        private class Entry
+        {
+            public readonly IColliding Collider;
+            public readonly HashSet<IColliding> Contacts = new();
+
+            public bool IsRegistered = true;
+            public Vector2 Center;
+            public float Radius;
+            public int PolygonCount;
+            public Polygon[] WorldPolygons;
+
+            private bool _isWorldReady;
+
+            public Entry(IColliding collider)
             {
-                var projection = Vector2.Dot(vertex, axis);
-                min = Mathf.Min(min, projection);
-                max = Mathf.Max(max, projection);
+                Collider = collider;
+            }
+
+            public void PrepareForTick()
+            {
+                var mesh = Collider.Mesh;
+                var polygons = mesh?.Polygons;
+                var scale = Collider.Transform.Scale;
+
+                PolygonCount = polygons?.Length ?? 0;
+                Center = Collider.Transform.Position;
+                Radius = mesh == null ? 0f : mesh.BoundingRadius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y));
+                _isWorldReady = false;
+            }
+
+            public void EnsureWorldPolygons()
+            {
+                if (_isWorldReady) return;
+
+                if (WorldPolygons == null || WorldPolygons.Length < PolygonCount)
+                {
+                    WorldPolygons = new Polygon[PolygonCount];
+                }
+
+                var transform = Collider.Transform;
+                var radians = transform.Rotation * Mathf.Deg2Rad;
+                var cos = Mathf.Cos(radians);
+                var sin = Mathf.Sin(radians);
+                var polygons = Collider.Mesh.Polygons;
+
+                for (var i = 0; i < PolygonCount; i++)
+                {
+                    WorldPolygons[i] = new Polygon
+                    {
+                        A = ToWorld(polygons[i].A, transform, cos, sin),
+                        B = ToWorld(polygons[i].B, transform, cos, sin),
+                        C = ToWorld(polygons[i].C, transform, cos, sin),
+                    };
+                }
+
+                _isWorldReady = true;
+            }
+
+            private static Vector2 ToWorld(Vector2 local, Transform2D transform, float cos, float sin)
+            {
+                var scaled = Vector2.Scale(local, transform.Scale);
+                var rotated = new Vector2(scaled.x * cos - scaled.y * sin, scaled.x * sin + scaled.y * cos);
+                return transform.Position + rotated;
             }
         }
     }
