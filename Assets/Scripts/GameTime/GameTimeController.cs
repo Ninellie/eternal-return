@@ -17,6 +17,7 @@ namespace EternalReturn.GameTime
         
         private bool _isRunning;
         private bool _midnightWasReached;
+        private int _pauseCount;
         
         public GameTimeController(GameTimeSettings settings)
         {
@@ -28,9 +29,20 @@ namespace EternalReturn.GameTime
             return GameTime.Day;
         }
         
+        public void Pause()
+        {
+            _pauseCount++;
+        }
+
+        public void Resume()
+        {
+            _pauseCount = Mathf.Max(_pauseCount - 1, 0);
+        }
+
         public void FixedTick()
         {
             if (!_isRunning) return;
+            if (_pauseCount > 0) return;
             
             var next = GameTime.AddMinutes(Time.fixedDeltaTime * _settings.GetMinutesPerRealSecond());
             

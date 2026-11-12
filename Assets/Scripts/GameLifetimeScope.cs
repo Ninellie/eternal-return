@@ -117,6 +117,7 @@ namespace EternalReturn
             builder.RegisterEntryPoint<MovementSystem>().AsSelf();
             builder.RegisterEntryPoint<StressGameController>().AsSelf();
             builder.RegisterEntryPoint<StressGameViewController>();
+            builder.RegisterEntryPoint<StressPauseController>();
             builder.RegisterInstance(stressGamePanel).Keyed("stress-game-panel");
             builder.RegisterInstance(stressGameGraphic);
             

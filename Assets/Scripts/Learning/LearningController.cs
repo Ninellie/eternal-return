@@ -23,6 +23,7 @@ namespace EternalReturn.Learning
         private readonly DayCycleController _dayCycleController;
         
         private Skill _reward;
+        private int _pauseCount;
 
         public LearningController(
             LearningProcessSettings settings,
@@ -39,9 +40,20 @@ namespace EternalReturn.Learning
             _dayCycleController.OnDayEnded += Abort;
         }
 
+        public void Pause()
+        {
+            _pauseCount++;
+        }
+
+        public void Resume()
+        {
+            _pauseCount = Mathf.Max(_pauseCount - 1, 0);
+        }
+
         public void Tick()
         {
             if (!IsLearning) return;
+            if (_pauseCount > 0) return;
 
             Process.Tick(Time.deltaTime);
 

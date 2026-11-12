@@ -12,12 +12,14 @@ namespace EternalReturn.Input
         public event Action<Vector2> OnClick;
         
         private InputActionMap _playerMap;
+        private InputActionMap _stressMap;
         
         public void Initialize()
         {
             InputSystem.actions.Disable();
             
             _playerMap = InputSystem.actions.FindActionMap("Player");
+            _stressMap = InputSystem.actions.FindActionMap("Stress");
             
             _playerMap.FindAction("SelectSlot1").performed += SelectSlot1;
             _playerMap.FindAction("SelectSlot2").performed += SelectSlot2;
@@ -74,9 +76,16 @@ namespace EternalReturn.Input
         private void PressR(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.R);
         private void PressT(InputAction.CallbackContext _) => OnKeyPressed?.Invoke(KeyCode.T);
         
-        private void SwitchToPlayerMap()
+        public void SwitchToPlayerMap()
         {
+            _stressMap.Disable();
             _playerMap.Enable();
+        }
+
+        public void SwitchToStressMap()
+        {
+            _playerMap.Disable();
+            _stressMap.Enable();
         }
     }
 }

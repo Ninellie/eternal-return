@@ -24,6 +24,7 @@ namespace EternalReturn.Topics
         private readonly DayCycleController _dayCycleController;
         
         private Topic _selectedTopic;
+        private int _pauseCount;
         
         public ForumController(
             TopicSettings settings,
@@ -52,8 +53,20 @@ namespace EternalReturn.Topics
             _dayCycleController.OnDayEnded += Abort;
         }
 
+        public void Pause()
+        {
+            _pauseCount++;
+        }
+
+        public void Resume()
+        {
+            _pauseCount = Mathf.Max(_pauseCount - 1, 0);
+        }
+
         public void Tick()
         {
+            if (_pauseCount > 0) return;
+
             foreach (var slot in _slots.Where(x => x.Status == SlotStatus.Occupied))
             {
                 slot.Topic.Tick(Time.deltaTime);
