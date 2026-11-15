@@ -16,4 +16,4 @@ MonoBehaviour:
     Position: {x: 0, y: 0}
     Rotation: 0
     Scale: {x: 1, y: 1}
-  Size: {x: 300, y: 300}
+  Size: {x: 250, y: 250}
