@@ -68,7 +68,7 @@ namespace EternalReturn
             builder.RegisterEntryPoint<GameTimeController>().AsSelf();
             builder.RegisterEntryPoint<DayCycleController>().AsSelf();
             builder.RegisterEntryPoint<ClockViewController>();
-            builder.RegisterEntryPoint<EndDayButtonViewController>();
+            builder.RegisterEntryPoint<EndDayButtonViewController>().AsSelf();
             builder.RegisterEntryPoint<StartDayButtonViewController>();
             
             builder.RegisterInstance(topicSettings);

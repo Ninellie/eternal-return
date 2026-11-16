@@ -18,6 +18,7 @@ namespace EternalReturn.GameTime
         private readonly GameTimeController _gameTimeController;
 
         private bool _isPulsing;
+        private bool _isPaused;
 
         public EndDayButtonViewController(
             [Key("end-day")] Button endDayButton,
@@ -42,12 +43,25 @@ namespace EternalReturn.GameTime
 
         public void Tick()
         {
+            if (_isPaused) return;
             if (!_isPulsing) return;
 
             var wave = Mathf.Sin(Time.time * PulseSpeed);
             var scale = 1f + wave * PulseAmplitude;
             ApplyScale(scale);
             _graphic.color = Color.Lerp(Color.white, Color.red, Mathf.Clamp01(wave));
+        }
+
+        public void Pause()
+        {
+            _isPaused = true;
+            _button.interactable = false;
+        }
+        
+        public void Resume()
+        {
+            _isPaused = false;
+            _button.interactable = true;
         }
 
         private void Show()

@@ -12,7 +12,7 @@ namespace EternalReturn.GameTime
         
         public event Action OnBedtime;
         public event Action OnLateBedtime;
-
+        
         private readonly GameTimeSettings _settings;
         
         private bool _isRunning;

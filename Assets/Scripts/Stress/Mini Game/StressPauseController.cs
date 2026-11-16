@@ -15,6 +15,7 @@ namespace EternalReturn.Stress.Mini_Game
         private readonly LearningController _learningController;
         private readonly ForumController _forumController;
         private readonly InputManager _inputManager;
+        private readonly EndDayButtonViewController _endDayButtonViewController;
 
         private bool _isPaused;
 
@@ -24,7 +25,8 @@ namespace EternalReturn.Stress.Mini_Game
             GameTimeController gameTimeController,
             LearningController learningController,
             ForumController forumController,
-            InputManager inputManager)
+            InputManager inputManager,
+            EndDayButtonViewController endDayButtonViewController)
         {
             _stress = resourceProvider.Stress;
             _stressGameController = stressGameController;
@@ -32,6 +34,7 @@ namespace EternalReturn.Stress.Mini_Game
             _learningController = learningController;
             _forumController = forumController;
             _inputManager = inputManager;
+            _endDayButtonViewController = endDayButtonViewController;
         }
 
         public void Start()
@@ -49,6 +52,7 @@ namespace EternalReturn.Stress.Mini_Game
             _gameTimeController.Pause();
             _learningController.Pause();
             _forumController.Pause();
+            _endDayButtonViewController.Pause();
             _inputManager.SwitchToStressMap();
         }
 
@@ -60,6 +64,7 @@ namespace EternalReturn.Stress.Mini_Game
             _gameTimeController.Resume();
             _learningController.Resume();
             _forumController.Resume();
+            _endDayButtonViewController.Resume();
             _inputManager.SwitchToPlayerMap();
         }
     }
