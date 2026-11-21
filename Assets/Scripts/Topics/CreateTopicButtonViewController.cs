@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
@@ -33,7 +34,7 @@ namespace EternalReturn.Topics
 
         private void UpdateButtonState()
         {
-            _createTopicButton.interactable = _forumController.HasUnoccupiedSlot;
+            _createTopicButton.interactable = _forumController.HasUnoccupiedSlot && !(_forumController.Cooldown > 0);
             
         }
     }

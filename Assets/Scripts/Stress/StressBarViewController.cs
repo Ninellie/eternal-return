@@ -6,29 +6,30 @@ using VContainer.Unity;
 
 namespace EternalReturn.Stress
 {
-    public class StressBarViewController : ITickable
+    public class StressBarViewController : IStartable
     {
-        private readonly RectTransform _stressBar;
+        private readonly RectTransform _bar;
         private readonly Resource _stress;
 
         public StressBarViewController(
-            [Key("stress-bar")] RectTransform stressBar, ResourceProvider resourceProvider)
+            [Key("stress-bar")] RectTransform bar, ResourceProvider resourceProvider)
         {
-            _stressBar = stressBar;
+            _bar = bar;
             _stress = resourceProvider.Stress;
         }
-        
-        public void Tick()
+
+        public void Start()
         {
-            UpdateDurationBar();
+            _stress.OnChange += UpdateDurationBar;
+            UpdateDurationBar(_stress.Amount);
         }
-        
-        private void UpdateDurationBar()
+
+        private void UpdateDurationBar(int amount)
         {
             ViewHelper.UpdateDurationBar(
                 _stress.MaxAmount,
-                _stress.Amount,
-                _stressBar,
+                amount,
+                _bar,
                 ViewHelper.DurationBarMode.RightToLeft);
         }
     }

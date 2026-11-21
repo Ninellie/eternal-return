@@ -88,6 +88,7 @@ namespace EternalReturn.Topics
             
             _currentMessages.Dequeue();
             
+            _controller.MessageComplete();
             OnMessageComplete?.Invoke(message);
         }
     }

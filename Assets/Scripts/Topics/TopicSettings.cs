@@ -11,6 +11,7 @@ namespace EternalReturn.Topics
         [Header("Topic")]
         [Tooltip("Длительность темы (min, max).")]
         public Vector2 TopicDuration = new(100f, 200f);
+        public float Cooldown = 20;
         
         [Tooltip("Среднее количество сообщений в секунду. Количество сообщений в теме = длительность * это значение.")]
         public float AverageMessagesPerSecond;

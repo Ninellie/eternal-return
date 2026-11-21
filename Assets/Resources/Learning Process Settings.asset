@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3e9c1d8f2b4570b4d7e1a5c0f83b92, type: 3}
   m_Name: Learning Process Settings
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Learning.LearningProcessSettings
-  Presets:
-  - {fileID: 11400000, guid: 3b8e1d5a7c924f06a9d2e4b0c6f18a37, type: 2}
-  - {fileID: 11400000, guid: 5c2f9a4e8b1d4730b6e7a3d0f2c94b58, type: 2}
-  - {fileID: 11400000, guid: 9a4d7c1e3f6b4852a0c5e8b2d7f13a69, type: 2}
-  - {fileID: 11400000, guid: d6e0b3a8c5f14972b1a4e7c9d3f20b84, type: 2}
-  - {fileID: 11400000, guid: 27f5c8b1e4a94d03b7d6a2e9c0f35a71, type: 2}
+  presets:
   - {fileID: 11400000, guid: f1a7d4c2b9e84605a3c8e0b6d5f92c13, type: 2}
+  - {fileID: 11400000, guid: 3b8e1d5a7c924f06a9d2e4b0c6f18a37, type: 2}
+  - {fileID: 11400000, guid: d6e0b3a8c5f14972b1a4e7c9d3f20b84, type: 2}
+  - {fileID: 11400000, guid: 5c2f9a4e8b1d4730b6e7a3d0f2c94b58, type: 2}
+  - {fileID: 11400000, guid: 27f5c8b1e4a94d03b7d6a2e9c0f35a71, type: 2}
+  - {fileID: 11400000, guid: 9a4d7c1e3f6b4852a0c5e8b2d7f13a69, type: 2}

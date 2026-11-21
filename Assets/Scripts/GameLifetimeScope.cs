@@ -1,6 +1,8 @@
-﻿using EternalReturn.GameTime;
+﻿using System;
+using EternalReturn.GameTime;
 using EternalReturn.Input;
 using EternalReturn.Learning;
+using EternalReturn.Motivation;
 using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using EternalReturn.Stress;
@@ -51,6 +53,9 @@ namespace EternalReturn
         [SerializeField] private RectTransform stressGamePanel;
         [SerializeField] private StressGameGraphic stressGameGraphic;
         
+        [Header("Motivation")] 
+        [SerializeField] private MotivationConfig motivationConfig;
+        
         [Header("Resources")] 
         [SerializeField] private ResourceConfigs resourceConfigs;
 
@@ -64,7 +69,7 @@ namespace EternalReturn
             builder.RegisterInstance(endDayButton).Keyed("end-day");
             builder.RegisterInstance(endDayButtonLabel).Keyed("end-day");
             builder.RegisterInstance(startDayButton).Keyed("start-day");
-
+            
             builder.RegisterEntryPoint<GameTimeController>().AsSelf();
             builder.RegisterEntryPoint<DayCycleController>().AsSelf();
             builder.RegisterEntryPoint<ClockViewController>();
@@ -80,7 +85,7 @@ namespace EternalReturn
             builder.RegisterInstance(topicSlotsRoot).Keyed("topics-root");
             builder.RegisterInstance(topicViewPrefab);
 
-            // Learning
+            // learning
             builder.RegisterEntryPoint<LearningController>().AsSelf();
             builder.RegisterEntryPoint<LearningViewController>();
             builder.RegisterInstance(learningGraphic);
@@ -88,16 +93,16 @@ namespace EternalReturn
             builder.RegisterInstance(learningProcessSettings);
             builder.RegisterInstance(skillChoicePanel);
             
-            // Learning start
+            // learning start
             builder.RegisterEntryPoint<StartLearningButtonViewController>();
             builder.RegisterInstance(startLearningButton).Keyed("start-learning");
 
-            // Choosing skills
+            // choosing skills
             builder.RegisterEntryPoint<SkillChoiceViewController>();
             builder.RegisterInstance(skillCardViewPrefab);
             builder.RegisterInstance(skillsConfig);
             
-            // Skills
+            // skills
             builder.RegisterEntryPoint<SkillsController>().AsSelf();
             builder.RegisterEntryPoint<SkillsViewController>();
             builder.RegisterInstance(skillsPanel).Keyed("skills-panel");
@@ -106,7 +111,7 @@ namespace EternalReturn
             builder.RegisterInstance(skillViewPrefab);
             
             // stress
-            builder.RegisterEntryPoint<StressGainController>();
+            builder.RegisterEntryPoint<StressController>();
             builder.RegisterEntryPoint<BurnoutGainController>();
             builder.RegisterEntryPoint<StressBarViewController>();
             builder.RegisterInstance(stressBar).Keyed("stress-bar");
@@ -121,6 +126,10 @@ namespace EternalReturn
             builder.RegisterEntryPoint<StressPauseController>();
             builder.RegisterInstance(stressGamePanel).Keyed("stress-game-panel");
             builder.RegisterInstance(stressGameGraphic);
+            
+            // motivation
+            builder.RegisterEntryPoint<MotivationController>();
+            builder.RegisterInstance(motivationConfig);
             
             // resources
             var resourceProvider = new ResourceProvider(resourceConfigs);

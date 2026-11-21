@@ -1,5 +1,6 @@
 using System;
 using EternalReturn.GameTime;
+using EternalReturn.Resources_Feature;
 using EternalReturn.Skills;
 using UnityEngine;
 using VContainer.Unity;
@@ -13,12 +14,13 @@ namespace EternalReturn.Learning
         public event Action OnLearningAborted;
         public event Action<LearningNode> OnNewNode;
         public event Action OnNodeLost;
-        public event Action<LearningNode> OnNodeComplete;
+        public event Action OnNodeComplete;
         
         public bool IsLearning { get; private set; }
         public LearningProcess Process { get; private set; }
 
         private readonly NodeGenerator _nodeGenerator;
+        private readonly LearningProcessSettings _config;
         private readonly SkillsController _skillsController;
         private readonly DayCycleController _dayCycleController;
         
@@ -30,6 +32,7 @@ namespace EternalReturn.Learning
             SkillsController skillsController,
             DayCycleController dayCycleController)
         {
+            _config = settings;
             _nodeGenerator = new NodeGenerator(settings);
             _skillsController = skillsController;
             _dayCycleController = dayCycleController;
@@ -93,6 +96,11 @@ namespace EternalReturn.Learning
         public void NodeLost()
         {
             OnNodeLost?.Invoke();
+        }
+
+        public void NodeComplete()
+        {
+            OnNodeComplete?.Invoke();
         }
     }
 }

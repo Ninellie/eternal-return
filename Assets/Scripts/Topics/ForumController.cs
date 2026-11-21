@@ -14,24 +14,29 @@ namespace EternalReturn.Topics
         public event Action<Topic> OnTopicClosed;
         public event Action<Topic> OnTopicAborted;
         public event Action OnMessageLost;
+        public event Action OnMessageComplete;
         
         public bool HasUnoccupiedSlot => _slots.Any(x => x.Status == SlotStatus.Unoccupied);
         public int SlotCount => _slots.Length;
+        public float Cooldown => _cooldown;
 
         private readonly InputManager _inputManager;
+        private readonly TopicSettings _config;
         private readonly MessageGenerator _messageGenerator;
         private readonly TopicSlot[] _slots;
         private readonly DayCycleController _dayCycleController;
         
         private Topic _selectedTopic;
         private int _pauseCount;
-        
+        private float _cooldown;
+
         public ForumController(
             TopicSettings settings,
             InputManager inputManager,
             DayCycleController dayCycleController)
         {
             _inputManager = inputManager;
+            _config = settings;
             _messageGenerator = new MessageGenerator(settings);
             _slots = new TopicSlot[settings.SlotsAmount];
             _dayCycleController = dayCycleController;
@@ -67,6 +72,8 @@ namespace EternalReturn.Topics
         {
             if (_pauseCount > 0) return;
 
+            _cooldown -= Time.deltaTime;
+            
             foreach (var slot in _slots.Where(x => x.Status == SlotStatus.Occupied))
             {
                 slot.Topic.Tick(Time.deltaTime);
@@ -102,6 +109,11 @@ namespace EternalReturn.Topics
 
         public void CreateTopic()
         {
+            if (_cooldown > 0)
+            {
+                return;
+            }
+            
             var topicSlot = _slots.First(x => x.Status == SlotStatus.Unoccupied);
             
             var duration = _messageGenerator.RollDuration();
@@ -113,6 +125,8 @@ namespace EternalReturn.Topics
             OnTopicOpened?.Invoke(topicSlot);
             
             SelectTopic(topicSlot.Id);
+            
+            _cooldown = _config.Cooldown;
             
             Debug.Log("Topic Created");
         }
@@ -151,6 +165,11 @@ namespace EternalReturn.Topics
         public void MessageLost()
         {
             OnMessageLost?.Invoke();
+        }
+        
+        public void MessageComplete()
+        {
+            OnMessageComplete?.Invoke();
         }
     }
 }

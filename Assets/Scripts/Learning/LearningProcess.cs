@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +5,7 @@ namespace EternalReturn.Learning
 {
     public class LearningProcess
     {
-        public float Duration { get; set; }
+        public float Duration { get; private set; }
         public float BaseDuration { get; }
         public float NodeRadius { get; }
         public List<LearningNode> CurrentNodes { get; }
@@ -68,8 +67,7 @@ namespace EternalReturn.Learning
         public void CompleteNode(LearningNode node)
         {
             if (!CurrentNodes.Remove(node)) return;
-
-            // OnNodeComplete?.Invoke(node);
+            _controller.NodeComplete();
         }
     }
 }

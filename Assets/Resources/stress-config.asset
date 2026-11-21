@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2966dac8fdb4db4b32ec151a9967b89, type: 3}
   m_Name: stress-config
   m_EditorClassIdentifier: Assembly-CSharp::EternalReturn.Stress.StressConfig
-  learningStressGain: 30
-  forumStressGain: 30
+  learningStressGain: 5
+  forumStressGain: 5

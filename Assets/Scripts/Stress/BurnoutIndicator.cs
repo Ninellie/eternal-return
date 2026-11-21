@@ -6,10 +6,13 @@ namespace EternalReturn.Stress
 {
     public class BurnoutIndicator : MonoBehaviour
     {
-        [SerializeField] private H_SDFUIOutline[] indicators;
+        [SerializeField]
+        private H_SDFUIOutline[] indicators;
 
         [Inject]
         private readonly ResourceProvider _resourceProvider;
+        
+        private Resource _burnout;
         
         private void Start()
         {
